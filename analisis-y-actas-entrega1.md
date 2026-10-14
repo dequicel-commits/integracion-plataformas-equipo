@@ -1,152 +1,126 @@
-[entrega_1_analista_de_procesos_y_actas_inp.md](https://github.com/user-attachments/files/33442371/entrega_1_analista_de_procesos_y_actas_inp.md)
-# Entregable 1 — Análisis de Procesos (AS-IS / TO-BE) y Actas de Seguimiento
+[entrega_1_analista_de_procesos_y_actas_inp.md](https://github.com/user-attachments/files/33442539/entrega_1_analista_de_procesos_y_actas_inp.md)
+# Avance Entregable 1 - Análisis del Proceso y Actas de Reunión
 
-**Curso:** Integración de Plataformas (INP) — IPLACEX  
-**Docente:** Santiago Neira (`sneira@profesor.iplacex.cl`)  
-**Repositorio Oficial del Equipo:** [dequicel-commits/integracion-plataformas-equipo](https://www.google.com/search?q=https%3A%2F%2Fgithub.com%2Fdequicel-commits%2Fintegracion-plataformas-equipo)  
-**Fecha de actualización:** 14 de octubre de 2026  
+**Asignatura:** Integración de Plataformas (INP)  
+**Profesor:** Santiago Neira  
+**Fecha:** 14 de octubre de 2026  
 
-**Integrantes del Equipo y Roles (Iteración Semanas 3–4):**
-* **Felipe Octavio Quicel Soto** — *Analista de Procesos*
-* **Geraldine Andrea González Acuña** — *Modeladora BPMN*
-* **Elvis Brayan Gutiérrez Bernal** — *Implementador Flowable*
-* **Lautaro Nelson Salinas Alvear** — *QA / Tester y Gestión de Repositorio*
+**Integrantes del grupo y roles (Semanas 3 y 4):**
+* **Felipe Octavio Quicel Soto** - Analista de procesos
+* **Geraldine Andrea González Acuña** - Modeladora BPMN
+* **Elvis Brayan Gutiérrez Bernal** - Implementador Flowable
+* **Lautaro Nelson Salinas Alvear** - QA / Tester y encargado de repositorio
 
-## 1. Identificación del Caso y Diagnóstico Inicial
+## 1. Resumen del Caso y Participantes
 
-### 1.1 Antecedentes del Socio Comunitario (Micro o Pequeña Empresa)
+*(Nota: Datos específicos de la empresa pendientes de confirmación por el profesor).*
 
-| Campo | Detalle del Caso Asignado |
-| :--- | :--- |
-| **Nombre de la organización / empresa** | *(Completar al recibir asignación del docente)* |
-| **Rubro o giro principal** | *(Ej. Comercio minorista, servicios técnicos, gestión de socios, atención de clientes)* |
-| **Proceso de negocio a intervenir** | *(Ej. Proceso de ingreso y validación de solicitudes / pedidos / reservas)* |
-| **Problema central detectado** | *(Describir qué demora, pérdida de trazabilidad o reproceso ocurre hoy al hacerlo de forma manual)* |
-| **Objetivo del rediseño (TO-BE)** | Estandarizar y digitalizar el flujo del proceso en Flowable, asegurando trazabilidad de estados y reduciendo tiempos de respuesta. |
-| **Nivel de madurez inicial (BPMM)** | **Nivel 1 (Inicial / Ad-hoc):** Proceso ejecutado de forma manual (correo/mensajería/planillas) sin control formal de estados ni métricas. |
-| **Nivel de madurez objetivo (BPMM)** | **Nivel 2–3 (Gestionado / Estandarizado):** Flujo formalizado en BPMN 2.0, con roles definidos, reglas de negocio claras y ejecución trazable en Flowable. |
+* **Empresa / Socio comunitario:** *(Por confirmar)*
+* **Rubro:** *(Por confirmar)*
+* **Proceso que vamos a trabajar:** Recepción, revisión y gestión de solicitudes de clientes.
+* **Problema actual:** Actualmente el proceso se lleva de forma manual (por correo o WhatsApp y planillas Excel), lo que genera demoras en responder, datos incompletos al recibir una solicitud y poca claridad sobre en qué estado va cada caso.
+* **Objetivo de la mejora:** Pasar el proceso a Flowable para que las solicitudes entren con datos ordenados, cada encargado tenga sus tareas claras en pantalla y quede registro del estado de principio a fin (pasando de un nivel inicial desordenado a un proceso estandarizado según BPMM).
 
-### 1.2 Participantes del Proceso (Pools y Lanes para el Diagrama BPMN)
+**Actores del proceso (Lanes para el diagrama BPMN):**
+1. **Cliente / Solicitante:** Persona que inicia el proceso enviando su solicitud.
+2. **Encargado / Ejecutivo:** Quien recibe el caso en el sistema, revisa los datos y aprueba o rechaza.
+3. **Administrador / Supervisor:** Quien valida el cierre o revisa casos con observaciones.
+4. **Sistema (Flowable):** Encargado de mover las tareas y guardar el estado del proceso.
 
-| Participante / Rol (Lane BPMN) | Tipo de Actor | Responsabilidad dentro del proceso |
-| :--- | :--- | :--- |
-| **Solicitante / Cliente** | Externo (Iniciador) | Inicia el proceso ingresando los datos de su solicitud o requerimiento. |
-| **Encargado Operativo / Ejecutivo** | Interno (Usuario Flowable) | Revisa la solicitud recibida, verifica los antecedentes y aprueba, observa o rechaza el caso. |
-| **Administrador / Supervisor** | Interno (Usuario Flowable) | Resuelve casos especiales o autoriza el cierre/entrega final del servicio. |
-| **Sistema Flowable / Servicios Web** | Automatizado (Motor BPMN) | Registra el estado del caso, asigna tareas humanas y ejecuta validaciones automáticas (*Service Tasks* en Entregable 2). |
+## 2. Proceso Actual (AS-IS)
 
-## 2. Levantamiento del Proceso Actual (BPMN AS-IS Simplificado)
+Paso a paso de cómo se hace hoy el proceso de manera manual (base para armar el diagrama BPMN AS-IS):
 
-Esta tabla sirve de insumo directo para que **Geraldine González** (*Modeladora BPMN*) dibuje el diagrama **AS-IS** de la Semana 3. Refleja cómo opera la organización hoy sin automatización:
-
-| Paso | Actor (Lane) | Nombre de la Actividad (Verbo + Objeto) | Canal / Herramienta Actual | Problema o Cuello de Botella (Dolor) |
+| N° | Quién lo hace (Lane) | Paso del proceso | Cómo se hace hoy | Problema que genera |
 | :--- | :--- | :--- | :--- | :--- |
-| **1** | Solicitante / Cliente | Enviar solicitud o requerimiento | WhatsApp, correo electrónico o presencial | Los datos llegan incompletos y sin un formato estándar. |
-| **2** | Encargado Operativo | Recibir y anotar datos manualmente | Planilla Excel o cuaderno de registro | Doble digitación, riesgo de pérdida de mensajes y falta de folio único. |
-| **3** | Encargado Operativo | Verificar disponibilidad o antecedentes | Revisión manual en archivos o consultas internas | Demora en la revisión; el cliente no sabe en qué estado está su solicitud. |
-| **4** | Encargado Operativo | Informar respuesta al solicitante | Respuesta manual por WhatsApp o correo | Falta de trazabilidad histórica y retrasos en la confirmación. |
-| **5** | Encargado Operativo | Archivar o cerrar el requerimiento | Registro manual en planilla | Sin indicadores automáticos de tiempos de atención ni control de estados. |
+| 1 | Cliente | Envía la solicitud | Por WhatsApp o correo | A veces faltan datos importantes para atender el pedido. |
+| 2 | Encargado | Recibe y anota los datos | Planilla Excel a mano | Se pierde tiempo traspasando datos y se pueden traspapelar. |
+| 3 | Encargado | Revisa antecedentes o disponibilidad | Búsqueda manual en archivos | Toma mucho tiempo validar cada solicitud. |
+| 4 | Encargado | Responde al cliente | Mensaje manual por correo o teléfono | El cliente no tiene cómo saber el estado si no pregunta. |
+| 5 | Encargado | Cierra y guarda el registro | Actualiza el Excel | Cuesta hacer seguimiento de qué casos siguen pendientes. |
 
-## 3. Propuesta de Proceso Mejorado (BPMN TO-BE Preliminar)
+## 3. Proceso Propuesto (TO-BE Preliminar)
 
-Esta tabla guía a **Geraldine González** (*Modeladora BPMN*) para construir el diagrama **TO-BE preliminar** (y proyecta dónde se conectarán los Web Services y *Gateways* en las siguientes iteraciones):
+Paso a paso de cómo funcionará con el sistema en Flowable (base para el diagrama BPMN TO-BE):
 
-| Paso | Actor (Lane) | Actividad en el Nuevo Proceso | Tipo de Elemento BPMN 2.0 | Mejora Incorporada en el TO-BE |
+| N° | Quién lo hace (Lane) | Paso en el nuevo flujo | Elemento en BPMN | Qué mejora |
 | :--- | :--- | :--- | :--- | :--- |
-| **Inicio** | Solicitante / Sistema | Solicitud ingresada en formulario | **Start Event** (Evento de Inicio) | Captura estructurada con campos obligatorios validados desde el origen. |
-| **1** | Solicitante / Encargado | Registrar datos de la solicitud | **User Task** (Tarea Humana) | Registro único en Flowable con generación automática de instancia y trazabilidad. |
-| **2** | Sistema (Iteración 2) | Validar antecedentes / consultar servicio | **Service Task** *(External Worker REST/SOAP)* | *(Proyectado para Semana 5)* Validación automática mediante Web Service en Java. |
-| **3** | Encargado Operativo | Evaluar y resolver solicitud | **User Task** + **Exclusive Gateway (XOR)** | El encargado revisa la información en su bandeja de Flowable y decide aprobar o rechazar. |
-| **4** | Sistema / Encargado | Actualizar estado y notificar resolución | **User Task** / **Service Task** | El estado del caso queda registrado formalmente (`APROBADO` / `RECHAZADO`). |
-| **Fin** | Sistema | Solicitud finalizada y trazada | **End Event** (Evento de Término) | Cierre formal de la instancia con historial completo de auditoría en Flowable. |
+| Inicio | Cliente / Sistema | Ingreso de solicitud | Evento de Inicio (Start Event) | El proceso parte con todos los datos necesarios desde el inicio. |
+| 1 | Cliente / Encargado | Registrar solicitud en formulario | Tarea Humana (User Task) | Queda guardado al tiro en Flowable con un identificador único. |
+| 2 | Sistema | Validar datos automáticamente | Tarea de Servicio (Service Task) | *(Para el Entregable 2)* Consulta automática mediante servicio web en Java. |
+| 3 | Encargado | Revisar solicitud y decidir | Tarea Humana + Compuerta (Gateway) | El encargado revisa en su bandeja y marca si se aprueba o rechaza. |
+| 4 | Sistema / Encargado | Actualizar estado y avisar | Tarea Humana / Servicio | El caso cambia de estado (`Aprobado` o `Rechazado`) de forma ordenada. |
+| Fin | Sistema | Fin del proceso | Evento de Fin (End Event) | Queda el historial completo de quién atendió el caso y cuándo terminó. |
 
-## 4. Especificación del Proceso Mínimo Ejecutable (Semana 3 — Flowable)
+## 4. Definición del Proceso Mínimo para Flowable (Semana 3)
 
-De acuerdo con la programación de la **Semana 3**, el primer prototipo desplegado en [Flowable Cloud IPLACEX](https://www.google.com/search?q=https%3A%2F%2Fiplacex.cloud.flowable.com%2F) debe implementar el flujo mínimo ejecutable:
+Para cumplir con el flujo básico que pide la primera entrega (`Inicio -> Tarea humana -> Fin`), definimos la siguiente estructura para configurarla en [Flowable Cloud](https://www.google.com/search?q=https%3A%2F%2Fiplacex.cloud.flowable.com%2F):
 
-`Evento de Inicio → Tarea Humana (User Task) → Evento de Fin`
+* **Nombre del proceso en Flowable:** `Proceso Gestion de Solicitudes`
+* **Clave (Key):** `proceso_solicitudes`
+* **Flujo mínimo:** `Inicio de solicitud` -> `Tarea Humana: Revisar solicitud` -> `Fin de solicitud`
 
-### 4.1 Ficha Técnica para el Implementador de Flowable
+**Datos que tendrá el formulario de la Tarea Humana:**
 
-| Parámetro en Flowable Design | Valor Definido |
-| :--- | :--- |
-| **Nombre del Proceso (Process Name)** | `Proceso Gestion de Solicitudes MVP` |
-| **Identificador del Proceso (Process Key)** | `proceso_solicitud_mvp` |
-| **Evento de Inicio (Start Event)** | `Inicio de Solicitud` |
-| **Tarea Humana (User Task)** | `Revisar y Validar Solicitud` |
-| **Asignación (Assignee / Candidate Group)** | Usuario ejecutor del equipo en Flowable Cloud |
-| **Evento de Término (End Event)** | `Solicitud Procesada` |
+| Campo en el formulario | Variable en Flowable | Tipo de dato | Obligatorio |
+| :--- | :--- | :--- | :--- |
+| Nombre del solicitante | `nombreSolicitante` | Texto (`Text`) | Sí |
+| RUT o identificador | `rutSolicitante` | Texto (`Text`) | Sí |
+| Correo de contacto | `correoContacto` | Texto (`Text`) | Sí |
+| Tipo de solicitud | `tipoSolicitud` | Texto / Lista | Sí |
+| Detalle del pedido | `detalleSolicitud` | Texto largo | Sí |
+| Estado de la revisión | `estadoSolicitud` | Lista (`Aprobado` / `Rechazado` / `Pendiente`) | Sí |
+| Comentarios del encargado | `observaciones` | Texto largo | No |
 
-### 4.2 Campos del Formulario de la Tarea Humana (Form Fields)
+## 5. Actas de Reuniones Semanales
 
-Estos son los campos base que **Elvis Gutiérrez** (*Implementador de Flowable*) debe agregar en el formulario asociado a la *User Task* (sirven para cualquier rubro y solo se ajusta la etiqueta según la empresa asignada):
-
-| Etiqueta en Pantalla (Label) | Nombre de Variable (`id`) | Tipo de Dato (Flowable) | Obligatorio | Uso dentro del Proceso |
-| :--- | :--- | :--- | :--- | :--- |
-| **Nombre o Razón Social del Solicitante** | `nombreSolicitante` | Texto (`Text`) | Sí | Identificar a la persona o cliente que origina el caso. |
-| **Identificador / Folio / RUT** | `identificadorCliente` | Texto (`Text`) | Sí | Llave de búsqueda para futuras integraciones con Web Services (Semana 5). |
-| **Correo Electrónico de Contacto** | `correoContacto` | Texto (`Text`) | Sí | Canal para notificaciones del proceso. |
-| **Tipo o Motivo de Solicitud** | `tipoSolicitud` | Selección (`Dropdown` / `Text`) | Sí | Clasificar el requerimiento del negocio. |
-| **Detalle o Descripción del Requerimiento** | `detalleSolicitud` | Texto multilínea (`Multiline Text`) | Sí | Contexto específico de la solicitud ingresada. |
-| **Estado de Revisión Inicial** | `estadoSolicitud` | Selección (`APROBADO` / `PENDIENTE` / `RECHAZADO`) | Sí | Variable de control de estado (base para el *Gateway* de las Semanas 4–6). |
-| **Observaciones del Revisor** | `observacionesRevision` | Texto multilínea (`Multiline Text`) | No | Registro de comentarios técnicos o motivo de la decisión. |
-
-## 5. Registro de Actas de Reunión (Evidencia Obligatoria para el Repositorio)
-
-Según los lineamientos del curso, el equipo debe registrar **al menos 2 reuniones semanales** (sincrónicas o asincrónicas por WhatsApp/Discord/Meet) y guardarlas en GitHub.
-
-### Acta de Reunión N°1 — Conformación, Roles y Preparación Base (Semana 2)
+### Acta de Reunión 1 (Semana 2)
 
 * **Fecha:** 14 de octubre de 2026
-* **Modalidad:** Coordinación de equipo (Sincrónica / Asincrónica)
-* **Participantes y Roles Asignados (Iteración Semanas 3–4):**
-  * **Analista de Procesos:** Felipe Octavio Quicel Soto
-  * **Modeladora BPMN:** Geraldine Andrea González Acuña
-  * **Implementador Flowable:** Elvis Brayan Gutiérrez Bernal
-  * **QA / Tester y Gestión de Repositorio:** Lautaro Nelson Salinas Alvear
-* **Resumen de avances realizados:**
-  * Revisión de los lineamientos de evaluación del curso y calendario de entregas (Semanas 3 a 9).
-  * Conformación oficial del equipo de 4 integrantes y distribución de roles iniciales para las Semanas 3 y 4.
-  * Creación del repositorio grupal en GitHub ([dequicel-commits/integracion-plataformas-equipo](https://www.google.com/search?q=https%3A%2F%2Fgithub.com%2Fdequicel-commits%2Fintegracion-plataformas-equipo)).
-  * Elaboración de la estructura base del documento de Análisis de Procesos (diagnóstico BPMM, tablas AS-IS y TO-BE, y especificación técnica de la Tarea Humana mínima para Flowable) por parte de Felipe Quicel.
-  * Verificación de acceso a la plataforma [Flowable Cloud IPLACEX](https://www.google.com/search?q=https%3A%2F%2Fiplacex.cloud.flowable.com%2F).
-* **Tareas comprometidas para el siguiente período:**
+* **Modalidad:** Online / Coordinación por grupo
+* **Asistentes:**
+  * Felipe Octavio Quicel Soto (Analista de procesos)
+  * Geraldine Andrea González Acuña (Modeladora BPMN)
+  * Elvis Brayan Gutiérrez Bernal (Implementador Flowable)
+  * Lautaro Nelson Salinas Alvear (QA / Tester)
 
-| Tarea Comprometida | Responsable | Fecha Límite | Estado |
+**Avances revisados:**
+* Revisamos el documento de planificación del curso y las fechas de las entregas.
+* Nos repartimos los primeros roles del equipo para las semanas 3 y 4.
+* Se creó el repositorio del grupo en GitHub para ir subiendo los avances y las actas.
+* Felipe avanzó con el documento base de análisis del proceso (AS-IS, TO-BE y los campos de la tarea humana para Flowable).
+
+**Compromisos para la próxima reunión:**
+
+| Tarea | Responsable | Fecha estimada | Estado |
 | :--- | :--- | :--- | :--- |
-| Enviar nómina oficial del grupo al profesor y consultar asignación de empresa/caso | Equipo Completo | 15-10-2026 | En progreso |
-| Adaptar tablas AS-IS y TO-BE apenas se confirme el caso de la micro/pequeña empresa | Felipe Octavio Quicel Soto (Analista) | 19-10-2026 | Preparado (base lista en GitHub) |
-| Iniciar bocetos de diagramas BPMN AS-IS y TO-BE según tablas 2 y 3 | Geraldine Andrea González Acuña (Modeladora) | 20-10-2026 | Pendiente |
-| Configurar flujo mínimo (`Inicio → Tarea humana → Fin`) en Flowable Cloud | Elvis Brayan Gutiérrez Bernal (Implementador) | 20-10-2026 | Pendiente |
-| Mantener estructura del repositorio en GitHub y preparar pruebas de ejecución | Lautaro Nelson Salinas Alvear (QA / Tester) | 21-10-2026 | En progreso |
+| Enviar correo al profesor con los integrantes del grupo y consultar por el caso | Grupo | 15-10-2026 | En curso |
+| Completar los datos específicos de la empresa cuando el profesor confirme el caso | Felipe Quicel | 19-10-2026 | Listo para rellenar |
+| Ir armando el borrador de los diagramas AS-IS y TO-BE en BPMN | Geraldine González | 20-10-2026 | Pendiente |
+| Probar el flujo básico (`Inicio -> Tarea humana -> Fin`) en Flowable Cloud | Elvis Gutiérrez | 20-10-2026 | Pendiente |
+| Ordenar carpetas del repositorio y revisar que estén todos los archivos | Lautaro Salinas | 21-10-2026 | En curso |
 
-* **Bloqueos o dificultades identificados:**
-  * **Bloqueo 1 (Externo):** A la fecha de esta reunión, el equipo se encuentra a la espera de la asignación oficial de la micro o pequeña empresa (socio comunitario) por parte del docente para completar los datos específicos del rubro en las secciones 1, 2 y 3 del análisis. **Acción de mitigación:** Felipe Quicel dejó construida toda la arquitectura documental y el diseño del formulario base del MVP en GitHub para completar los datos del negocio en cuanto sea asignado.
+**Bloqueos o dificultades:**
+* Todavía no tenemos asignada la empresa/socio comunitario por parte del profesor. Para no atrasarnos, dejamos armada la estructura del análisis AS-IS y TO-BE y los campos base del formulario para ajustarlos apenas tengamos el caso definitivo.
 
-### Acta de Reunión N°2 — Revisión del Caso Asignado y Modelamiento (Plantilla Lista)
+### Acta de Reunión 2 (Plantilla para la siguiente reunión)
 
-* **Fecha:** *(Completar fecha de la segunda reunión de la semana)*
-* **Modalidad:** *(Sincrónica online / Asincrónica por WhatsApp o Discord)*
-* **Participantes:**
-  * Felipe Octavio Quicel Soto (*Analista de Procesos*)
-  * Geraldine Andrea González Acuña (*Modeladora BPMN*)
-  * Elvis Brayan Gutiérrez Bernal (*Implementador Flowable*)
-  * Lautaro Nelson Salinas Alvear (*QA / Tester*)
-* **Revisión de compromisos de la reunión anterior:**
-  * Confirmación de grupo enviado al docente: *(Completado / En espera)*
-  * Repositorio GitHub creado y estructurado con Acta N°1: **Completado**
-* **Resumen de avances realizados:**
-  * Recepción y análisis del caso de negocio asignado.
-  * Cierre del levantamiento AS-IS y propuesta TO-BE por parte del Analista de Procesos (Felipe Quicel).
-  * Avance en el diseño de los diagramas BPMN AS-IS y TO-BE preliminar y configuración del proceso mínimo en Flowable.
-* **Tareas comprometidas para el cierre del Entregable 1 (Semana 3):**
+* **Fecha:** *(Por definir)*
+* **Modalidad:** Online / Grupo de WhatsApp
+* **Asistentes:** Felipe Quicel, Geraldine González, Elvis Gutiérrez, Lautaro Salinas.
 
-| Tarea Comprometida | Responsable | Fecha Límite | Estado |
-| :--- | :--- | :--- | :--- |
-| Publicar versión final del Análisis AS-IS / TO-BE con datos de la empresa en GitHub | Felipe Octavio Quicel Soto (Analista) | 20-10-2026 | Pendiente |
-| Subir diagramas BPMN AS-IS y TO-BE preliminar (`.bpmn20.xml` y `.png`) al repositorio | Geraldine Andrea González Acuña (Modeladora) | 22-10-2026 | Pendiente |
-| Desplegar proceso mínimo (`Inicio → Tarea humana → Fin`) en Flowable Cloud | Elvis Brayan Gutiérrez Bernal (Implementador) | 23-10-2026 | Pendiente |
-| Grabar evidencia de ejecución y validar entrega completa en el repositorio | Lautaro Nelson Salinas Alvear (QA / Tester) | 24-10-2026 | Pendiente |
+**Revisión de tareas anteriores:**
+* Envío de grupo al profesor: *(Completado / En espera)*
+* Creación de repositorio y subida de Acta 1: Completado.
 
-* **Bloqueos o dificultades identificados:**
-  * *(Registrar cualquier duda técnica con Flowable Cloud o con las reglas del negocio asignado).*
+**Avances de la reunión:**
+* *(Anotar aquí cuando reciban el caso de la empresa y revisen los primeros diagramas).*
+
+**Compromisos acordados:**
+* **Felipe Quicel:** Actualizar documento de análisis con los datos reales de la empresa.
+* **Geraldine González:** Subir archivos `.bpmn20.xml` e imágenes de los diagramas AS-IS y TO-BE.
+* **Elvis Gutiérrez:** Dejar desplegado el proceso mínimo en Flowable Cloud.
+* **Lautaro Salinas:** Grabar video corto de prueba del proceso corriendo y subirlo al repositorio.
+
+**Bloqueos o dificultades:**
+* *(Anotar si hubo algún problema técnico con Flowable o dudas con el caso).*
