@@ -79,10 +79,10 @@ Para cumplir con el flujo básico que pide la primera entrega (`Inicio -> Tarea 
 * **Fecha:** 14 de octubre de 2026
 * **Modalidad:** Online / Coordinación por grupo
 * **Asistentes:**
-  * Felipe Octavio Quicel Soto (Analista de procesos)
-  * Geraldine Andrea González Acuña (Modeladora BPMN)
-  * Elvis Brayan Gutiérrez Bernal (Implementador Flowable)
-  * Lautaro Nelson Salinas Alvear (QA / Tester)
+  * Felipe Octavio Quicel Soto (Analista)
+  * Geraldine Andrea González Acuña (desconocido)
+  * Elvis Brayan Gutiérrez Bernal (desconocido)
+  * Lautaro Nelson Salinas Alvear (desconocido)
 
 **Avances revisados:**
 * Revisamos el documento de planificación del curso y las fechas de las entregas.
@@ -117,10 +117,10 @@ Para cumplir con el flujo básico que pide la primera entrega (`Inicio -> Tarea 
 * *(Anotar aquí cuando reciban el caso de la empresa y revisen los primeros diagramas).*
 
 **Compromisos acordados:**
-* **Felipe Quicel:** Actualizar documento de análisis con los datos reales de la empresa.
-* **Geraldine González:** Subir archivos `.bpmn20.xml` e imágenes de los diagramas AS-IS y TO-BE.
-* **Elvis Gutiérrez:** Dejar desplegado el proceso mínimo en Flowable Cloud.
-* **Lautaro Salinas:** Grabar video corto de prueba del proceso corriendo y subirlo al repositorio.
+* **Felipe Quicel:**
+* **Geraldine González:** S
+* **Elvis Gutiérrez:** 
+* **Lautaro Salinas:** 
 
 **Bloqueos o dificultades:**
 * *(Anotar si hubo algún problema técnico con Flowable o dudas con el caso).*
