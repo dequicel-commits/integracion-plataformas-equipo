@@ -23,8 +23,8 @@ Peluditos Pet Chile es un emprendimiento que elabora y vende pastelería para ma
 
 El caso plantea dos necesidades:
 
-- **Gestionar potenciales clientes o leads:** guardar sus datos, identificar el canal por el que llegaron, registrar los seguimientos y saber si finalmente compraron.
-- **Generar oportunidades de recompra:** aprovechar fechas como el cumpleaños de una mascota, Navidad u otras campañas para volver a contactar a los clientes.
+**Gestionar potenciales clientes o leads:** guardar sus datos, identificar el canal por el que llegaron, registrar los seguimientos y saber si finalmente compraron.
+**Generar oportunidades de recompra:** aprovechar fechas como el cumpleaños de una mascota, Navidad u otras campañas para volver a contactar a los clientes.
 
 Para empezar, proponemos trabajar con el registro y seguimiento de leads. Así podemos probar un proceso pequeño en Flowable y mejorarlo en las siguientes entregas. La gestión de fechas y oportunidades de recompra seguirá formando parte del proyecto.
 
@@ -45,10 +45,10 @@ Flowable será la herramienta para ejecutar el proceso propuesto. No asumimos qu
 
 El AS-IS representa el proceso actual. El caso confirma lo siguiente:
 
-- Las consultas llegan desde distintos canales digitales.
-- Algunas personas compran y otras solamente piden información.
-- No existe un mecanismo formal para registrar y seguir a los interesados.
-- No hay una forma sistemática de identificar oportunidades de recompra.
+Las consultas llegan desde distintos canales digitales.
+Algunas personas compran y otras solamente piden información.
+No existe un mecanismo formal para registrar y seguir a los interesados.
+No hay una forma sistemática de identificar oportunidades de recompra.
 
 El documento no explica todos los pasos de atención. Por eso, este recorrido es una base para conversar con la emprendedora y preparar el primer diagrama; todavía debe validarse.
 
@@ -70,10 +70,10 @@ El esquema compartido muestra una consulta, su respuesta y una decisión sobre s
 
 Como analista, propongo revisar estos puntos con Elvis:
 
-- Cambiar “Ingresa consulta de cliente” por “Recibir consulta del cliente”, si la actividad representa la recepción y no un registro que ya exista en la empresa.
-- Aclarar la tarea “Finalizar consulta seguimiento”. Si representa el cierre de la atención, puede llamarse “Finalizar consulta”. Todavía debemos confirmar si hoy realizan algún seguimiento informal.
-- Mantener “Pedido coordinado” como resultado de esa rama. Coordinar un pedido no demuestra por sí solo que la compra se haya concretado; falta definir qué confirma la compra.
-- En el TO-BE, incorporar el registro del interesado, las acciones de seguimiento y el resultado. Si alguien no compra en el primer contacto, debemos definir si sigue pendiente o corresponde cerrar su consulta.
+Cambiar “Ingresa consulta de cliente” por “Recibir consulta del cliente”, si la actividad representa la recepción y no un registro que ya exista en la empresa.
+Aclarar la tarea “Finalizar consulta seguimiento”. Si representa el cierre de la atención, puede llamarse “Finalizar consulta”. Todavía debemos confirmar si hoy realizan algún seguimiento informal.
+Mantener “Pedido coordinado” como resultado de esa rama. Coordinar un pedido no demuestra por sí solo que la compra se haya concretado; falta definir qué confirma la compra.
+En el TO-BE, incorporar el registro del interesado, las acciones de seguimiento y el resultado. Si alguien no compra en el primer contacto, debemos definir si sigue pendiente o corresponde cerrar su consulta.
 
 La imagen es evidencia de un avance de modelado. También se necesita guardar el archivo editable `.bpmn` y, cuando corresponda, la evidencia de ejecución en Flowable.
 
@@ -98,10 +98,10 @@ Este recorrido muestra la mejora que queremos desarrollar. La primera versión e
 
 La planificación muestra como mínimo un proceso con inicio, una tarea humana y fin. Proponemos comenzar con lo siguiente:
 
-- **Nombre del proceso:** Registro de consultas de Peluditos.
-- **Clave propuesta:** `registro_consultas_peluditos`.
-- **Flujo:** inicio → tarea humana “Registrar consulta” → fin.
-- **Plataforma del curso:** [Flowable](https://iplacex.cloud.flowable.com/).
+**Nombre del proceso:** Registro de consultas de Peluditos.
+**Clave propuesta:** `registro_consultas_peluditos`.
+**Flujo:** inicio → tarea humana “Registrar consulta” → fin.
+**Plataforma del curso:** [Flowable](https://iplacex.cloud.flowable.com/).
 
 La persona encargada ingresará los datos manualmente. Elegir Instagram como canal de origen no significa que el sistema esté conectado con esa red social.
 
@@ -134,11 +134,11 @@ Guardaremos capturas o un video de esa prueba. Por ahora, estos puntos son crite
 
 ### Qué queda para ampliar después
 
-- Agregar las tareas de seguimiento y registro del resultado.
-- Definir cuándo una consulta se cierra sin compra.
-- Relacionar a quienes compraron con las futuras oportunidades comerciales.
-- Incorporar servicios web en Java, según la planificación del segundo entregable.
-- Desarrollar la gestión de fechas y oportunidades de recompra.
+Agregar las tareas de seguimiento y registro del resultado.
+Definir cuándo una consulta se cierra sin compra.
+Relacionar a quienes compraron con las futuras oportunidades comerciales.
+Incorporar servicios web en Java, según la planificación del segundo entregable.
+Desarrollar la gestión de fechas y oportunidades de recompra.
 
 ## 6. Preguntas que debemos resolver
 
@@ -161,12 +161,12 @@ Con esta actualización, el documento queda enfocado en Peluditos Pet Chile e in
 
 Todavía corresponde:
 
-- Revisar y acordar el alcance con el equipo.
-- Validar los detalles del proceso actual.
-- Revisar con Elvis los diagramas AS-IS y TO-BE y registrar las observaciones del análisis.
-- Coordinar con Geraldine los campos del formulario y el proceso mínimo, si el equipo confirma su propuesta de asumir Flowable.
-- Participar en la revisión del prototipo y registrar las observaciones.
-- Mantener las actas con lo que realmente se converse y acuerde.
+Revisar y acordar el alcance con el equipo.
+Validar los detalles del proceso actual.
+Revisar con Elvis los diagramas AS-IS y TO-BE y registrar las observaciones del análisis.
+Coordinar con Geraldine los campos del formulario y el proceso mínimo, si el equipo confirma su propuesta de asumir Flowable.
+Participar en la revisión del prototipo y registrar las observaciones.
+Mantener las actas con lo que realmente se converse y acuerde.
 
 Los diagramas BPMN y la ejecución en Flowable son entregables aparte. Este documento sirve de base, pero no los reemplaza.
 
@@ -194,29 +194,29 @@ Este registro conserva lo informado en el documento original. La referencia a la
 - Revisamos la planificación del curso y las fechas de las entregas.
 - Repartimos los primeros roles para las semanas 3 y 4.
 - Se informó la creación del repositorio del grupo para guardar avances y actas.
-- Felipe avanzó en una estructura inicial del análisis, con el proceso actual, la propuesta de mejora y los campos de una tarea humana.
+- Felipe avanzó en una estructura inicial del análisis, con el proceso actual, la propuesta de mejora y los campos de una tarea.
 
 **Compromisos registrados en esa reunión:**
 
 | Tarea | Responsable | Fecha estimada | Estado registrado entonces |
 | --- | --- | --- | --- |
-| Enviar los integrantes al profesor y consultar por el caso. | Grupo | 15-10-2026 | En curso. |
-| Completar el análisis con los datos de la empresa. | Felipe Quicel | 19-10-2026 | Estructura preparada, pendiente de completar. |
+| Enviar los integrantes al profesor y consultar por el caso. | Grupo | 15-10-2026 | Completo. |
+| Completar el análisis con los datos de la empresa. | Felipe Quicel | 19-10-2026 | Estructura preparada, pendiente. |
 | Preparar borradores de los diagramas AS-IS y TO-BE. | Geraldine González | 20-10-2026 | Pendiente. |
 | Probar el flujo básico en Flowable. | Elvis Gutiérrez | 20-10-2026 | Pendiente. |
-| Ordenar las carpetas y revisar los archivos del repositorio. | Lautaro Salinas | 21-10-2026 | En curso. |
+| Ordenar las carpetas y revisar los archivos del repositorio. | Lautaro Salinas | 21-10-2026 | Pendiente. |
 
 **Bloqueo registrado:** faltaba contar con el caso de la empresa para ajustar el análisis. Mientras tanto, se había preparado una estructura general de trabajo.
 
-Los estados anteriores describen lo registrado en el acta original. Su avance se revisará en la siguiente reunión; esta edición no acredita que los compromisos ya se hayan cumplido.
+Los estados anteriores describen lo registrado en el acta original. Su avance se revisará.
 
 ### Coordinación por WhatsApp — 17 de octubre de 2026
 
-Se registra el intercambio compartido del grupo. No se atribuye asistencia a otros integrantes ni se presenta como una reunión adicional.
+Se registra el intercambio compartido del grupo.
 
-- **19:55, Elvis:** indicó que después realizaría el modelo TO-BE con las mejoras.
-- **20:11, Geraldine:** se ofreció para asumir la implementación en Flowable y hacer funcionar y probar el proceso cuando estuviera listo el TO-BE. Consultó al grupo si estaba de acuerdo.
-- **20:27, Elvis:** confirmó que se encargaría del modelado BPMN.
+**19:55, Elvis:** indicó que después realizaría el modelo TO-BE con las mejoras.
+**20:11, Geraldine:** se ofreció para asumir la implementación en Flowable y hacer funcionar y probar el proceso cuando estuviera listo el TO-BE. Consultó al grupo si estaba de acuerdo.
+**20:27, Elvis:** confirmó que se encargaría del modelado BPMN.
 
 **Seguimiento pendiente:** confirmar en el grupo la propuesta de Geraldine y actualizar los responsables de las tareas futuras. La distribución del acta del 14 de octubre se conserva como antecedente de esa fecha.
 
@@ -228,15 +228,15 @@ Se registra el intercambio compartido del grupo. No se atribuye asistencia a otr
 
 **Revisión de compromisos anteriores:**
 
-- Envío de integrantes al profesor: por revisar.
-- Actualización del análisis para Peluditos: por revisar con el equipo.
-- Borradores BPMN: por revisar.
-- Prueba del proceso mínimo en Flowable: por revisar.
-- Organización y acceso al repositorio: por revisar.
+Envío de integrantes al profesor: por revisar.
+Actualización del análisis para Peluditos: por revisar con el equipo.
+Borradores BPMN: por revisar.
+Prueba del proceso mínimo en Flowable: por revisar.
+Organización y acceso al repositorio: por revisar.
 
 **Avances conversados:**
 
-- Por completar con lo revisado durante la reunión.
+Por completar con lo revisado durante la reunión.
 
 **Nuevos acuerdos:**
 
@@ -246,12 +246,12 @@ Se registra el intercambio compartido del grupo. No se atribuye asistencia a otr
 
 **Bloqueos y dudas:**
 
-- Por completar con las dificultades identificadas o indicar que no se reportaron.
+Por completar con las dificultades identificadas o indicar que no se reportaron.
 
 ## 9. Documentos de referencia
 
-- **PeluditosPetChile.pdf:** contexto del emprendimiento, gestión de leads y oportunidades comerciales.
-- **planificacion-final.pdf:** requisitos de la primera entrega, proceso mínimo, reuniones y evidencias del equipo.
-- **Anuncio Semana 1 de Integración de Plataformas:** uso de GitHub, roles y calendario del curso.
+**PeluditosPetChile.pdf:** contexto del emprendimiento, gestión de leads y oportunidades comerciales.
+**planificacion-final.pdf:** requisitos de la primera entrega, proceso mínimo, reuniones y evidencias del equipo.
+**Anuncio Semana 1 de Integración de Plataformas:** uso de GitHub, roles y calendario del curso.
 
 El anuncio sitúa la evaluación de la Unidad 1 en la semana del 19 al 25 de octubre de 2026. El equipo debe revisar la actividad de entrega para conocer la hora de cierre y la forma de presentación.
