@@ -1,4 +1,3 @@
-[analisis-y-actas-entrega1.md](https://github.com/user-attachments/files/33631200/analisis-y-actas-entrega1.md)
 # Primera entrega — Análisis de Peluditos Pet Chile y actas del equipo
 
 **Asignatura:** Integración de Plataformas  
