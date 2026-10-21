@@ -102,6 +102,31 @@ Para cumplir con el flujo básico ejecutable (`Inicio -> Tarea humana -> Fin`) e
 3. Probar que el flujo avance bien por las opciones hasta terminar.
 4. Sacar capturas o grabar un video corto de la prueba y subirlo al repositorio.
 
+## Resultado de Prueba y Paso a Paso (Execution Log) - Peluditos Pet Chile TO-BE
+
+## Resumen del Funcionamiento
+La simulación y validación en [Flowable Design](https://iplacex.cloud.flowable.com/design/#/workspace/20264B/apps/primeraEntrega/editor/bpmn/peluditosPetChileTOBE) comprueba que el flujo modelado gestiona de manera correcta las dos rutas posibles tras la evaluación comercial: una para los clientes que concretan la compra (**Lead convertido**) y otra para aquellos que no (**Lead no convertido**).
+
+## Paso a Paso (Execution Log)
+
+### Escenario A: Flujo con Compra Exitosa (Ruta SI)
+1. **Inicio del Proceso**: El evento de inicio se activa cuando el `Cliente realiza una consulta`.
+2. **Captura de Datos**: El flujo avanza a la tarea `Registro de datos potencial cliente` para almacenar la información inicial.
+3. **Gestión Comercial**: Se ejecuta la tarea `Gestionar y responder consulta` por parte del equipo de atención.
+4. **Seguimiento**: Se completa la tarea de `Realizar seguimiento comercial`.
+5. **Compuerta Condicional**: El flujo llega a la compuerta exclusiva `¿La compra fue realizada ?`, donde se evalúa la condición de venta como **SI**.
+6. **Registro Exitoso**: Se ejecuta la tarea `Registro cliente y compra realizada`.
+7. **Fin del Proceso**: El token alcanza el evento final y el estado resultante es **Lead convertido**.
+
+### Escenario B: Flujo sin Compra (Ruta NO)
+1. **Inicio del Proceso**: El evento de inicio se activa con una nueva consulta del cliente.
+2. **Captura de Datos**: Se registra la información en `Registro de datos potencial cliente`.
+3. **Gestión Comercial**: Se procesa la atención en `Gestionar y responder consulta`.
+4. **Seguimiento**: Se ejecuta el `Realizar seguimiento comercial`.
+5. **Compuerta Condicional**: El flujo llega a la compuerta `¿La compra fue realizada ?`, evaluando la condición como **NO**.
+6. **Registro Alternativo**: Se ejecuta la tarea de `Registro de resultado sin compra`.
+7. **Fin del Proceso**: El flujo concluye en el estado final **Lead no convertido**.
+
 ## 6. Dudas anotadas para el negocio
 
 Puntos que dejamos anotados como equipo por si se precisan más adelante:
