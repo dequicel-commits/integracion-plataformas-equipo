@@ -3,7 +3,7 @@
 **Asignatura:** Integración de Plataformas  
 **Profesor:** Santiago Neira  
 **Actualizado:** 21 de octubre de 2026  
-**Entrega:** jueves 29 de octubre de 2026, según el plazo informado al actualizar este documento. La hora se revisará en la actividad.  
+**Entrega:**
 **Estado del trabajo:** análisis y modelos iniciales preparados; implementación, integración y evidencias en desarrollo.
 
 ## 1. Cómo nos organizamos
