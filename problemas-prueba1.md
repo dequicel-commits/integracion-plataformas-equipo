@@ -6,7 +6,7 @@
 
 ---
 
-### 2. Variable `compraRealizada` en la compuerta exclusiva
+### 2. Variable `compraRealizada` :
 * **Problema detectado:** Después de pasar por el External Worker (`ExternalWorkerTask_21`), el proceso llega a la compuerta exclusiva que evalúa `${compraRealizada == true}` / `${compraRealizada == false}`. Originalmente, el Worker completaba el trabajo sin enviar esta variable:
   ```java
   worker.createCompletionBuilder(trabajo).complete();
