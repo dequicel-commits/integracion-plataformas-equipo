@@ -2,9 +2,9 @@
 
 **Asignatura:** Integración de Plataformas  
 **Profesor:** Santiago Neira  
-**Actualizado:** 21 de octubre de 2026  
-**Entrega:**
-**Estado del trabajo:** análisis y modelos iniciales preparados; implementación, integración y evidencias en desarrollo.
+**Actualizado:** 24 de octubre de 2026  
+**Entrega:** jueves 29 de octubre de 2026.  
+**Estado del trabajo:** prototipo en Enterprise e integración local con Java y Flowable OSS con pruebas reportadas y capturas disponibles. Falta cerrar algunos respaldos, revisar la configuración y preparar los videos.
 
 ## 1. Cómo nos organizamos
 
@@ -14,14 +14,14 @@ Nos estamos coordinando por WhatsApp. Cada uno tiene una parte principal, pero n
 | --- | --- |
 | Felipe Octavio Quicel Soto | Análisis del proceso y organización del repositorio. |
 | Elvis Brayan Gutiérrez Bernal | Modelos BPMN AS-IS y TO-BE. |
-| Geraldine Andrea González Acuña | Implementación en Flowable. El 21 informó que también está avanzando en integración con Web Services. |
+| Geraldine Andrea González Acuña | Implementación en Flowable e integración de prueba con el servicio REST Java y el external worker. |
 | Lautaro Nelson Salinas Alvear | Pruebas y registro de resultados. |
 
 El 18 se conversó la distribución en el grupo. Elvis confirmó el modelado y Geraldine confirmó su rol de implementadora. Lautaro ha estado revisando el requerimiento y las pruebas.
 
-Estamos usando Flowable de IPLACEX. Para el desarrollo se propuso Java 21, Maven y Visual Studio Code. Antes de ejecutar el código compartido debemos comprobar las versiones y anotar los pasos en el README.
+Estamos usando Flowable Enterprise de IPLACEX para el prototipo y sus formularios. La integración con el worker y el servicio Java se probó en Flowable OSS local. En la documentación de Geraldine están las herramientas y los pasos usados: Java 21, Maven, Visual Studio Code y Tomcat para el entorno local.
 
-Con la pauta nueva quedó claro que en esta primera entrega sí se necesita un servicio Java de prueba y su integración mediante un external worker. Ya no dejamos esa parte para la segunda entrega. Como Geraldine está trabajando en integración, falta revisar con ella qué tiene avanzado y cómo se repartirá lo que queda.
+La pauta nueva pide un servicio Java de prueba y un external worker integrado al proceso desde esta entrega. Geraldine ya subió esa implementación en `Entrega-1` y Lautaro informó que la probó en su equipo. Ahora debemos dejar claros los pasos y ajustes para que la versión del repositorio se pueda volver a probar.
 
 ## 2. Qué problema queremos resolver
 
@@ -69,7 +69,7 @@ Este es nuestro modelo inicial del proceso. Los detalles que no están explicado
 - Ese mismo día avisó que tenía un error en el AS-IS y después indicó que estaba corregido.
 - Geraldine revisó los dos caminos del TO-BE mediante simulación de tokens y señaló que ambos llegaban al final.
 
-Falta comprobar que estén respaldados en el repositorio los archivos editables con los nombres que pide la pauta: `BPMN/AS-IS.bpmn` y `BPMN/TO-BE.bpmn`. Las capturas sirven de apoyo, pero no reemplazan esos archivos.
+En `Entrega-1/bpmn-oss/` está el BPMN adaptado para la integración local. Todavía falta incorporar los originales editables del AS-IS y TO-BE con los nombres que pide la pauta: `BPMN/AS-IS.bpmn` y `BPMN/TO-BE.bpmn`. Las capturas sirven de apoyo, pero no reemplazan esos archivos.
 
 ## 4. Proceso propuesto TO-BE
 
@@ -119,25 +119,30 @@ Podemos usar datos ficticios y una lógica simplificada, pero hay que mostrar lo
 | Resultado final | `resultadoLead` | Compró o No concretó, cuando ya exista una decisión de cierre. |
 | Observaciones | `observaciones` | Anotar seguimiento o motivo de no compra cuando se conozca. |
 
-Esta tabla es una propuesta para revisar con Geraldine. No confirma que todos los campos ya estén configurados. El estado de trabajo se propone para resolver la diferencia entre los dos caminos actuales y las consultas que siguen pendientes.
+Esta tabla sigue siendo una propuesta de datos del negocio. La captura del formulario de seguimiento que está en el repositorio muestra nombre del cliente, fecha, una casilla para indicar si compró y observaciones. No damos por configurados todos los campos de la tabla. El estado de trabajo sigue propuesto para resolver cómo mantener una consulta pendiente sin cerrarla antes de tiempo.
 
 Si necesitamos registrar el cumpleaños de la mascota en otra iteración, conviene definir un campo de fecha propio. Por ahora no lo consideramos una función implementada ni dependemos de buscar esa fecha dentro de observaciones.
 
 ### Servicios y arquitectura
 
-Geraldine informó el 21 que tiene avanzada la integración con Web Services. Falta revisar con ella el servicio y el worker que está utilizando, cómo se ejecutan y qué evidencia podemos mostrar.
+Geraldine implementó el servicio de prueba `GET /api/seguimiento`. No necesita datos de entrada y devuelve un JSON con un estado y un mensaje. Sirve para probar la comunicación; todavía no guarda clientes ni compras.
 
-Debemos documentar la lista inicial de servicios previstos, indicando para cada operación:
+El worker toma el trabajo del tema `seguimiento-peluditos`, consulta el servicio y completa el trabajo si recibe una respuesta HTTP 200. Esa actividad permite que Flowable continúe hacia la decisión sobre la compra.
 
-- Nombre y propósito.
-- Método y ruta si usamos REST, o servicio y operación si usamos SOAP.
-- Datos que recibe y devuelve.
-- Actividad del proceso con la que se relaciona.
-- Estado: propuesto, desarrollado o probado.
+Los archivos y la explicación están en:
 
-No se exige implementar toda la lista, pero sí al menos un servicio Java de prueba integrado al proceso mediante el worker. Revisaremos las rutas con Geraldine para documentar las que realmente esté usando.
+- [Documentación técnica](Entrega-1/DOCUMENTACION-TECNICA.md).
+- [Guía para el tester](Entrega-1/GUIA-PARA-TESTER.md).
+- [Servicio Java](Entrega-1/servicio-peluditos/).
+- [External worker](Entrega-1/external-worker-peluditos/).
+- [BPMN de integración local](Entrega-1/bpmn-oss/peluditos-integracion-oss.bpmn20.xml).
+- [Capturas de implementación](Entrega-1/Evidencias/Implementacion/).
 
-También falta comprobar el diagrama de arquitectura en `Arquitectura/`. Debe mostrar los componentes reales y su comunicación, y distinguir lo que todavía esté planificado. Para esta entrega basta un esquema claro con cajas y flechas.
+La documentación técnica también propone `POST /api/clientes` y `POST /api/seguimientos`, con su propósito, entradas, salidas y relación con el proceso. Esos servicios son propuestas para continuar el proyecto; no están implementados.
+
+Lautaro agregó el [diagrama de arquitectura](arquitectura-demo.md). Muestra el prototipo Enterprise, el entorno local, el worker y el servicio REST, además de componentes planificados. Geraldine comentó el 24 que le parecía bien usarlo como base. Falta dejarlo organizado también en `Arquitectura/`, como solicita la pauta.
+
+En el video debemos explicar esta separación: los formularios se probaron en Enterprise y la integración se probó localmente en OSS. La documentación indica que el Sandbox no generaba los trabajos del worker y que se consultó al profesor. No damos por solucionado ese problema del Cloud solo porque la prueba local funcionó.
 
 ## 6. Simulación del TO-BE registrada por Lautaro
 
@@ -163,16 +168,29 @@ Este apartado conserva el recorrido que Lautaro añadió al documento. Correspon
 
 **Resultado informado:** ambos caminos llegaron al final en la simulación. Esto nos sirve para revisar el recorrido del diagrama. No demuestra todavía que los datos se guarden o que la integración funcione en una instancia real.
 
-### Pruebas que faltan registrar
+### Pruebas de ejecución realizadas después de la simulación
 
-- Iniciar una instancia real del proceso desplegado.
-- Completar los formularios con datos ficticios y revisar las validaciones configuradas.
-- Recorrer las opciones de compra y no compra.
-- Verificar cómo se mantiene una consulta pendiente, cuando esa decisión esté resuelta e implementada.
-- Mostrar que la instancia llega a la actividad externa, que el worker la atiende e invoca el servicio Java y que el proceso continúa.
-- Guardar capturas, resultados o video, indicando qué se probó y qué quedó pendiente.
+El 21 por la tarde Geraldine informó que logró ejecutar la integración con Flowable OSS, el worker y el servicio REST Java. El 22 subió el código, la documentación y las capturas a `Entrega-1`.
 
-Lautaro lleva la parte de pruebas y Geraldine la implementación. Por mi parte, debo revisar que los formularios y los resultados correspondan al análisis del negocio.
+En las evidencias se ve el formulario de seguimiento en Enterprise, una instancia completada, la respuesta del servicio y el mensaje del worker indicando que recibió y completó un trabajo. También hay una captura de la instancia finalizada en OSS. La prueba descrita en la documentación usa `compraRealizada = true`.
+
+El 22 por la noche Lautaro compartió capturas de sus pruebas. El 23 explicó que probó la integración local y dejó anotados estos problemas en [problemas-prueba1.md](problemas-prueba1.md):
+
+- El puerto 7070 estaba ocupado en su equipo y utilizó 7071 en el servicio y en el worker.
+- Tuvo que resolver cómo llegaba la variable `compraRealizada` a la decisión del proceso.
+- El modelo local hacía referencia a un formulario que no estaba incluido. Para continuar la prueba completó esa tarea mediante la API REST.
+
+Estos son ajustes y alternativas usados durante las pruebas de Lautaro. No significan que el formulario local faltante ya esté implementado ni que esos cambios se hayan incorporado al código subido. Geraldine y Lautaro deben revisar qué configuración dejarán como referencia para repetir la prueba.
+
+### Lo que queda por revisar en las pruebas
+
+- Acordar y documentar el puerto usado y cómo se entrega `compraRealizada` antes de evaluar la decisión.
+- Comprobar la ruta de compra y la de no compra en la versión final. No dejar la variable fija en verdadero si se quiere demostrar la opción de no compra.
+- Distinguir el formulario Enterprise del avance local por API, para explicar exactamente qué se probó en cada entorno.
+- Mantener identificado el manejo de consultas pendientes como un punto todavía por resolver.
+- Preparar una demostración de la integración para el video y conservar las capturas y resultados en el repositorio.
+
+Lautaro lleva las pruebas y Geraldine la implementación. Por mi parte, debo revisar que lo que mostremos coincida con el análisis y que no presentemos como terminadas las funciones que siguen propuestas.
 
 ## 7. Dudas que seguimos teniendo
 
@@ -185,21 +203,21 @@ Lautaro lleva la parte de pruebas y Geraldine la implementación. Por mi parte, 
 
 Cuando tengamos respuestas, las agregaremos y revisaremos si cambian las reglas del proceso. No las damos por respondidas solamente por haberlas anotado.
 
-## 8. Estado al 21 de octubre y trabajo pendiente
+## 8. Estado al 24 de octubre y trabajo pendiente
 
-| Parte | Avance informado | Qué falta comprobar o terminar |
+| Parte | Avance al 24 de octubre | Qué falta revisar o terminar |
 | --- | --- | --- |
-| Análisis | Documento actualizado con el caso y las observaciones del grupo. | Revisar el alcance y las dudas con el equipo. |
-| BPMN | Elvis informó que ambos modelos estaban en Flowable y que corrigió el error del AS-IS. | Respaldar los editables y revisar que coincidan con el análisis y el prototipo. |
-| Simulación | Geraldine informó que los dos caminos llegaban al final; Lautaro agregó el recorrido. | Mantener separadas la simulación y la prueba de ejecución real. |
-| Implementación e integración | Geraldine informó avances en ambas el 21 de octubre. | Resolver el problema con la plataforma y mostrar qué componentes ya funcionan. |
-| Pruebas | Hay un registro del recorrido simulado. | Ejecutar y documentar el prototipo y la integración. |
-| Repositorio | Creado; se compartieron invitaciones y usuarios. | Comprobar accesos, fuentes, actas separadas, README y enlaces de evidencia. |
-| Videos | Se conversó su propósito. Me ofrecí para el de la emprendedora. | Coordinar, grabar y subir los enlaces. |
+| Análisis | Documento actualizado con el caso, los aportes del grupo y las pruebas informadas. | Mantener las dudas y propuestas separadas de las funciones disponibles. |
+| BPMN | Ambos modelos están informados en Flowable; hay una versión de integración OSS en GitHub. | Subir los originales editables AS-IS y TO-BE y revisar que coincidan con el prototipo. |
+| Enterprise | Hay capturas del formulario de seguimiento y del proceso completado. | Preparar la demostración y comprobar qué formularios y actividades se mostrarán. |
+| Integración local | Geraldine subió el servicio Java, el worker y el BPMN, con capturas de la prueba. | Acordar con Lautaro los pasos y ajustes necesarios para volver a ejecutarla. |
+| Pruebas | Lautaro informó una prueba local y documentó los problemas encontrados. | Confirmar ambas rutas en la versión que se entregará y registrar sus resultados. |
+| Arquitectura | Lautaro subió un diagrama y Geraldine lo apoyó como base. | Dejarlo en `Arquitectura/` y ajustar los enlaces si se cambia de lugar. |
+| Videos | Geraldine compartió un PowerPoint base el 24 y pidió las capturas y diagramas faltantes. | Revisar las partes, grabar, unir las intervenciones y publicar los dos enlaces. |
 
-Geraldine avisó que tiene un problema con Flowable de IPLACEX y que ya consultó al profesor. En los mensajes revisados todavía no aparece una respuesta ni una confirmación de que esté resuelto. No damos la implementación por terminada.
+La integración local ya cuenta con avances y evidencias. El bloqueo del Sandbox se mantiene como antecedente para explicar por qué se trabajó con los dos entornos, no como si todo el proyecto siguiera detenido.
 
-Las fechas internas del 22, 23 y 24 de octubre estaban anotadas en la versión anterior. El plazo final informado para entregar es el jueves 29. Si necesitamos cambiar las metas internas, debemos acordarlo y anotarlo.
+Las fechas internas del 22, 23 y 24 se conservan en las actas anteriores. El plazo de entrega es el jueves 29 de octubre. Las nuevas fechas de grabación y revisión todavía deben coordinarse.
 
 ## 9. Videos y entrega individual
 
@@ -213,7 +231,9 @@ Me ofrecí para hacerlo, solo o con otro compañero. Falta coordinarlo con el gr
 
 Debemos hablar los cuatro. Cada uno tiene un máximo de cinco minutos, por lo que el video del grupo puede durar como máximo veinte minutos.
 
-Para mi intervención voy a preparar la explicación del problema, el alcance inicial, las mejoras propuestas y las revisiones en las que participé. Los demás deben mostrar sus propios aportes y evidencias. Podemos usar el diagrama de arquitectura para ordenar la explicación del equipo.
+Para mi intervención voy a explicar el problema, el alcance inicial y las mejoras propuestas, además de mi trabajo con el análisis y el repositorio. Cada compañero explicará sus propios aportes y evidencias.
+
+El 21 conversamos que nos convenía grabar por separado y luego unir las partes. El 24 Geraldine compartió un PowerPoint base y pidió revisar la información de cada uno y enviarle los diagramas o capturas que faltan. Esa es la propuesta que estamos usando para organizar el video técnico; falta cerrar las diapositivas y las grabaciones. El diagrama de arquitectura nos servirá para explicar cómo se conecta la solución.
 
 Los enlaces de ambos videos deben quedar en el repositorio.
 
@@ -234,6 +254,7 @@ Archivos de actas preparados con esta actualización:
 - [Acta 1 - organización inicial](Actas/Acta-2026-10-16.md).
 - [Acta 2 - modelos y primeros avances](Actas/Acta-2026-10-20.md).
 - [Acta 3 - actualización del 21 de octubre](Actas/Acta-2026-10-21.md).
+- [Acta 4 - avances y coordinación hasta el 24 de octubre](Actas/Acta-2026-10-24.md).
 
 Seguimos con un solo repositorio para todo el proyecto. El README debe explicar las carpetas, el propósito de los componentes y cómo revisar o ejecutar lo que entregamos. Los modelos editables van en `BPMN/`, el diagrama de arquitectura en `Arquitectura/` y los enlaces de videos deben quedar accesibles desde el repositorio. La estructura interna del código se ajustará a los proyectos que realmente usemos.
 
@@ -247,6 +268,8 @@ Seguimos con un solo repositorio para todo el proyecto. El README debe explicar 
 Los avances que conversamos por WhatsApp deben acompañarse con sus archivos y evidencias en el repositorio. Así podremos revisar las pruebas y mostrar lo que ya funciona.
 
 ## 12. Registro de actas
+
+Las tres actas siguientes se conservan con lo que se había registrado hasta ese momento. El acta del 21 resume los primeros mensajes de ese día. La continuación del 21 por la tarde y los avances hasta el 24 están en [Acta-2026-10-24.md](Actas/Acta-2026-10-24.md).
 
 ### Acta 1 - Organización inicial del equipo
 
