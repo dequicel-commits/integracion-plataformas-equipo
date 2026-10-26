@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:design="http://flowable.org/design" targetNamespace="http://flowable.org/test" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.29.0" design:palette="flowable-work-process-palette">
+  <process id="peluditosPetChileTOBE" name="Peluditos Pet Chile - TO-BE" isExecutable="true" flowable:candidateStarterGroups="flowableUser">
+    <extensionElements>
+      <flowable:candidates-type>all</flowable:candidates-type>
+      <design:stencilid>BPMNDiagram</design:stencilid>
+      <design:creationdate>2026-10-18T00:11:04.131Z</design:creationdate>
+      <design:modificationdate>2026-10-18T02:01:56.139Z</design:modificationdate>
+    </extensionElements>
+    <userTask id="FormTask_13" name="Registrar cliente y compra realizada" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+      <extensionElements>
+        <flowable:task-candidates-type>all</flowable:task-candidates-type>
+        <design:stencilid>FormTask</design:stencilid>
+        <design:stencilsuperid>Task</design:stencilsuperid>
+      </extensionElements>
+      <outgoing>Flow_0fpo986</outgoing>
+    </userTask>
+    <userTask id="FormTask_1" name="Registrar  datos del potencial cliente" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+      <extensionElements>
+        <flowable:task-candidates-type>all</flowable:task-candidates-type>
+        <design:stencilid>FormTask</design:stencilid>
+        <design:stencilsuperid>Task</design:stencilsuperid>
+      </extensionElements>
+    </userTask>
+    <userTask id="FormTask_3" name="Atender y responder consulta del cliente" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+      <extensionElements>
+        <flowable:task-candidates-type>all</flowable:task-candidates-type>
+        <design:stencilid>FormTask</design:stencilid>
+        <design:stencilsuperid>Task</design:stencilsuperid>
+      </extensionElements>
+    </userTask>
+    <userTask id="FormTask_5" name="Realizar seguimiento comercial" flowable:assignee="${initiator}" flowable:formKey="form_seguimiento_comercial" flowable:formFieldValidation="false">
+      <extensionElements>
+        <flowable:task-candidates-type>all</flowable:task-candidates-type>
+        <design:stencilid>FormTask</design:stencilid>
+        <design:stencilsuperid>Task</design:stencilsuperid>
+      </extensionElements>
+    </userTask>
+    <userTask id="FormTask_11" name="Registrar cliente potencial sin compra" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+      <extensionElements>
+        <flowable:task-candidates-type>all</flowable:task-candidates-type>
+        <design:stencilid>FormTask</design:stencilid>
+        <design:stencilsuperid>Task</design:stencilsuperid>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="Exclusive_Databased_Gateway_7" name="¿La compra fue realizada ?">
+      <extensionElements>
+        <design:stencilid>Exclusive_Databased_Gateway</design:stencilid>
+        <design:display_ref_in_diagram>true</design:display_ref_in_diagram>
+      </extensionElements>
+    </exclusiveGateway>
+    <startEvent id="startnoneevent1" name="Cliente realiza una consulta" flowable:initiator="initiator" flowable:formFieldValidation="false">
+      <extensionElements>
+        <flowable:work-form-field-validation>false</flowable:work-form-field-validation>
+        <design:stencilid>StartNoneEvent</design:stencilid>
+        <design:display_ref_in_diagram>true</design:display_ref_in_diagram>
+      </extensionElements>
+    </startEvent>
+    <endEvent id="EndNoneEvent_19" name="Venta no concretada de potencial cliente">
+      <extensionElements>
+        <design:stencilid>EndNoneEvent</design:stencilid>
+        <design:display_ref_in_diagram>true</design:display_ref_in_diagram>
+      </extensionElements>
+    </endEvent>
+    <sequenceFlow id="SequenceFlow_4" sourceRef="FormTask_1" targetRef="FormTask_3">
+      <extensionElements>
+        <design:stencilid>SequenceFlow</design:stencilid>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_6" sourceRef="FormTask_3" targetRef="FormTask_5">
+      <extensionElements>
+        <design:stencilid>SequenceFlow</design:stencilid>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_8" sourceRef="FormTask_5" targetRef="Exclusive_Databased_Gateway_7">
+      <extensionElements>
+        <design:stencilid>SequenceFlow</design:stencilid>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_20" sourceRef="FormTask_11" targetRef="EndNoneEvent_19">
+      <extensionElements>
+        <design:stencilid>SequenceFlow</design:stencilid>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_12" name="NO" sourceRef="Exclusive_Databased_Gateway_7" targetRef="FormTask_11">
+      <extensionElements>
+        <design:stencilid>SequenceFlow</design:stencilid>
+        <design:display_ref_in_diagram>true</design:display_ref_in_diagram>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${compraRealizada == false}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_14" name="SI" sourceRef="Exclusive_Databased_Gateway_7" targetRef="FormTask_13">
+      <extensionElements>
+        <design:stencilid>SequenceFlow</design:stencilid>
+        <design:display_ref_in_diagram>true</design:display_ref_in_diagram>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression">${compraRealizada == true}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow_2" sourceRef="startnoneevent1" targetRef="FormTask_1">
+      <extensionElements>
+        <design:stencilid>SequenceFlow</design:stencilid>
+      </extensionElements>
+    </sequenceFlow>
+    <endEvent id="Event_0zovcf7" name="Venta concretada">
+      <incoming>Flow_0fpo986</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_0fpo986" sourceRef="FormTask_13" targetRef="Event_0zovcf7" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_peluditosPetChileTOBE">
+    <bpmndi:BPMNPlane id="BPMNPlane_peluditosPetChileTOBE" bpmnElement="peluditosPetChileTOBE">
+      <bpmndi:BPMNShape id="BPMNShape_FormTask_13" bpmnElement="FormTask_13">
+        <omgdc:Bounds x="900" y="118" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_FormTask_1" bpmnElement="FormTask_1">
+        <omgdc:Bounds x="340" y="236" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_FormTask_3" bpmnElement="FormTask_3">
+        <omgdc:Bounds x="490" y="236" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_FormTask_5" bpmnElement="FormTask_5">
+        <omgdc:Bounds x="640" y="236" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_FormTask_11" bpmnElement="FormTask_11">
+        <omgdc:Bounds x="900" y="344" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Exclusive_Databased_Gateway_7" bpmnElement="Exclusive_Databased_Gateway_7" isMarkerVisible="true">
+        <omgdc:Bounds x="811" y="256" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="873" y="265" width="147" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_startnoneevent1" bpmnElement="startnoneevent1">
+        <omgdc:Bounds x="197" y="261" width="30" height="30" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="155" y="302" width="132" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndNoneEvent_19" bpmnElement="EndNoneEvent_19">
+        <omgdc:Bounds x="1050" y="370" width="28" height="28" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1026" y="412" width="77" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0zovcf7_di" bpmnElement="Event_0zovcf7">
+        <omgdc:Bounds x="1046" y="140" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1021" y="186" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="440" y="276" />
+        <omgdi:waypoint x="490" y="276" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="590" y="276" />
+        <omgdi:waypoint x="640" y="276" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="740" y="276" />
+        <omgdi:waypoint x="811.1163265889346" y="276" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_20" bpmnElement="SequenceFlow_20" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="1000" y="384.43549954275255" />
+        <omgdi:waypoint x="1050" y="384.43549954275255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="831.1163265889346" y="296" />
+        <omgdi:waypoint x="831.1163265889346" y="384.4354995427526" />
+        <omgdi:waypoint x="900" y="384.43549954275255" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="840" y="396" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_14" bpmnElement="SequenceFlow_14" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="831.1163265889346" y="256" />
+        <omgdi:waypoint x="831.1163265889346" y="157.82120198902615" />
+        <omgdi:waypoint x="899.9999999999999" y="157.82120198902612" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="840" y="123" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="227" y="276" />
+        <omgdi:waypoint x="340" y="276" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fpo986_di" bpmnElement="Flow_0fpo986">
+        <omgdi:waypoint x="1000" y="158" />
+        <omgdi:waypoint x="1046" y="158" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
