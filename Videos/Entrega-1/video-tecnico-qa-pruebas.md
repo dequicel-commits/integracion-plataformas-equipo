@@ -10,5 +10,4 @@
 Demostración paso a paso de la ejecución y validación técnica del Servicio REST Java (`GET /api/seguimiento`), la cola de trabajos externos en Flowable OSS (`/external-job-api/jobs`), la ejecución del External Worker en Java (`external-worker-peluditos`) y el avance automático del proceso BPMN hacia las tareas activas (`/service/runtime/tasks`).
 
 ## Enlace al video
-- [▶ Ver / Descargar video técnico Pruebas QA — Peluditos Pet Chile (En Repositorio)](./PRUEBA-SERIVCIO-REST-LAUTARO_SALINAS.mp4)
-- [⬇ Descarga directa del video (.mp4)](https://github.com/dequicel-commits/integracion-plataformas-equipo/raw/main/Videos/Entrega-1/PRUEBA-SERIVCIO-REST-LAUTARO_SALINAS.mp4)
+[▶ Ver video técnico Pruebas QA — Peluditos Pet Chile](https://docs.google.com/videos/d/1FKFILjBbu_sVnfUya1LGT_LLQc9R7h4GMwgTcCbAxUs/play?usp=sharing)
