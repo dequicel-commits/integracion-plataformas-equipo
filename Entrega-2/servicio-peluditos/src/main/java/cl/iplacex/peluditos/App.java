@@ -1,5 +1,8 @@
 package cl.iplacex.peluditos;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import io.javalin.http.staticfiles.Location;
 import java.util.Map;
 import io.javalin.Javalin;
 import io.javalin.util.JavalinBindException;
@@ -25,7 +28,17 @@ public class App {
     }
 
     private static Javalin crearServidor() {
-        Javalin app = Javalin.create();
+                Path interfaz = Path.of("..", "interfaz-peluditos").toAbsolutePath().normalize();
+
+        Javalin app = Javalin.create(config -> {
+            if (Files.isDirectory(interfaz)) {
+                config.staticFiles.add(archivos -> {
+                    archivos.hostedPath = "/interfaz";
+                    archivos.directory = interfaz.toString();
+                    archivos.location = Location.EXTERNAL;
+                });
+            }
+        });
 
         // Endpoint de estado / seguimiento comercial
         app.get("/api/seguimiento", ctx -> {
