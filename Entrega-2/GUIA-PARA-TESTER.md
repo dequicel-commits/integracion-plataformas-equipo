@@ -4,6 +4,8 @@
 **Grupo:** 3  
 **Entrega:** Segunda evaluación
 
+> Para reproducir el registro desde la interfaz web, sigue la [sección 5](#5-prueba-desde-el-formulario-web).
+
 ## 1. Objetivo
 
 Este documento tiene como finalidad compartir la información de la implementación realizada con Java, SQLite y Flowable para la **Entrega 2**, de modo que cualquier integrante del equipo pueda levantar el proyecto en su Flowable local y realizar las pruebas de integración correspondientes.
@@ -121,4 +123,73 @@ BUILD SUCCESS
 
 Una vez ejecutado el worker:
 1. Se puede abrir `http://localhost:7070/api/clientes` (o `7071`) en el navegador para verificar que el cliente y su mascota quedaron guardados en SQLite.
-2. En Flowable, el proceso habrá avanzado automáticamente a **`Enviar información de productos y precios`** y luego a **`Realizar seguimiento comercial`** para finalizar el recorrido.
+2. En el BPMN OSS, después del guardado se habilita la tarea **Atender y responder consulta del cliente**. El seguimiento comercial viene después.
+
+---
+
+## 5. Prueba desde el formulario web
+
+Con esta prueba revisamos que una consulta ingresada en la página llegue a Flowable OSS y que el worker guarde al cliente y su mascota en SQLite. Este recorrido cubre el registro inicial.
+
+### Antes de empezar
+
+Descarga o actualiza el repositorio. Comprueba que `JAVA_HOME` apunta al JDK 21 y que `mvn -v` muestra Maven y Java 21. Descarga y descomprime Flowable OSS 7.2.0. Dentro de `wars` está `flowable-rest.war`. [Descarga de Flowable OSS 7.2.0](https://github.com/flowable/flowable-engine/releases/tag/flowable-7.2.0)
+
+### 1. Levantar Flowable y cargar el BPMN
+
+En una ventana de PowerShell, pega el comando. Cuando te pida la ruta, copia la ubicación completa de `flowable-rest.war`.
+
+```powershell
+$war = (Read-Host 'Ruta completa de flowable-rest.war').Trim('"')
+& "$env:JAVA_HOME\bin\java.exe" -jar $war --server.address=127.0.0.1 --server.port=8080
+```
+
+Cuando Flowable arranque, deja esa ventana abierta. En otra ventana, pega este bloque. Ingresa la ruta completa de la carpeta `Entrega-2` del repositorio.
+
+```powershell
+$entrega = (Read-Host 'Ruta completa de la carpeta Entrega-2').Trim('"')
+$bpmn = Join-Path $entrega 'bpmn-oss\peluditos-integracion-oss-entrega2.bpmn20.xml'
+curl.exe -i -u rest-admin:test -F "file=@$bpmn" "http://127.0.0.1:8080/flowable-rest/service/repository/deployments"
+```
+
+Si devuelve **HTTP 201**, el modelo se cargó. Haz este despliegue una vez por ambiente o cuando necesites cargar una versión nueva del BPMN.
+
+### 2. Levantar el servicio y abrir el formulario
+
+En la ventana donde cargaste el BPMN, inicia el servicio con las credenciales de prueba del Flowable local.
+
+```powershell
+Set-Location -LiteralPath (Join-Path $entrega 'servicio-peluditos')
+$env:FLOWABLE_REST_URL = 'http://127.0.0.1:8080/flowable-rest/service'
+$env:FLOWABLE_USER = 'rest-admin'
+$env:FLOWABLE_PASSWORD = 'test'
+mvn compile exec:java "-Dexec.mainClass=cl.iplacex.peluditos.App"
+```
+
+Deja el servicio abierto y entra a [Registrar una consulta](http://localhost:7070/interfaz/index.html). Usa datos ficticios, por ejemplo **Cliente Prueba Web**, teléfono `000000000`, correo `cliente.prueba@example.com`, canal **WhatsApp** y mascota **Nube**. En la consulta puedes escribir «Preguntó por el precio de una torta de cumpleaños para su perrita».
+
+Pulsa **Revisar datos**, verifica la vista previa y luego pulsa **Enviar registro**. Debe aparecer el ID del caso y el mensaje de que el guardado queda pendiente del worker.
+
+### 3. Ejecutar el worker y comprobar el guardado
+
+Abre una tercera ventana. Ingresa nuevamente la ruta completa de `Entrega-2` y ejecuta el worker después de enviar el formulario.
+
+```powershell
+$entrega = (Read-Host 'Ruta completa de la carpeta Entrega-2').Trim('"')
+Set-Location -LiteralPath (Join-Path $entrega 'external-worker-peluditos')
+$env:FLOWABLE_API_URL = 'http://127.0.0.1:8080/flowable-rest/external-job-api'
+$env:FLOWABLE_USER = 'rest-admin'
+$env:FLOWABLE_PASSWORD = 'test'
+$env:SERVICIO_PELUDITOS_URL = 'http://localhost:7070/api/clientes'
+mvn compile exec:java "-Dexec.mainClass=cl.iplacex.peluditos.App"
+```
+
+Si solo enviaste un registro y la cola estaba vacía, la consola debe mostrar **Trabajos recibidos: 1** y **Trabajo completado en Flowable**. El worker consulta una vez y termina. Si lo ejecutaste antes de enviar el formulario, vuelve a ejecutarlo después del envío.
+
+Abre [la lista de clientes](http://localhost:7070/api/clientes) y busca al cliente de prueba junto con su mascota. Para comprobar la persistencia, reinicia solo el servicio Java desde la misma carpeta y vuelve a abrir la lista. El registro debe seguir ahí.
+
+Si el servicio arrancó en el puerto `7071`, usa ese puerto en las direcciones del formulario y de clientes, y en `SERVICIO_PELUDITOS_URL`.
+
+### Evidencia de la prueba
+
+Guarda una captura de la confirmación del formulario, una de la salida del worker y una del registro recuperado en `/api/clientes`. Las evidencias del equipo se guardan en `Entrega-2/Evidencias/Implementacion/`.
