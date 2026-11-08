@@ -1,1 +1,100 @@
+* {
+  box-sizing: border-box;
+}
 
+body {
+  margin: 0;
+  background: #f4f7f6;
+  color: #203330;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+header {
+  background: #164940;
+  color: white;
+  padding: 16px 24px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+fieldset,
+#resumen {
+  min-width: 0;
+  margin: 0 0 16px;
+  padding: 16px;
+  border: 1px solid #c3d4d0;
+  border-radius: 8px;
+  background: white;
+}
+
+legend {
+  padding: 0 6px;
+  font-weight: bold;
+}
+
+label {
+  display: block;
+  margin: 10px 0 4px;
+}
+
+input:not([type="checkbox"]),
+select,
+textarea {
+  display: block;
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #829c96;
+  border-radius: 5px;
+  background: white;
+  color: inherit;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  margin: 0 8px 16px 0;
+  padding: 9px 15px;
+  border: 1px solid #164940;
+  border-radius: 5px;
+  background: #164940;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+button[type="reset"] {
+  background: white;
+  color: #164940;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 3px solid #138571;
+  outline-offset: 2px;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
