@@ -1,1 +1,76 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro de clientes | Peluditos Pet Chile</title>
+  <link rel="stylesheet" href="estilos.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Peluditos Pet Chile</h1>
+  </header>
 
+  <main>
+    <h2>Registrar una consulta</h2>
+    <p>Ingresa los datos del cliente y su mascota. Los campos marcados con * son obligatorios.</p>
+
+    <form id="registro">
+      <fieldset>
+        <legend>Datos del cliente</legend>
+
+        <label for="clienteNombre">Nombre completo *</label>
+        <input id="clienteNombre" name="clienteNombre" required>
+
+        <label for="clienteTelefono">Teléfono o WhatsApp *</label>
+        <input id="clienteTelefono" name="clienteTelefono" type="tel" required>
+
+        <label for="clienteCorreo">Correo electrónico</label>
+        <input id="clienteCorreo" name="clienteCorreo" type="email">
+
+        <label for="clienteCanalContacto">Canal de contacto *</label>
+        <select id="clienteCanalContacto" name="clienteCanalContacto" required>
+          <option value="">Selecciona un canal</option>
+          <option>WhatsApp</option>
+          <option>Instagram</option>
+          <option>Facebook</option>
+          <option>TikTok</option>
+          <option>Otro</option>
+        </select>
+
+        <label for="clienteConsultaRealizada">¿Qué consultó? *</label>
+        <textarea id="clienteConsultaRealizada" name="clienteConsultaRealizada"
+                  rows="3" required></textarea>
+
+        <label>
+          <input name="clienteAutoriza" type="checkbox">
+          El cliente autoriza recibir promociones.
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Datos de la mascota</legend>
+
+        <label for="mascotaNombre">Nombre *</label>
+        <input id="mascotaNombre" name="mascotaNombre" required>
+
+        <label for="mascotaCumpleano">Cumpleaños</label>
+        <input id="mascotaCumpleano" name="mascotaCumpleano" type="date">
+
+        <label for="mascotaObservaciones">Observaciones</label>
+        <textarea id="mascotaObservaciones" name="mascotaObservaciones"
+                  rows="2"></textarea>
+      </fieldset>
+
+      <button id="revisar" type="submit" disabled>Revisar datos</button>
+      <button type="reset">Limpiar</button>
+    </form>
+
+    <section id="resumen" aria-live="polite" hidden>
+      <h2>Vista previa del registro</h2>
+      <dl id="datos"></dl>
+    </section>
+  </main>
+</body>
+</html>
