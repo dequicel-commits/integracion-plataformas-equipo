@@ -1,0 +1,16 @@
+{
+  "key": "form_registro_cliente",
+  "name": "Formulario Registro de Potencial Cliente",
+  "version": 1,
+  "fields": [
+    { "id": "clienteNombre", "name": "Nombre del cliente", "type": "text", "required": true, "placeholder": "Ej: Camila Rojas" },
+    { "id": "clienteTelefono", "name": "Teléfono o WhatsApp", "type": "text", "required": true, "placeholder": "Ej: +56987654321" },
+    { "id": "clienteCorreo", "name": "Correo electrónico", "type": "text", "required": false, "placeholder": "Ej: cliente@correo.cl" },
+    { "id": "clienteCanalContacto", "name": "Canal de contacto (WhatsApp, Instagram, etc.)", "type": "text", "required": true, "placeholder": "WhatsApp" },
+    { "id": "clienteConsultaRealizada", "name": "Producto o consulta realizada", "type": "text", "required": true, "placeholder": "Ej: Torta de cumpleaños canina" },
+    { "id": "clienteAutoriza", "name": "¿Autoriza recibir información por correo o WhatsApp?", "type": "boolean", "required": false },
+    { "id": "mascotaNombre", "name": "Nombre de la mascota", "type": "text", "required": true, "placeholder": "Ej: Toby" },
+    { "id": "mascotaCumpleano", "name": "Fecha de cumpleaños de la mascota (AAAA-MM-DD)", "type": "text", "required": false, "placeholder": "Ej: 2026-11-20" },
+    { "id": "mascotaObservaciones", "name": "Observaciones de la mascota (alergias, tamaño, etc.)", "type": "text", "required": false }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "key": "form_seguimiento_comercial",
+  "name": "Formulario de Seguimiento Comercial",
+  "version": 1,
+  "fields": [
+    { "id": "compraRealizada", "name": "¿El cliente realizó una compra?", "type": "boolean", "required": false },
+    { "id": "clienteObservaciones", "name": "Observaciones del seguimiento", "type": "text", "required": false }
+  ]
+}
