@@ -1,0 +1,38 @@
+---
+title: Diagrama de Arquitectura de Componentes - Peluditos Pet Chile - Entrega 2
+---
+flowchart TB
+    subgraph Actores["1. Participantes"]
+        Cliente["Cliente / Redes sociales y WhatsApp"]
+        Encargada["Encargada de Peluditos Pet Chile"]
+    end
+
+    subgraph Web["2. Interfaz y servicio web"]
+        Formulario["Formulario web HTML, CSS y JavaScript"]
+        REST["Servicio REST Java / Javalin"]
+        Registro["RegistroFlowable.java"]
+        BaseDatos["BaseDatos.java"]
+        BD["Base de datos SQLite - peluditos.db"]
+    end
+
+    subgraph Motor["3. Proceso e integracion"]
+        Flowable["Flowable OSS / BPMN TO-BE"]
+        Worker["External Worker Java"]
+        H2["Base de datos H2 de Flowable"]
+    end
+
+    subgraph Futuro["4. Planificado para Entrega 3"]
+        Campanas["Campanas y fechas especiales"]
+    end
+
+    Cliente -->|"Realiza consulta"| Encargada
+    Encargada -->|"Ingresa informacion"| Formulario
+    Formulario -->|"POST /api/consultas/{referencia}"| REST
+    REST --> Registro
+    Registro -->|"API REST"| Flowable
+    Flowable --> H2
+    Worker <-->|"Adquiere y completa tareas por API REST"| Flowable
+    Worker -->|"POST /api/clientes"| REST
+    REST -->|"Guardar y consultar datos"| BaseDatos
+    BaseDatos -->|"SQL / JDBC"| BD
+    Flowable -.->|"Modelado para etapa futura"| Campanas
