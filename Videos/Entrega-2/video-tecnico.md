@@ -8,3 +8,5 @@
 En este video presentamos los avances técnicos desarrollados por el equipo para la segunda entrega de Peluditos Pet Chile, incluyendo el análisis de requisitos, la actualización del modelo BPMN TO-BE, el desarrollo del servicio REST con base de datos SQLite, el formulario web, la integración mediante External Worker con Flowable OSS y las pruebas QA/Tester.
 
 **Enlace del video:** [Ver presentación](https://drive.google.com/file/d/1bBMAtlfdSBTot6JQ4Umi7xtGwgyshGzP/view?usp=drive_link)
+
+**Estado de acceso:** Permisos de visualización actualizados en Google Drive a público (*Cualquier persona con el enlace puede ver*).
