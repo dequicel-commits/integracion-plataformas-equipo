@@ -25,19 +25,16 @@ final class RegistroFlowableJakarta {
     private static final String TAREA_SEGUIMIENTO = "FormTask_5";
 
     private static final List<String> OBLIGATORIOS = List.of(
-        "clienteNombre", "clienteTelefono", "clienteCanalContacto",
-        "clienteConsultaRealizada", "mascotaNombre"
-    );
+            "clienteNombre", "clienteTelefono", "clienteCanalContacto",
+            "clienteConsultaRealizada", "mascotaNombre");
     private static final List<String> OPCIONALES = List.of(
-        "clienteCorreo", "mascotaCumpleano", "mascotaObservaciones"
-    );
+            "clienteCorreo", "mascotaCumpleano", "mascotaObservaciones");
 
     private final ObjectMapper json = new ObjectMapper();
     private final HttpClient http = HttpClient.newBuilder()
-        .connectTimeout(Duration.ofSeconds(5)).build();
+            .connectTimeout(Duration.ofSeconds(5)).build();
     private final String url = System.getenv().getOrDefault(
-        "FLOWABLE_REST_URL", "http://127.0.0.1:8080/flowable-rest/service"
-    );
+            "FLOWABLE_REST_URL", "http://127.0.0.1:8080/flowable-rest/service");
     private final String usuario = obtenerUsuarioPorDefecto();
     private final String clave = obtenerClavePorDefecto();
 
@@ -54,7 +51,7 @@ final class RegistroFlowableJakarta {
         if (envPass != null && !envPass.isBlank()) {
             return envPass;
         }
-        return "test";
+        return null;
     }
 
     synchronized Response registrar(String referencia, JsonNode datos) {
@@ -99,23 +96,20 @@ final class RegistroFlowableJakarta {
 
         variables.add(Map.of(
                 "name", "clienteAutoriza",
-                "value", datos.path("clienteAutoriza").asBoolean()
-        ));
+                "value", datos.path("clienteAutoriza").asBoolean()));
 
         try {
             String filtro = "?processDefinitionKey=" + PROCESO
                     + "&businessKey=" + referenciaFlowable;
 
             JsonNode casos = enviar(
-                    "/history/historic-process-instances" + filtro, null
-            ).path("data");
+                    "/history/historic-process-instances" + filtro, null).path("data");
 
             JsonNode caso = casos.isEmpty()
                     ? enviar("/runtime/process-instances",
                             Map.of(
                                     "processDefinitionKey", PROCESO,
-                                    "businessKey", referenciaFlowable
-                            ))
+                                    "businessKey", referenciaFlowable))
                     : casos.get(0);
 
             String casoId = caso.path("id").asText();
@@ -124,8 +118,7 @@ final class RegistroFlowableJakarta {
                     + "&taskDefinitionKey=" + TAREA;
 
             JsonNode pendientes = enviar(
-                    "/runtime/tasks" + tareas, null
-            ).path("data");
+                    "/runtime/tasks" + tareas, null).path("data");
 
             if (!pendientes.isEmpty()) {
                 String tareaId = pendientes.get(0).path("id").asText();
@@ -133,19 +126,17 @@ final class RegistroFlowableJakarta {
                 enviar("/runtime/tasks/" + tareaId,
                         Map.of(
                                 "action", "complete",
-                                "variables", variables
-                        ));
+                                "variables", variables));
             } else {
                 JsonNode completadas = enviar(
                         "/history/historic-task-instances"
-                                + tareas + "&finished=true", null
-                ).path("data");
+                                + tareas + "&finished=true",
+                        null).path("data");
 
                 if (completadas.isEmpty()) {
                     return Response.status(409)
                             .entity(Map.of(
-                                    "mensaje", "No se encontró la tarea de registro en Flowable."
-                            ))
+                                    "mensaje", "No se encontró la tarea de registro en Flowable."))
                             .build();
                 }
             }
@@ -159,8 +150,7 @@ final class RegistroFlowableJakarta {
 
             return Response.status(503)
                     .entity(Map.of(
-                            "mensaje", "Se interrumpió la conexión con Flowable. Intenta de nuevo."
-                    ))
+                            "mensaje", "Se interrumpió la conexión con Flowable. Intenta de nuevo."))
                     .build();
 
         } catch (IOException e) {
@@ -168,34 +158,35 @@ final class RegistroFlowableJakarta {
 
             return Response.status(502)
                     .entity(Map.of(
-                            "mensaje", "No se pudo confirmar el registro en Flowable. Intenta de nuevo."
-                    ))
+                            "mensaje", "No se pudo confirmar el registro en Flowable. Intenta de nuevo."))
                     .build();
         }
     }
 
     /**
-     * Avanza en Flowable OSS las tareas de atencion (FormTask_3) y seguimiento comercial (FormTask_5),
-     * inyectando compraRealizada (true/false) y observaciones para dejar listo el trabajo del Worker 2.
+     * Avanza en Flowable OSS las tareas de atencion (FormTask_3) y seguimiento
+     * comercial (FormTask_5),
+     * inyectando compraRealizada (true/false) y observaciones para dejar listo el
+     * trabajo del Worker 2.
      */
     synchronized Response avanzarSeguimiento(String casoId, JsonNode datos) {
         boolean compraRealizada = datos.path("compraRealizada").asBoolean(true);
         String observaciones = datos.path("clienteObservaciones").asText(
-            datos.path("observacionesSeguimiento").asText("")
-        ).trim();
+                datos.path("observacionesSeguimiento").asText("")).trim();
         Integer clienteId = datos.hasNonNull("clienteId") ? datos.path("clienteId").asInt() : null;
 
         String estadoCompra = compraRealizada ? "Compra realizada" : "Sin compra";
         String obsFinal = !observaciones.isEmpty()
-            ? observaciones
-            : (compraRealizada
-                ? "Seguimiento finalizado: cliente concreto la compra"
-                : "Seguimiento finalizado: potencial cliente sin compra");
+                ? observaciones
+                : (compraRealizada
+                        ? "Seguimiento finalizado: cliente concreto la compra"
+                        : "Seguimiento finalizado: potencial cliente sin compra");
 
         try {
             List<String> tareasCompletadas = new ArrayList<>();
 
-            // 1. Si FormTask_3 (Atender y responder consulta) esta pendiente, completarla primero
+            // 1. Si FormTask_3 (Atender y responder consulta) esta pendiente, completarla
+            // primero
             String filtroAtencion = "?processInstanceId=" + casoId + "&taskDefinitionKey=" + TAREA_ATENCION;
             JsonNode pendientesAtencion = enviar("/runtime/tasks" + filtroAtencion, null).path("data");
             if (!pendientesAtencion.isEmpty()) {
@@ -212,8 +203,7 @@ final class RegistroFlowableJakarta {
                         .entity(Map.of(
                                 "mensaje",
                                 "No hay tarea de seguimiento pendiente para el caso " + casoId
-                                        + ". Verifica que el Worker 1 (guardar-cliente-peluditos) ya se haya ejecutado."
-                        ))
+                                        + ". Verifica que el Worker 1 (guardar-cliente-peluditos) ya se haya ejecutado."))
                         .build();
             }
 
@@ -236,7 +226,8 @@ final class RegistroFlowableJakarta {
             respuesta.put("compraRealizada", compraRealizada);
             respuesta.put("clienteEstadoCompra", estadoCompra);
             respuesta.put("tareasCompletadas", tareasCompletadas);
-            respuesta.put("mensaje", "Seguimiento completado en Flowable. El cierre en BD queda listo para el Worker 2.");
+            respuesta.put("mensaje",
+                    "Seguimiento completado en Flowable. El cierre en BD queda listo para el Worker 2.");
 
             return Response.ok(respuesta).build();
 
@@ -256,33 +247,27 @@ final class RegistroFlowableJakarta {
     private String baseActiva = null;
 
     private JsonNode enviar(String ruta, Map<String, ?> cuerpo) throws IOException, InterruptedException {
-        String[] basesCandidatas = (baseActiva != null)
-            ? new String[] { baseActiva }
-            : new String[] {
-                url,
-                "http://127.0.0.1:8080/flowable-rest/service",
-                "http://127.0.0.1:8080/flowable-ui/process-api"
-            };
+        if (clave == null || clave.isBlank()) {
+            throw new IOException("Configura FLOWABLE_PASSWORD antes de conectar con Flowable.");
+        }
+
+        String[] basesCandidatas = new String[] { url };
 
         IOException ultimoError = null;
         for (String base : basesCandidatas) {
             try {
-                String userCandidato = base.contains("flowable-rest")
-                    ? (System.getenv("FLOWABLE_USER") != null ? System.getenv("FLOWABLE_USER") : "rest-admin")
-                    : (System.getenv("FLOWABLE_USER") != null ? System.getenv("FLOWABLE_USER") : "admin");
                 String token = Base64.getEncoder().encodeToString(
-                    (userCandidato + ":" + clave).getBytes(StandardCharsets.UTF_8)
-                );
+                        (usuario + ":" + clave).getBytes(StandardCharsets.UTF_8));
 
                 HttpRequest.Builder solicitud = HttpRequest.newBuilder(URI.create(base + ruta))
-                    .timeout(Duration.ofSeconds(10))
-                    .header("Authorization", "Basic " + token);
+                        .timeout(Duration.ofSeconds(10))
+                        .header("Authorization", "Basic " + token);
 
                 if (cuerpo == null) {
                     solicitud.GET();
                 } else {
                     solicitud.header("Content-Type", "application/json")
-                        .POST(HttpRequest.BodyPublishers.ofString(json.writeValueAsString(cuerpo)));
+                            .POST(HttpRequest.BodyPublishers.ofString(json.writeValueAsString(cuerpo)));
                 }
 
                 HttpResponse<String> respuesta = http.send(solicitud.build(), HttpResponse.BodyHandlers.ofString());
