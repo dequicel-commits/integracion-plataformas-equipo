@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Registro de clientes | Peluditos Pet Chile</title>
+  <title>Registro y seguimiento de clientes | Peluditos Pet Chile</title>
   <link rel="stylesheet" href="estilos.css">
   <script src="app.js" defer></script>
 </head>
@@ -15,7 +15,7 @@
   </header>
 
   <main>
-    <h2>Registrar una consulta</h2>
+    <h2>1. Registrar una consulta</h2>
     <p>Ingresa los datos del cliente y su mascota. Los campos marcados con * son obligatorios.</p>
 
     <form id="registro">
@@ -67,7 +67,6 @@
       <button type="reset">Limpiar</button>
     </form>
 
-
     <section id="resumen" aria-live="polite" hidden>
       <h2>Paso 2: Revisar y confirmar</h2>
       <p>Comprueba que los datos estén correctos antes de enviarlos.</p>
@@ -79,6 +78,39 @@
     </section>
 
     <p id="estado-registro" role="status"></p>
+
+    <hr>
+
+    <h2>2. Seguimiento comercial y resultado de compra</h2>
+    <p>Una vez que el Worker 1 haya guardado al potencial cliente, registra aquí la atención y el resultado del seguimiento para que el Worker 2 actualice el estado final en la base de datos.</p>
+
+    <form id="form-seguimiento">
+      <fieldset>
+        <legend>Cerrar seguimiento comercial en Flowable</legend>
+
+        <label for="casoIdSeguimiento">ID del caso en Flowable *</label>
+        <input id="casoIdSeguimiento" name="casoIdSeguimiento" placeholder="Se completa automáticamente al enviar un registro" required>
+
+        <label for="compraRealizada">¿El cliente concretó la compra? *</label>
+        <select id="compraRealizada" name="compraRealizada" required>
+          <option value="true">Sí — Compra realizada</option>
+          <option value="false">No — Potencial cliente sin compra</option>
+        </select>
+
+        <label for="observacionesSeguimiento">Observaciones del seguimiento *</label>
+        <textarea id="observacionesSeguimiento" name="observacionesSeguimiento" rows="2" placeholder="Ej.: Cliente confirmó pedido y fecha de entrega" required></textarea>
+      </fieldset>
+
+      <button id="enviar-seguimiento" type="submit">Registrar seguimiento en Flowable</button>
+    </form>
+    <p id="estado-seguimiento" role="status"></p>
+
+    <hr>
+
+    <h2>3. Clientes registrados en la base de datos</h2>
+    <p>Consulta el estado actual de los potenciales clientes y sus mascotas guardados en SQLite.</p>
+    <button id="cargar-clientes" type="button">Actualizar lista de clientes</button>
+    <div id="contenedor-clientes"></div>
   </main>
 </body>
 

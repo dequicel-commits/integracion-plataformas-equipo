@@ -12,33 +12,60 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 @Path("/api/consultas")
 public class ConsultasResource {
+
     @POST
-@Path("/{referencia}")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public Response registrarConsulta(
-        @PathParam("referencia") String referencia,
-        JsonNode datos) {
+    @Path("/{referencia}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registrarConsulta(
+            @PathParam("referencia") String referencia,
+            JsonNode datos) {
 
-    if (datos == null || !datos.isObject()) {
-        return Response.status(Response.Status.BAD_REQUEST)
-                .entity(java.util.Map.of(
-                        "mensaje", "Los datos del formulario no son válidos."
-                ))
-                .build();
+        if (datos == null || !datos.isObject()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(java.util.Map.of(
+                            "mensaje", "Los datos del formulario no son válidos."
+                    ))
+                    .build();
+        }
+
+        try {
+            java.util.UUID.fromString(referencia);
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(java.util.Map.of(
+                            "mensaje", "La referencia del registro no es válida."
+                    ))
+                    .build();
+        }
+
+        return new RegistroFlowableJakarta().registrar(referencia, datos);
     }
 
-    try {
-        java.util.UUID.fromString(referencia);
-    } catch (IllegalArgumentException e) {
-        return Response.status(Response.Status.BAD_REQUEST)
-                .entity(java.util.Map.of(
-                        "mensaje", "La referencia del registro no es válida."
-                ))
-                .build();
+    @POST
+    @Path("/{casoId}/seguimiento")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response avanzarSeguimiento(
+            @PathParam("casoId") String casoId,
+            JsonNode datos) {
+
+        if (casoId == null || casoId.isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(java.util.Map.of(
+                            "mensaje", "Debes indicar el ID del caso en Flowable."
+                    ))
+                    .build();
+        }
+
+        if (datos == null || !datos.isObject()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(java.util.Map.of(
+                            "mensaje", "Los datos del seguimiento no son válidos."
+                    ))
+                    .build();
+        }
+
+        return new RegistroFlowableJakarta().avanzarSeguimiento(casoId.trim(), datos);
     }
-
-    return new RegistroFlowableJakarta().registrar(referencia, datos);
-}
-
 }
