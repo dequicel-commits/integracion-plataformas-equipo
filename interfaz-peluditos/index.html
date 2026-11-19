@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="es-CL">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="estilos.css">
   <script src="app.js" defer></script>
 </head>
+
 <body>
   <header>
     <h1>Peluditos Pet Chile</h1>
@@ -40,8 +42,7 @@
         </select>
 
         <label for="clienteConsultaRealizada">¿Qué consultó? *</label>
-        <textarea id="clienteConsultaRealizada" name="clienteConsultaRealizada"
-                  rows="3" required></textarea>
+        <textarea id="clienteConsultaRealizada" name="clienteConsultaRealizada" rows="3" required></textarea>
 
         <label>
           <input name="clienteAutoriza" type="checkbox">
@@ -59,20 +60,26 @@
         <input id="mascotaCumpleano" name="mascotaCumpleano" type="date">
 
         <label for="mascotaObservaciones">Observaciones</label>
-        <textarea id="mascotaObservaciones" name="mascotaObservaciones"
-                  rows="2"></textarea>
+        <textarea id="mascotaObservaciones" name="mascotaObservaciones" rows="2"></textarea>
       </fieldset>
 
       <button id="revisar" type="submit" disabled>Revisar datos</button>
       <button type="reset">Limpiar</button>
     </form>
 
+
     <section id="resumen" aria-live="polite" hidden>
-      <h2>Vista previa del registro</h2>
+      <h2>Paso 2: Revisar y confirmar</h2>
+      <p>Comprueba que los datos estén correctos antes de enviarlos.</p>
+
       <dl id="datos"></dl>
-      <button id="enviar" type="button">Enviar registro</button>
+
+      <button id="volver" type="button">Volver a editar</button>
+      <button id="enviar" type="button">Confirmar y enviar</button>
     </section>
+
     <p id="estado-registro" role="status"></p>
   </main>
 </body>
+
 </html>

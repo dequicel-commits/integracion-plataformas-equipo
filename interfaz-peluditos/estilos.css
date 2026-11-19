@@ -98,3 +98,7 @@ dd {
   margin: 0 0 10px;
   overflow-wrap: anywhere;
 }
+
+[hidden] {
+  display: none !important;
+}

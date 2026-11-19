@@ -1,6 +1,7 @@
 const formulario = document.querySelector("#registro");
 const botonRevisar = document.querySelector("#revisar");
 const resumen = document.querySelector("#resumen");
+const botonVolver = document.querySelector("#volver");
 const listaDatos = document.querySelector("#datos");
 const botonEnviar = document.querySelector("#enviar");
 const botonLimpiar = formulario.querySelector('[type="reset"]');
@@ -43,9 +44,11 @@ formulario.addEventListener("submit", (evento) => {
     listaDatos.append(nombre, detalle);
   }
 
+
   datosRevisados = true;
+  formulario.hidden = true;
   resumen.hidden = false;
-  resumen.scrollIntoView({ block: "nearest" });
+  resumen.scrollIntoView({ block: "start" });
 });
 
 formulario.addEventListener("input", () => {
@@ -59,6 +62,13 @@ formulario.addEventListener("reset", () => {
   estado.textContent = "";
   listaDatos.replaceChildren();
   resumen.hidden = true;
+  formulario.hidden = false;
+});
+
+botonVolver.addEventListener("click", () => {
+  resumen.hidden = true;
+  formulario.hidden = false;
+  formulario.elements.clienteNombre.focus();
 });
 
 botonEnviar.addEventListener("click", async () => {

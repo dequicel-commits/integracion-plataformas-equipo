@@ -173,6 +173,53 @@ public class BaseDatos {
         }
     }
 
+    public static Map<String, Object> actualizarSeguimiento(
+        int clienteId,
+        boolean compraRealizada,
+        String clienteEstadoCompra,
+        String clienteObservaciones) throws SQLException {
+
+    if (clienteId <= 0) {
+        throw new IllegalArgumentException("El ID del cliente debe ser positivo");
+    }
+
+    String estadoCompra = clienteEstadoCompra;
+
+    if (estadoCompra == null || estadoCompra.isBlank()) {
+        estadoCompra = compraRealizada ? "Compra realizada" : "Sin compra";
+    }
+
+    String sql = """
+        UPDATE TABLA_CLIENTE
+        SET CLIENTE_ESTADO_COMPRA = ?,
+            CLIENTE_OBSERVACIONES = ?
+        WHERE CLIENTE_ID = ?
+    """;
+
+    try (Connection conn = conectar();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, estadoCompra);
+        ps.setString(2, clienteObservaciones);
+        ps.setInt(3, clienteId);
+
+        int filasActualizadas = ps.executeUpdate();
+
+        if (filasActualizadas == 0) {
+            throw new IllegalArgumentException("No existe el cliente con ID " + clienteId);
+        }
+    }
+ 
+
+    Map<String, Object> resultado = new LinkedHashMap<>();
+    resultado.put("estado", "OK");
+    resultado.put("mensaje", "Resultado del seguimiento comercial actualizado en la base de datos");
+    resultado.put("clienteId", clienteId);
+    resultado.put("clienteEstadoCompra", estadoCompra);
+    resultado.put("compraRealizada", compraRealizada);
+
+    return resultado;
+}
     public static List<Map<String, Object>> listarClientes() throws SQLException {
         List<Map<String, Object>> lista = new ArrayList<>();
         String sql = """
