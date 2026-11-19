@@ -34,6 +34,7 @@ final class RegistroFlowableJakarta {
 
     private final ObjectMapper json = new ObjectMapper();
     private final HttpClient http = HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_1_1)
         .connectTimeout(Duration.ofSeconds(5)).build();
     private final String url = System.getenv().getOrDefault(
         "FLOWABLE_REST_URL", "http://127.0.0.1:8080/flowable-rest/service"
@@ -275,6 +276,7 @@ final class RegistroFlowableJakarta {
                 );
 
                 HttpRequest.Builder solicitud = HttpRequest.newBuilder(URI.create(base + ruta))
+                    .version(HttpClient.Version.HTTP_1_1)
                     .timeout(Duration.ofSeconds(10))
                     .header("Authorization", "Basic " + token);
 
