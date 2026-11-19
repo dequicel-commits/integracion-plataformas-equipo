@@ -11,56 +11,52 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 public class ServidorJakarta {
 
-    public static void main(String[] args) throws Exception {
+        public static void main(String[] args) throws Exception {
 
-        BaseDatos.inicializar();
+                BaseDatos.inicializar();
 
-        URI direccion = URI.create("http://localhost:7072/");
+                String host = System.getenv().getOrDefault("PELU_HOST", "localhost");
+                String puerto = System.getenv().getOrDefault("PELU_PORT", "7072");
 
-        ResourceConfig configuracion = new ResourceConfig()
-                .packages("cl.iplacex.peluditos")
-                .register(JacksonFeature.class);
+                URI direccion = URI.create("http://" + host + ":" + puerto + "/");
 
-        HttpServer servidor =
-                GrizzlyHttpServerFactory.createHttpServer(
-                        direccion,
-                        configuracion,
-                        false
-                );
+                ResourceConfig configuracion = new ResourceConfig()
+                                .packages("cl.iplacex.peluditos")
+                                .register(JacksonFeature.class);
 
-        Path carpetaInterfaz = Path.of("..", "interfaz-peluditos")
-                .toAbsolutePath()
-                .normalize();
+                HttpServer servidor = GrizzlyHttpServerFactory.createHttpServer(
+                                direccion,
+                                configuracion,
+                                false);
 
-        if (Files.isDirectory(carpetaInterfaz)) {
+                Path carpetaInterfaz = Path.of("..", "interfaz-peluditos")
+                                .toAbsolutePath()
+                                .normalize();
 
-            StaticHttpHandler archivos = new StaticHttpHandler(
-                    carpetaInterfaz.toString()
-            );
+                if (Files.isDirectory(carpetaInterfaz)) {
 
-            servidor.getServerConfiguration()
-                    .addHttpHandler(archivos, "/interfaz/");
+                        StaticHttpHandler archivos = new StaticHttpHandler(
+                                        carpetaInterfaz.toString());
 
-            System.out.println(
-                    "Interfaz disponible en http://localhost:7072/interfaz/index.html"
-            );
+                        servidor.getServerConfiguration()
+                                        .addHttpHandler(archivos, "/interfaz/");
 
-        } else {
-            System.out.println(
-                    "No se encontró la carpeta interfaz-peluditos."
-            );
+                        System.out.println(
+                                        "Interfaz disponible en " + direccion + "interfaz/index.html");
+
+                } else {
+                        System.out.println(
+                                        "No se encontró la carpeta interfaz-peluditos.");
+                }
+
+                servidor.start();
+
+                System.out.println(
+                                "Servidor Jakarta REST iniciado en " + direccion);
+
+                Runtime.getRuntime().addShutdownHook(
+                                new Thread(servidor::shutdownNow));
+
+                Thread.currentThread().join();
         }
-
-        servidor.start();
-
-        System.out.println(
-                "Servidor Jakarta REST iniciado en " + direccion
-        );
-
-        Runtime.getRuntime().addShutdownHook(
-                new Thread(servidor::shutdownNow)
-        );
-
-        Thread.currentThread().join();
-    }
 }

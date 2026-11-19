@@ -13,7 +13,8 @@ import java.util.Map;
 
 public class BaseDatos {
 
-    private static final String DB_URL = "jdbc:sqlite:peluditos.db";
+    private static final String DB_URL = "jdbc:sqlite:" +
+        System.getenv().getOrDefault("PELU_DB_PATH", "peluditos.db");
 
     public static Connection conectar() throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL);
