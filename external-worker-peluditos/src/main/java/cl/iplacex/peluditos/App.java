@@ -58,6 +58,7 @@ public class App {
 
         ObjectMapper mapper = new ObjectMapper();
         HttpClient clienteHttp = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
                 .connectTimeout(Duration.ofSeconds(5))
                 .build();
 
@@ -319,6 +320,7 @@ public class App {
             try {
                 HttpRequest.Builder builder = HttpRequest.newBuilder()
                         .uri(URI.create(base + ruta))
+                        .version(HttpClient.Version.HTTP_1_1)
                         .timeout(Duration.ofSeconds(5));
 
                 if ("POST".equalsIgnoreCase(metodo)) {
