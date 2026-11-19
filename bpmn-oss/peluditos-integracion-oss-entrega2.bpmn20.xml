@@ -92,13 +92,12 @@
         <design:stencilsuperid><![CDATA[Task]]></design:stencilsuperid>
       </extensionElements>
     </userTask>
-    <userTask id="FormTask_13" name="Registrar cliente y compra realizada" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+    <serviceTask id="FormTask_13" name="Registrar cliente y compra realizada" flowable:type="external-worker" flowable:topic="actualizar-seguimiento-peluditos" flowable:exclusive="false">
       <extensionElements>
-        <flowable:task-candidates-type><![CDATA[all]]></flowable:task-candidates-type>
-        <design:stencilid><![CDATA[FormTask]]></design:stencilid>
+        <design:stencilid><![CDATA[ExternalWorkerTask]]></design:stencilid>
         <design:stencilsuperid><![CDATA[Task]]></design:stencilsuperid>
       </extensionElements>
-    </userTask>
+    </serviceTask>
     <userTask id="FormTask_1" name="Registrar datos del potencial cliente" flowable:assignee="${initiator}" flowable:formKey="form_registro_cliente" flowable:formFieldValidation="false">
       <extensionElements>
         <flowable:task-candidates-type><![CDATA[all]]></flowable:task-candidates-type>
@@ -113,13 +112,12 @@
         <design:stencilsuperid><![CDATA[Task]]></design:stencilsuperid>
       </extensionElements>
     </userTask>
-    <userTask id="FormTask_11" name="Registrar cliente potencial sin compra" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+    <serviceTask id="FormTask_11" name="Registrar cliente potencial sin compra" flowable:type="external-worker" flowable:topic="actualizar-seguimiento-peluditos" flowable:exclusive="false">
       <extensionElements>
-        <flowable:task-candidates-type><![CDATA[all]]></flowable:task-candidates-type>
-        <design:stencilid><![CDATA[FormTask]]></design:stencilid>
+        <design:stencilid><![CDATA[ExternalWorkerTask]]></design:stencilid>
         <design:stencilsuperid><![CDATA[Task]]></design:stencilsuperid>
       </extensionElements>
-    </userTask>
+    </serviceTask>
     <serviceTask id="Activity_10hj4gn" name="Guardar datos del potencial cliente" flowable:type="external-worker" flowable:topic="guardar-cliente-peluditos" flowable:exclusive="false">
       <extensionElements>
         <design:stencilid><![CDATA[ExternalWorkerTask]]></design:stencilid>
