@@ -246,8 +246,6 @@ final class RegistroFlowableJakarta {
         }
     }
 
-    private String baseActiva = null;
-
     private JsonNode enviar(String ruta, Map<String, ?> cuerpo) throws IOException, InterruptedException {
         if (clave == null || clave.isBlank()) {
             throw new IOException("Configura FLOWABLE_PASSWORD antes de conectar con Flowable.");
@@ -275,7 +273,7 @@ final class RegistroFlowableJakarta {
 
                 HttpResponse<String> respuesta = http.send(solicitud.build(), HttpResponse.BodyHandlers.ofString());
                 if (respuesta.statusCode() >= 200 && respuesta.statusCode() < 300) {
-                    baseActiva = base;
+                    
                     return respuesta.body().isBlank() ? json.nullNode() : json.readTree(respuesta.body());
                 }
                 ultimoError = new IOException(base + ruta + " respondió HTTP " + respuesta.statusCode());
