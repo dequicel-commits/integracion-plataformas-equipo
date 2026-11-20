@@ -40,9 +40,25 @@ public class BaseDatos {
                             CLIENTE_CONSULTA_REALIZADA TEXT NOT NULL,
                             CLIENTE_ESTADO_COMPRA TEXT NOT NULL,
                             CLIENTE_AUTORIZA INTEGER NOT NULL,
-                            CLIENTE_OBSERVACIONES TEXT
+                            CLIENTE_OBSERVACIONES TEXT,
+                            FLOWABLE_CASO_ID TEXT
                         );
                     """);
+            // Agregar la columna a bases de datos creadas anteriormente
+            boolean existeColumna = false;
+
+            try (ResultSet columnas = stmt.executeQuery("PRAGMA table_info(TABLA_CLIENTE)")) {
+                while (columnas.next()) {
+                    if ("FLOWABLE_CASO_ID".equals(columnas.getString("name"))) {
+                        existeColumna = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!existeColumna) {
+                stmt.execute("ALTER TABLE TABLA_CLIENTE ADD COLUMN FLOWABLE_CASO_ID TEXT");
+            }
 
             // 2. TABLA_TIPO_MASCOTA
             stmt.execute("""
@@ -122,8 +138,9 @@ public class BaseDatos {
                                 CLIENTE_NOMBRE, CLIENTE_TELEFONO, CLIENTE_CORREO,
                                 CLIENTE_CANAL_CONTACTO, CLIENTE_FECHA_CONSULTA,
                                 CLIENTE_CONSULTA_REALIZADA, CLIENTE_ESTADO_COMPRA,
-                                CLIENTE_AUTORIZA, CLIENTE_OBSERVACIONES
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                CLIENTE_AUTORIZA, CLIENTE_OBSERVACIONES,
+                                FLOWABLE_CASO_ID
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """;
 
                 try (PreparedStatement ps = conn.prepareStatement(sqlCliente, Statement.RETURN_GENERATED_KEYS)) {
@@ -137,6 +154,7 @@ public class BaseDatos {
                     ps.setString(7, valorPorDefecto(req.clienteEstadoCompra(), "En seguimiento"));
                     ps.setInt(8, Boolean.TRUE.equals(req.clienteAutoriza()) ? 1 : 0);
                     ps.setString(9, req.clienteObservaciones());
+                    ps.setString(10, req.flowableCasoId());
                     ps.executeUpdate();
 
                     try (ResultSet keys = ps.getGeneratedKeys()) {
@@ -235,16 +253,18 @@ public class BaseDatos {
 
     public static List<Map<String, Object>> listarClientes() throws SQLException {
         List<Map<String, Object>> lista = new ArrayList<>();
+
         String sql = """
-                    SELECT c.CLIENTE_ID, c.CLIENTE_NOMBRE, c.CLIENTE_TELEFONO, c.CLIENTE_CORREO,
-                           c.CLIENTE_CANAL_CONTACTO, c.CLIENTE_FECHA_CONSULTA, c.CLIENTE_CONSULTA_REALIZADA,
-                           c.CLIENTE_ESTADO_COMPRA, c.CLIENTE_AUTORIZA, c.CLIENTE_OBSERVACIONES,
-                           m.MASCOTA_ID, m.MASCOTA_NOMBRE, m.MASCOTA_CUMPLEANO, m.MASCOTA_OBSERVACIONES,
-                           t.MASCOTA_ESPECIE, t.MASCOTA_TAMANO
-                    FROM TABLA_CLIENTE c
-                    LEFT JOIN TABLA_MASCOTA m ON c.CLIENTE_ID = m.CLIENTE_ID
-                    LEFT JOIN TABLA_TIPO_MASCOTA t ON m.MASCOTA_TIPO_ID = t.MASCOTA_TIPO_ID
-                    ORDER BY c.CLIENTE_ID DESC
+                SELECT c.CLIENTE_ID, c.CLIENTE_NOMBRE, c.CLIENTE_TELEFONO, c.CLIENTE_CORREO,
+                       c.CLIENTE_CANAL_CONTACTO, c.CLIENTE_FECHA_CONSULTA, c.CLIENTE_CONSULTA_REALIZADA,
+                       c.CLIENTE_ESTADO_COMPRA, c.CLIENTE_AUTORIZA, c.CLIENTE_OBSERVACIONES,
+                       c.FLOWABLE_CASO_ID,
+                       m.MASCOTA_ID, m.MASCOTA_NOMBRE, m.MASCOTA_CUMPLEANO, m.MASCOTA_OBSERVACIONES,
+                       t.MASCOTA_ESPECIE, t.MASCOTA_TAMANO
+                FROM TABLA_CLIENTE c
+                LEFT JOIN TABLA_MASCOTA m ON c.CLIENTE_ID = m.CLIENTE_ID
+                LEFT JOIN TABLA_TIPO_MASCOTA t ON m.MASCOTA_TIPO_ID = t.MASCOTA_TIPO_ID
+                ORDER BY c.CLIENTE_ID DESC
                 """;
 
         try (Connection conn = conectar();
@@ -262,6 +282,7 @@ public class BaseDatos {
                 fila.put("CLIENTE_ESTADO_COMPRA", rs.getString("CLIENTE_ESTADO_COMPRA"));
                 fila.put("CLIENTE_AUTORIZA", rs.getInt("CLIENTE_AUTORIZA") == 1);
                 fila.put("CLIENTE_OBSERVACIONES", rs.getString("CLIENTE_OBSERVACIONES"));
+                fila.put("FLOWABLE_CASO_ID", rs.getString("FLOWABLE_CASO_ID"));
                 fila.put("MASCOTA_ID", rs.getObject("MASCOTA_ID"));
                 fila.put("MASCOTA_NOMBRE", rs.getString("MASCOTA_NOMBRE"));
                 fila.put("MASCOTA_CUMPLEANO", rs.getString("MASCOTA_CUMPLEANO"));
@@ -317,6 +338,7 @@ public class BaseDatos {
             String mascotaNombre,
             Integer mascotaTipoId,
             String mascotaCumpleano,
-            String mascotaObservaciones) {
+            String mascotaObservaciones,
+            String flowableCasoId) {
     }
 }

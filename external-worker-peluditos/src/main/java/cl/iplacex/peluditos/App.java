@@ -37,23 +37,20 @@ public class App {
             String clave = (claveEnv != null && !claveEnv.isBlank()) ? claveEnv : "test";
             clientesWorker = List.of(RestExternalWorkerClient.create(
                     "peluditos-worker-entrega3",
-                    JavaHttpClientRestInvoker.withBasicAuth(urlEnv, usuario, clave)
-            ));
+                    JavaHttpClientRestInvoker.withBasicAuth(urlEnv, usuario, clave)));
         } else {
-            // Si no se especifico FLOWABLE_API_URL, revisar tanto flowable-rest como flowable-ui en :8080
+            // Si no se especifico FLOWABLE_API_URL, revisar tanto flowable-rest como
+            // flowable-ui en :8080
             String clave = (claveEnv != null && !claveEnv.isBlank()) ? claveEnv : "test";
             clientesWorker = List.of(
                     RestExternalWorkerClient.create(
                             "peluditos-worker-rest",
                             JavaHttpClientRestInvoker.withBasicAuth(
-                                    "http://localhost:8080/flowable-rest/external-job-api", "rest-admin", clave)
-                    ),
+                                    "http://localhost:8080/flowable-rest/external-job-api", "rest-admin", clave)),
                     RestExternalWorkerClient.create(
                             "peluditos-worker-ui",
                             JavaHttpClientRestInvoker.withBasicAuth(
-                                    "http://localhost:8080/flowable-ui/external-job-api", "admin", clave)
-                    )
-            );
+                                    "http://localhost:8080/flowable-ui/external-job-api", "admin", clave)));
         }
 
         ObjectMapper mapper = new ObjectMapper();
@@ -71,10 +68,12 @@ public class App {
                     // 1. Ejecutar Worker 1: Guardar datos del potencial cliente y su mascota
                     procesarGuardarClientes(worker, mapper, clienteHttp, !modoContinuo);
 
-                    // 2. Ejecutar Worker 2: Actualizar resultado del seguimiento comercial (con o sin compra)
+                    // 2. Ejecutar Worker 2: Actualizar resultado del seguimiento comercial (con o
+                    // sin compra)
                     procesarActualizarSeguimiento(worker, mapper, clienteHttp, !modoContinuo);
                 } catch (Exception ignored) {
-                    // Si uno de los dos entornos (flowable-rest o flowable-ui) no esta activo, continuar con el otro
+                    // Si uno de los dos entornos (flowable-rest o flowable-ui) no esta activo,
+                    // continuar con el otro
                 }
             }
 
@@ -86,29 +85,32 @@ public class App {
 
     /**
      * WORKER 1 (topic: guardar-cliente-peluditos)
-     * Toma los datos ingresados al inicio del proceso BPMN, invoca POST /api/clientes
-     * en el servicio Jakarta REST (:7072) y devuelve a Flowable los IDs generados en SQLite.
+     * Toma los datos ingresados al inicio del proceso BPMN, invoca POST
+     * /api/clientes
+     * en el servicio Jakarta REST (:7072) y devuelve a Flowable los IDs generados
+     * en SQLite.
      */
     private static void procesarGuardarClientes(
             ExternalWorkerClient worker,
             ObjectMapper mapper,
             HttpClient clienteHttp,
-            boolean mostrarSiCero
-    ) {
-        List<AcquiredExternalWorkerJob> trabajos =
-                worker.createJobAcquireBuilder()
-                        .topic(TOPIC_GUARDAR_CLIENTE)
-                        .numberOfTasks(5)
-                        .lockDuration(Duration.ofMinutes(2))
-                        .acquireAndLock();
+            boolean mostrarSiCero) {
+        List<AcquiredExternalWorkerJob> trabajos = worker.createJobAcquireBuilder()
+                .topic(TOPIC_GUARDAR_CLIENTE)
+                .numberOfTasks(5)
+                .lockDuration(Duration.ofMinutes(2))
+                .acquireAndLock();
 
         if (mostrarSiCero || !trabajos.isEmpty()) {
-            System.out.println("[Worker 1] Trabajos recibidos (topic: " + TOPIC_GUARDAR_CLIENTE + "): " + trabajos.size());
+            System.out.println(
+                    "[Worker 1] Trabajos recibidos (topic: " + TOPIC_GUARDAR_CLIENTE + "): " + trabajos.size());
         }
 
         for (AcquiredExternalWorkerJob trabajo : trabajos) {
             try {
                 Map<String, Object> vars = trabajo.getVariables();
+                System.out.println("[QA] Scope ID del proceso: " + trabajo.getScopeId());
+                System.out.println("[QA] Scope Type: " + trabajo.getScopeType());
 
                 String consulta = leerTexto(vars, "clienteConsultaRealizada", "Torta de cumpleanos para perro mediano");
                 String obsMascota = leerTexto(vars, "mascotaObservaciones", "Sin alergias alimentarias");
@@ -119,11 +121,12 @@ public class App {
                 payload.put("clienteTelefono", leerTexto(vars, "clienteTelefono", "+56987654321"));
                 payload.put("clienteCorreo", leerTexto(vars, "clienteCorreo", "camila.rojas@correo.cl"));
                 payload.put("clienteCanalContacto", leerTexto(vars, "clienteCanalContacto", "Instagram"));
-                payload.put("clienteFechaConsulta", leerTexto(vars, "clienteFechaConsulta", LocalDate.now().toString()));
+                payload.put("clienteFechaConsulta",leerTexto(vars, "clienteFechaConsulta", LocalDate.now().toString()));
                 payload.put("clienteConsultaRealizada", consulta);
                 payload.put("clienteEstadoCompra", leerTexto(vars, "clienteEstadoCompra", "En seguimiento"));
                 payload.put("clienteAutoriza", leerBooleano(vars, "clienteAutoriza", true));
-                payload.put("clienteObservaciones", leerTexto(vars, "clienteObservaciones", "Registrado desde Flowable"));
+                payload.put("clienteObservaciones",leerTexto(vars, "clienteObservaciones", "Registrado desde Flowable"));
+                payload.put("flowableCasoId", trabajo.getScopeId());
                 payload.put("mascotaNombre", leerTexto(vars, "mascotaNombre", "Toby"));
                 payload.put("mascotaTipoId", leerEntero(vars, "mascotaTipoId", tipoMascotaPorDefecto));
                 payload.put("mascotaCumpleano", leerTexto(vars, "mascotaCumpleano", "2026-11-15"));
@@ -133,7 +136,8 @@ public class App {
                 System.out.println("[Worker 1] Enviando POST /api/clientes: " + jsonBody);
 
                 HttpResponse<String> respuesta = enviarPeticionServicio(clienteHttp, "POST", "/api/clientes", jsonBody);
-                System.out.println("[Worker 1] Respuesta de /api/clientes (HTTP " + respuesta.statusCode() + "): " + respuesta.body());
+                System.out.println("[Worker 1] Respuesta de /api/clientes (HTTP " + respuesta.statusCode() + "): "
+                        + respuesta.body());
 
                 if (respuesta.statusCode() == 200 || respuesta.statusCode() == 201) {
                     JsonNode nodo = mapper.readTree(respuesta.body());
@@ -165,33 +169,36 @@ public class App {
 
     /**
      * WORKER 2 (topic: actualizar-seguimiento-peluditos)
-     * Se ejecuta al cerrar el seguimiento comercial (ruta SI con compra o ruta NO sin compra).
+     * Se ejecuta al cerrar el seguimiento comercial (ruta SI con compra o ruta NO
+     * sin compra).
      * Toma clienteId, compraRealizada y observaciones desde Flowable e invoca
-     * PUT /api/clientes/{clienteId}/seguimiento en el servicio Jakarta REST (:7072).
+     * PUT /api/clientes/{clienteId}/seguimiento en el servicio Jakarta REST
+     * (:7072).
      */
     private static void procesarActualizarSeguimiento(
             ExternalWorkerClient worker,
             ObjectMapper mapper,
             HttpClient clienteHttp,
-            boolean mostrarSiCero
-    ) {
-        List<AcquiredExternalWorkerJob> trabajos =
-                worker.createJobAcquireBuilder()
-                        .topic(TOPIC_ACTUALIZAR_SEGUIMIENTO)
-                        .numberOfTasks(5)
-                        .lockDuration(Duration.ofMinutes(2))
-                        .acquireAndLock();
+            boolean mostrarSiCero) {
+        List<AcquiredExternalWorkerJob> trabajos = worker.createJobAcquireBuilder()
+                .topic(TOPIC_ACTUALIZAR_SEGUIMIENTO)
+                .numberOfTasks(5)
+                .lockDuration(Duration.ofMinutes(2))
+                .acquireAndLock();
 
         if (mostrarSiCero || !trabajos.isEmpty()) {
-            System.out.println("[Worker 2] Trabajos recibidos (topic: " + TOPIC_ACTUALIZAR_SEGUIMIENTO + "): " + trabajos.size());
+            System.out.println(
+                    "[Worker 2] Trabajos recibidos (topic: " + TOPIC_ACTUALIZAR_SEGUIMIENTO + "): " + trabajos.size());
         }
 
         for (AcquiredExternalWorkerJob trabajo : trabajos) {
             try {
                 Map<String, Object> vars = trabajo.getVariables();
+
                 String elementId = trabajo.getElementId() != null ? trabajo.getElementId() : "";
 
-                // Determinar si la compra fue realizada segun la variable de Flowable o la actividad del BPMN
+                // Determinar si la compra fue realizada segun la variable de Flowable o la
+                // actividad del BPMN
                 boolean porDefectoCompro = !elementId.equalsIgnoreCase("FormTask_11");
                 boolean compraRealizada = leerBooleano(vars, "compraRealizada", porDefectoCompro);
                 if (elementId.equalsIgnoreCase("FormTask_11")) {
@@ -213,8 +220,7 @@ public class App {
                         leerTexto(vars, "clienteObservaciones",
                                 compraRealizada
                                         ? "Seguimiento finalizado: venta concretada en Flowable"
-                                        : "Seguimiento finalizado: potencial cliente no concreto la compra")
-                );
+                                        : "Seguimiento finalizado: potencial cliente no concreto la compra"));
 
                 Map<String, Object> payload = new LinkedHashMap<>();
                 payload.put("compraRealizada", compraRealizada);
@@ -226,7 +232,8 @@ public class App {
                 System.out.println("[Worker 2] Enviando PUT " + ruta + ": " + jsonBody);
 
                 HttpResponse<String> respuesta = enviarPeticionServicio(clienteHttp, "PUT", ruta, jsonBody);
-                System.out.println("[Worker 2] Respuesta de " + ruta + " (HTTP " + respuesta.statusCode() + "): " + respuesta.body());
+                System.out.println("[Worker 2] Respuesta de " + ruta + " (HTTP " + respuesta.statusCode() + "): "
+                        + respuesta.body());
 
                 if (respuesta.statusCode() == 200 || respuesta.statusCode() == 201) {
                     worker.createCompletionBuilder(trabajo)
@@ -254,8 +261,7 @@ public class App {
             ExternalWorkerClient worker,
             AcquiredExternalWorkerJob trabajo,
             String mensajeError,
-            String detalleError
-    ) {
+            String detalleError) {
         System.err.println("[Error Worker] " + mensajeError + " (jobId: " + trabajo.getId() + ")");
         try {
             worker.createFailureBuilder(trabajo)
@@ -301,8 +307,7 @@ public class App {
             HttpClient cliente,
             String metodo,
             String ruta,
-            String jsonBody
-    ) throws Exception {
+            String jsonBody) throws Exception {
         String baseConfigurada = System.getenv().getOrDefault("SERVICIO_PELUDITOS_URL", "http://localhost:7072");
         // Si SERVICIO_PELUDITOS_URL incluia /api/clientes, extraer solo el host:puerto
         int idxApi = baseConfigurada.indexOf("/api/");

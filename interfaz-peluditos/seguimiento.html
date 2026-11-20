@@ -27,9 +27,11 @@
         <form id="form-seguimiento">
             <fieldset>
                 <legend>Resultado del seguimiento</legend>
+                <label for="casoIdSeguimiento">Seleccionar cliente *</label>
+                <select id="casoIdSeguimiento" name="casoIdSeguimiento" required>
+                    <option value="">Cargando clientes pendientes...</option>
+                </select>
 
-                <label for="casoIdSeguimiento">Número de seguimiento *</label>
-                <input id="casoIdSeguimiento" name="casoIdSeguimiento" required>
 
                 <label for="compraRealizada">¿El cliente concretó la compra? *</label>
                 <select id="compraRealizada" name="compraRealizada" required>

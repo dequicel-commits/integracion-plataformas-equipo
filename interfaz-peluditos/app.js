@@ -124,7 +124,62 @@ botonEnviar.addEventListener("click", async () => {
 });
 }
 
+async function cargarClientesSeguimiento() {
+  if (!formSeguimiento || !inputCasoId) return;
+
+  inputCasoId.replaceChildren(new Option("Cargando clientes pendientes...", ""));
+  inputCasoId.disabled = true;
+
+  try {
+    const respuesta = await fetch("/api/clientes");
+
+    if (!respuesta.ok) {
+      throw new Error("No se pudo obtener la lista de clientes.");
+    }
+
+    const clientes = await respuesta.json();
+
+    const pendientes = clientes.filter(c =>
+      c.FLOWABLE_CASO_ID &&
+      c.CLIENTE_ESTADO_COMPRA === "En seguimiento"
+    );
+
+    inputCasoId.replaceChildren(
+      new Option("Selecciona un cliente...", "")
+    );
+
+    for (const cliente of pendientes) {
+      const nombre = cliente.CLIENTE_NOMBRE || "Cliente sin nombre";
+      const mascota = cliente.MASCOTA_NOMBRE || "Sin mascota";
+      const etiqueta = `${nombre} — ${mascota} (Cliente N.º ${cliente.CLIENTE_ID})`;
+
+      inputCasoId.add(
+        new Option(etiqueta, cliente.FLOWABLE_CASO_ID)
+      );
+    }
+
+    if (pendientes.length === 0) {
+      inputCasoId.replaceChildren(
+        new Option("No hay clientes pendientes disponibles", "")
+      );
+      estadoSeguimiento.textContent = "No hay clientes con seguimiento disponible.";
+    }
+
+  } catch (error) {
+    inputCasoId.replaceChildren(
+      new Option("Error al cargar clientes", "")
+    );
+
+    estadoSeguimiento.textContent =
+      error.message || "No se pudo cargar la lista de clientes.";
+  } finally {
+    inputCasoId.disabled = false;
+  }
+}
+
 if (formSeguimiento) {
+    cargarClientesSeguimiento();
+
   formSeguimiento.addEventListener("submit", async (evento) => {
     evento.preventDefault();
     if (!formSeguimiento.reportValidity()) return;
@@ -149,7 +204,7 @@ if (formSeguimiento) {
       if (!respuesta.ok) throw new Error(resultado.mensaje || "No se pudo avanzar el seguimiento.");
 
       estadoSeguimiento.textContent = "El resultado del seguimiento fue registrado correctamente. El estado del cliente se actualizará en el sistema.";
-      setTimeout(cargarClientes, 2500);
+      setTimeout(cargarClientesSeguimiento, 2500);
     } catch (error) {
       estadoSeguimiento.textContent = error.message || "No se pudo conectar con el servicio.";
     } finally {
