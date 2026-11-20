@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es-CL">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seguimiento comercial | Peluditos Pet Chile</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="vista-emprendedora">
+    <header>
+        <h1>Peluditos Pet Chile</h1>
+        <p>Panel de gestión de clientes</p>
+    </header>
+
+    <main>
+        <p class="navegacion-panel">
+            <a class="boton-volver" href="emprendedora.html">
+                ← Volver al panel
+            </a>
+        </p>
+        <h2>Seguimiento comercial</h2>
+        <p>Registra el resultado de la atención de un cliente.</p>
+
+        <form id="form-seguimiento">
+            <fieldset>
+                <legend>Resultado del seguimiento</legend>
+
+                <label for="casoIdSeguimiento">Número de seguimiento *</label>
+                <input id="casoIdSeguimiento" name="casoIdSeguimiento" required>
+
+                <label for="compraRealizada">¿El cliente concretó la compra? *</label>
+                <select id="compraRealizada" name="compraRealizada" required>
+                    <option value="true">Sí — Compra realizada</option>
+                    <option value="false">No — Sin compra</option>
+                </select>
+
+                <label for="observacionesSeguimiento">Observaciones *</label>
+                <textarea id="observacionesSeguimiento" name="observacionesSeguimiento" rows="3" required></textarea>
+            </fieldset>
+
+            <button id="enviar-seguimiento" type="submit">
+                Guardar resultado del seguimiento
+            </button>
+        </form>
+
+        <p id="estado-seguimiento" role="status"></p>
+    </main>
+</body>
+
+</html>

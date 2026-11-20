@@ -127,3 +127,161 @@ hr {
 .tabla-clientes th {
   background: #e6efed;
 }
+
+.vista-emprendedora main {
+  max-width: 900px;
+  padding-top: 16px;
+}
+
+.vista-emprendedora #form-seguimiento {
+  max-width: 650px;
+  margin: 0;
+}
+
+.vista-emprendedora #form-seguimiento fieldset {
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+
+.vista-emprendedora #form-seguimiento label {
+  margin: 7px 0 3px;
+}
+
+.vista-emprendedora #form-seguimiento input,
+.vista-emprendedora #form-seguimiento select,
+.vista-emprendedora #form-seguimiento textarea {
+  padding: 7px 9px;
+}
+
+.vista-emprendedora #observacionesSeguimiento {
+  min-height: 65px;
+  max-height: 110px;
+}
+
+.navegacion-panel {
+  margin: 0 0 24px;
+}
+
+.boton-volver {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 15px;
+  border: 1px solid #164940;
+  border-radius: 6px;
+  background: white;
+  color: #164940;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.boton-volver:hover {
+  background: #e6efed;
+}
+
+.boton-volver:focus-visible {
+  outline: 3px solid #138571;
+  outline-offset: 2px;
+}
+
+.vista-emprendedora #form-seguimiento {
+  text-align: center;
+}
+
+.vista-emprendedora #form-seguimiento fieldset {
+  text-align: left;
+}
+
+.vista-emprendedora #enviar-seguimiento {
+  margin: 4px auto 16px;
+}
+
+.vista-emprendedora .boton-panel {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #164940;
+  color: white;
+  border: 1px solid #164940;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.vista-emprendedora .boton-panel:hover {
+  background: #21695b;
+}
+
+.vista-emprendedora .boton-panel:focus-visible {
+  outline: 3px solid #138571;
+  outline-offset: 3px;
+}
+
+.vista-emprendedora .panel-principal {
+  max-width: 960px;
+  padding-top: 32px;
+}
+
+.tarjetas-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+}
+
+.tarjeta-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  background: white;
+  border: 1px solid #c3d4d0;
+  border-radius: 12px;
+}
+
+.tarjeta-panel h3,
+.tarjeta-panel p {
+  margin: 0;
+}
+
+.tarjeta-panel .boton-panel {
+  display: block;
+  margin-top: auto;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+@media (max-width: 650px) {
+  .tarjetas-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjeta-panel {
+    padding: 20px;
+  }
+}
+
+.icono-tarjeta {
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+body:not(.vista-emprendedora) #registro fieldset {
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+
+body:not(.vista-emprendedora) #registro label {
+  margin: 7px 0 3px;
+}
+
+body:not(.vista-emprendedora) #registro input:not([type="checkbox"]),
+body:not(.vista-emprendedora) #registro select,
+body:not(.vista-emprendedora) #registro textarea {
+  padding: 8px 10px;
+}
+
+body:not(.vista-emprendedora) #registro textarea {
+  min-height: 75px;
+}

@@ -4,7 +4,7 @@ const resumen = document.querySelector("#resumen");
 const botonVolver = document.querySelector("#volver");
 const listaDatos = document.querySelector("#datos");
 const botonEnviar = document.querySelector("#enviar");
-const botonLimpiar = formulario.querySelector('[type="reset"]');
+const botonLimpiar = formulario?.querySelector('[type="reset"]');
 const estado = document.querySelector("#estado-registro");
 
 const formSeguimiento = document.querySelector("#form-seguimiento");
@@ -31,6 +31,8 @@ const etiquetas = {
   mascotaCumpleano: "Cumpleaños de la mascota",
   mascotaObservaciones: "Observaciones",
 };
+
+if (formulario) {
 
 formulario.addEventListener("submit", (evento) => {
   evento.preventDefault();
@@ -73,6 +75,7 @@ formulario.addEventListener("reset", () => {
   resumen.hidden = true;
   formulario.hidden = false;
 });
+}
 
 if (botonVolver) {
   botonVolver.addEventListener("click", () => {
@@ -81,6 +84,8 @@ if (botonVolver) {
     formulario.elements.clienteNombre.focus();
   });
 }
+
+if (botonEnviar) {
 
 botonEnviar.addEventListener("click", async () => {
   if (!datosRevisados || !formulario.reportValidity()) return;
@@ -92,7 +97,7 @@ botonEnviar.addEventListener("click", async () => {
   botonEnviar.disabled = true;
   botonRevisar.disabled = true;
   botonLimpiar.disabled = true;
-  estado.textContent = "Enviando a Flowable...";
+  estado.textContent = "Enviando tu consulta, por favor espera...";
 
   try {
     const respuesta = await fetch(`/api/consultas/${referencia}`, {
@@ -107,7 +112,7 @@ botonEnviar.addEventListener("click", async () => {
     if (inputCasoId && resultado.casoId) {
       inputCasoId.value = resultado.casoId;
     }
-    estado.textContent = `Registro enviado a Flowable. Caso ${resultado.casoId}. El guardado queda pendiente del Worker 1.`;
+    estado.textContent = "Tu consulta fue recibida correctamente. Gracias por comunicarte con Peluditos Pet Chile.";
     setTimeout(cargarClientes, 2500);
   } catch (error) {
     estado.textContent = error.message || "No se pudo conectar con el servicio.";
@@ -117,6 +122,7 @@ botonEnviar.addEventListener("click", async () => {
     botonLimpiar.disabled = false;
   }
 });
+}
 
 if (formSeguimiento) {
   formSeguimiento.addEventListener("submit", async (evento) => {
@@ -128,7 +134,7 @@ if (formSeguimiento) {
     const clienteObservaciones = inputObsSeguimiento.value.trim();
 
     botonSeguimiento.disabled = true;
-    estadoSeguimiento.textContent = "Actualizando seguimiento en Flowable...";
+    estadoSeguimiento.textContent = "Guardando el resultado del seguimiento...";
 
     try {
       const respuesta = await fetch(`/api/consultas/${encodeURIComponent(casoId)}/seguimiento`, {
@@ -142,7 +148,7 @@ if (formSeguimiento) {
       const resultado = await respuesta.json();
       if (!respuesta.ok) throw new Error(resultado.mensaje || "No se pudo avanzar el seguimiento.");
 
-      estadoSeguimiento.textContent = `${resultado.mensaje} (${resultado.clienteEstadoCompra}). Ejecuta el Worker 2 para reflejar el cambio en SQLite.`;
+      estadoSeguimiento.textContent = "El resultado del seguimiento fue registrado correctamente. El estado del cliente se actualizará en el sistema.";
       setTimeout(cargarClientes, 2500);
     } catch (error) {
       estadoSeguimiento.textContent = error.message || "No se pudo conectar con el servicio.";
@@ -154,7 +160,7 @@ if (formSeguimiento) {
 
 async function cargarClientes() {
   if (!contenedorClientes) return;
-  contenedorClientes.textContent = "Cargando clientes desde SQLite...";
+  contenedorClientes.textContent = "Cargando clientes registrados...";
   try {
     const respuesta = await fetch("/api/clientes");
     if (!respuesta.ok) throw new Error("No se pudo obtener la lista de clientes.");
@@ -213,4 +219,6 @@ if (botonCargarClientes) {
   cargarClientes();
 }
 
-botonRevisar.disabled = false;
+if (botonRevisar) {
+  botonRevisar.disabled = false;
+}

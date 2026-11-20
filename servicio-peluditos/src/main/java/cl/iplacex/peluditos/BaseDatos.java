@@ -14,7 +14,7 @@ import java.util.Map;
 public class BaseDatos {
 
     private static final String DB_URL = "jdbc:sqlite:" +
-        System.getenv().getOrDefault("PELU_DB_PATH", "peluditos.db");
+            System.getenv().getOrDefault("PELU_DB_PATH", "peluditos.db");
 
     public static Connection conectar() throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL);
@@ -26,57 +26,57 @@ public class BaseDatos {
 
     public static void inicializar() {
         try (Connection conn = conectar();
-             Statement stmt = conn.createStatement()) {
+                Statement stmt = conn.createStatement()) {
 
             // 1. TABLA_CLIENTE
             stmt.execute("""
-                CREATE TABLE IF NOT EXISTS TABLA_CLIENTE (
-                    CLIENTE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    CLIENTE_NOMBRE TEXT NOT NULL,
-                    CLIENTE_TELEFONO TEXT NOT NULL,
-                    CLIENTE_CORREO TEXT,
-                    CLIENTE_CANAL_CONTACTO TEXT NOT NULL,
-                    CLIENTE_FECHA_CONSULTA TEXT NOT NULL,
-                    CLIENTE_CONSULTA_REALIZADA TEXT NOT NULL,
-                    CLIENTE_ESTADO_COMPRA TEXT NOT NULL,
-                    CLIENTE_AUTORIZA INTEGER NOT NULL,
-                    CLIENTE_OBSERVACIONES TEXT
-                );
-            """);
+                        CREATE TABLE IF NOT EXISTS TABLA_CLIENTE (
+                            CLIENTE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                            CLIENTE_NOMBRE TEXT NOT NULL,
+                            CLIENTE_TELEFONO TEXT NOT NULL,
+                            CLIENTE_CORREO TEXT,
+                            CLIENTE_CANAL_CONTACTO TEXT NOT NULL,
+                            CLIENTE_FECHA_CONSULTA TEXT NOT NULL,
+                            CLIENTE_CONSULTA_REALIZADA TEXT NOT NULL,
+                            CLIENTE_ESTADO_COMPRA TEXT NOT NULL,
+                            CLIENTE_AUTORIZA INTEGER NOT NULL,
+                            CLIENTE_OBSERVACIONES TEXT
+                        );
+                    """);
 
             // 2. TABLA_TIPO_MASCOTA
             stmt.execute("""
-                CREATE TABLE IF NOT EXISTS TABLA_TIPO_MASCOTA (
-                    MASCOTA_TIPO_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    MASCOTA_ESPECIE TEXT NOT NULL,
-                    MASCOTA_TAMANO TEXT NOT NULL
-                );
-            """);
+                        CREATE TABLE IF NOT EXISTS TABLA_TIPO_MASCOTA (
+                            MASCOTA_TIPO_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                            MASCOTA_ESPECIE TEXT NOT NULL,
+                            MASCOTA_TAMANO TEXT NOT NULL
+                        );
+                    """);
 
             // 3. TABLA_MASCOTA
             stmt.execute("""
-                CREATE TABLE IF NOT EXISTS TABLA_MASCOTA (
-                    MASCOTA_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    CLIENTE_ID INTEGER NOT NULL,
-                    MASCOTA_TIPO_ID INTEGER NOT NULL,
-                    MASCOTA_NOMBRE TEXT NOT NULL,
-                    MASCOTA_CUMPLEANO TEXT,
-                    MASCOTA_OBSERVACIONES TEXT,
-                    FOREIGN KEY (CLIENTE_ID) REFERENCES TABLA_CLIENTE(CLIENTE_ID),
-                    FOREIGN KEY (MASCOTA_TIPO_ID) REFERENCES TABLA_TIPO_MASCOTA(MASCOTA_TIPO_ID)
-                );
-            """);
+                        CREATE TABLE IF NOT EXISTS TABLA_MASCOTA (
+                            MASCOTA_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                            CLIENTE_ID INTEGER NOT NULL,
+                            MASCOTA_TIPO_ID INTEGER NOT NULL,
+                            MASCOTA_NOMBRE TEXT NOT NULL,
+                            MASCOTA_CUMPLEANO TEXT,
+                            MASCOTA_OBSERVACIONES TEXT,
+                            FOREIGN KEY (CLIENTE_ID) REFERENCES TABLA_CLIENTE(CLIENTE_ID),
+                            FOREIGN KEY (MASCOTA_TIPO_ID) REFERENCES TABLA_TIPO_MASCOTA(MASCOTA_TIPO_ID)
+                        );
+                    """);
 
             // 4. TABLA_PRODUCTO
             stmt.execute("""
-                CREATE TABLE IF NOT EXISTS TABLA_PRODUCTO (
-                    PRODUCTO_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    PRODUCTO_NOMBRE TEXT NOT NULL,
-                    PRODUCTO_TIPO TEXT NOT NULL,
-                    MASCOTA_TIPO_ID INTEGER NOT NULL,
-                    FOREIGN KEY (MASCOTA_TIPO_ID) REFERENCES TABLA_TIPO_MASCOTA(MASCOTA_TIPO_ID)
-                );
-            """);
+                        CREATE TABLE IF NOT EXISTS TABLA_PRODUCTO (
+                            PRODUCTO_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                            PRODUCTO_NOMBRE TEXT NOT NULL,
+                            PRODUCTO_TIPO TEXT NOT NULL,
+                            MASCOTA_TIPO_ID INTEGER NOT NULL,
+                            FOREIGN KEY (MASCOTA_TIPO_ID) REFERENCES TABLA_TIPO_MASCOTA(MASCOTA_TIPO_ID)
+                        );
+                    """);
 
             cargarDatosBaseSiVacio(conn);
             System.out.println("Base de datos SQLite inicializada correctamente (peluditos.db).");
@@ -88,33 +88,43 @@ public class BaseDatos {
 
     private static void cargarDatosBaseSiVacio(Connection conn) throws SQLException {
         try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM TABLA_TIPO_MASCOTA")) {
+                ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM TABLA_TIPO_MASCOTA")) {
             if (rs.next() && rs.getInt(1) == 0) {
-                stmt.execute("INSERT INTO TABLA_TIPO_MASCOTA (MASCOTA_ESPECIE, MASCOTA_TAMANO) VALUES ('Perro', 'Pequeno');");
-                stmt.execute("INSERT INTO TABLA_TIPO_MASCOTA (MASCOTA_ESPECIE, MASCOTA_TAMANO) VALUES ('Perro', 'Mediano');");
-                stmt.execute("INSERT INTO TABLA_TIPO_MASCOTA (MASCOTA_ESPECIE, MASCOTA_TAMANO) VALUES ('Perro', 'Grande');");
-                stmt.execute("INSERT INTO TABLA_TIPO_MASCOTA (MASCOTA_ESPECIE, MASCOTA_TAMANO) VALUES ('Gato', 'Mediano');");
+                stmt.execute(
+                        "INSERT INTO TABLA_TIPO_MASCOTA (MASCOTA_ESPECIE, MASCOTA_TAMANO) VALUES ('Perro', 'Pequeno');");
+                stmt.execute(
+                        "INSERT INTO TABLA_TIPO_MASCOTA (MASCOTA_ESPECIE, MASCOTA_TAMANO) VALUES ('Perro', 'Mediano');");
+                stmt.execute(
+                        "INSERT INTO TABLA_TIPO_MASCOTA (MASCOTA_ESPECIE, MASCOTA_TAMANO) VALUES ('Perro', 'Grande');");
+                stmt.execute(
+                        "INSERT INTO TABLA_TIPO_MASCOTA (MASCOTA_ESPECIE, MASCOTA_TAMANO) VALUES ('Gato', 'Mediano');");
 
-                stmt.execute("INSERT INTO TABLA_PRODUCTO (PRODUCTO_NOMBRE, PRODUCTO_TIPO, MASCOTA_TIPO_ID) VALUES ('Torta Cumpleanos Canina Pollo y Zanahoria', 'Torta', 2);");
-                stmt.execute("INSERT INTO TABLA_PRODUCTO (PRODUCTO_NOMBRE, PRODUCTO_TIPO, MASCOTA_TIPO_ID) VALUES ('Galletas Naturales de Higado', 'Galletas', 1);");
-                stmt.execute("INSERT INTO TABLA_PRODUCTO (PRODUCTO_NOMBRE, PRODUCTO_TIPO, MASCOTA_TIPO_ID) VALUES ('Muffin Felino de Salmon', 'Snack', 4);");
+                stmt.execute(
+                        "INSERT INTO TABLA_PRODUCTO (PRODUCTO_NOMBRE, PRODUCTO_TIPO, MASCOTA_TIPO_ID) VALUES ('Torta Cumpleanos Canina Pollo y Zanahoria', 'Torta', 2);");
+                stmt.execute(
+                        "INSERT INTO TABLA_PRODUCTO (PRODUCTO_NOMBRE, PRODUCTO_TIPO, MASCOTA_TIPO_ID) VALUES ('Galletas Naturales de Higado', 'Galletas', 1);");
+                stmt.execute(
+                        "INSERT INTO TABLA_PRODUCTO (PRODUCTO_NOMBRE, PRODUCTO_TIPO, MASCOTA_TIPO_ID) VALUES ('Muffin Felino de Salmon', 'Snack', 4);");
             }
         }
     }
 
     public static Map<String, Object> guardarClienteYMascota(RegistroClienteRequest req) throws SQLException {
+        if (req == null || req.clienteNombre() == null || req.clienteNombre().isBlank()) {
+            throw new IllegalArgumentException("El nombre del cliente es obligatorio");
+        }
         try (Connection conn = conectar()) {
             conn.setAutoCommit(false);
             try {
                 int clienteId;
                 String sqlCliente = """
-                    INSERT INTO TABLA_CLIENTE (
-                        CLIENTE_NOMBRE, CLIENTE_TELEFONO, CLIENTE_CORREO,
-                        CLIENTE_CANAL_CONTACTO, CLIENTE_FECHA_CONSULTA,
-                        CLIENTE_CONSULTA_REALIZADA, CLIENTE_ESTADO_COMPRA,
-                        CLIENTE_AUTORIZA, CLIENTE_OBSERVACIONES
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+                            INSERT INTO TABLA_CLIENTE (
+                                CLIENTE_NOMBRE, CLIENTE_TELEFONO, CLIENTE_CORREO,
+                                CLIENTE_CANAL_CONTACTO, CLIENTE_FECHA_CONSULTA,
+                                CLIENTE_CONSULTA_REALIZADA, CLIENTE_ESTADO_COMPRA,
+                                CLIENTE_AUTORIZA, CLIENTE_OBSERVACIONES
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        """;
 
                 try (PreparedStatement ps = conn.prepareStatement(sqlCliente, Statement.RETURN_GENERATED_KEYS)) {
                     ps.setString(1, valorPorDefecto(req.clienteNombre(), "Cliente Peluditos"));
@@ -122,7 +132,8 @@ public class BaseDatos {
                     ps.setString(3, req.clienteCorreo());
                     ps.setString(4, valorPorDefecto(req.clienteCanalContacto(), "WhatsApp"));
                     ps.setString(5, valorPorDefecto(req.clienteFechaConsulta(), "2026-11-06"));
-                    ps.setString(6, valorPorDefecto(req.clienteConsultaRealizada(), "Consulta por torta de cumpleanos para mascota"));
+                    ps.setString(6, valorPorDefecto(req.clienteConsultaRealizada(),
+                            "Consulta por torta de cumpleanos para mascota"));
                     ps.setString(7, valorPorDefecto(req.clienteEstadoCompra(), "En seguimiento"));
                     ps.setInt(8, Boolean.TRUE.equals(req.clienteAutoriza()) ? 1 : 0);
                     ps.setString(9, req.clienteObservaciones());
@@ -137,13 +148,14 @@ public class BaseDatos {
                 Integer mascotaId = null;
                 if (req.mascotaNombre() != null && !req.mascotaNombre().isBlank()) {
                     String sqlMascota = """
-                        INSERT INTO TABLA_MASCOTA (
-                            CLIENTE_ID, MASCOTA_TIPO_ID, MASCOTA_NOMBRE,
-                            MASCOTA_CUMPLEANO, MASCOTA_OBSERVACIONES
-                        ) VALUES (?, ?, ?, ?, ?)
-                    """;
+                                INSERT INTO TABLA_MASCOTA (
+                                    CLIENTE_ID, MASCOTA_TIPO_ID, MASCOTA_NOMBRE,
+                                    MASCOTA_CUMPLEANO, MASCOTA_OBSERVACIONES
+                                ) VALUES (?, ?, ?, ?, ?)
+                            """;
                     int tipoId = (req.mascotaTipoId() != null && req.mascotaTipoId() > 0) ? req.mascotaTipoId() : 1;
-                    try (PreparedStatement psMascota = conn.prepareStatement(sqlMascota, Statement.RETURN_GENERATED_KEYS)) {
+                    try (PreparedStatement psMascota = conn.prepareStatement(sqlMascota,
+                            Statement.RETURN_GENERATED_KEYS)) {
                         psMascota.setInt(1, clienteId);
                         psMascota.setInt(2, tipoId);
                         psMascota.setString(3, req.mascotaNombre());
@@ -175,69 +187,69 @@ public class BaseDatos {
     }
 
     public static Map<String, Object> actualizarSeguimiento(
-        int clienteId,
-        boolean compraRealizada,
-        String clienteEstadoCompra,
-        String clienteObservaciones) throws SQLException {
+            int clienteId,
+            boolean compraRealizada,
+            String clienteEstadoCompra,
+            String clienteObservaciones) throws SQLException {
 
-    if (clienteId <= 0) {
-        throw new IllegalArgumentException("El ID del cliente debe ser positivo");
-    }
-
-    String estadoCompra = clienteEstadoCompra;
-
-    if (estadoCompra == null || estadoCompra.isBlank()) {
-        estadoCompra = compraRealizada ? "Compra realizada" : "Sin compra";
-    }
-
-    String sql = """
-        UPDATE TABLA_CLIENTE
-        SET CLIENTE_ESTADO_COMPRA = ?,
-            CLIENTE_OBSERVACIONES = ?
-        WHERE CLIENTE_ID = ?
-    """;
-
-    try (Connection conn = conectar();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-        ps.setString(1, estadoCompra);
-        ps.setString(2, clienteObservaciones);
-        ps.setInt(3, clienteId);
-
-        int filasActualizadas = ps.executeUpdate();
-
-        if (filasActualizadas == 0) {
-            throw new IllegalArgumentException("No existe el cliente con ID " + clienteId);
+        if (clienteId <= 0) {
+            throw new IllegalArgumentException("El ID del cliente debe ser positivo");
         }
+
+        String estadoCompra = clienteEstadoCompra;
+
+        if (estadoCompra == null || estadoCompra.isBlank()) {
+            estadoCompra = compraRealizada ? "Compra realizada" : "Sin compra";
+        }
+
+        String sql = """
+                    UPDATE TABLA_CLIENTE
+                    SET CLIENTE_ESTADO_COMPRA = ?,
+                        CLIENTE_OBSERVACIONES = ?
+                    WHERE CLIENTE_ID = ?
+                """;
+
+        try (Connection conn = conectar();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, estadoCompra);
+            ps.setString(2, clienteObservaciones);
+            ps.setInt(3, clienteId);
+
+            int filasActualizadas = ps.executeUpdate();
+
+            if (filasActualizadas == 0) {
+                throw new IllegalArgumentException("No existe el cliente con ID " + clienteId);
+            }
+        }
+
+        Map<String, Object> resultado = new LinkedHashMap<>();
+        resultado.put("estado", "OK");
+        resultado.put("mensaje", "Resultado del seguimiento comercial actualizado en la base de datos");
+        resultado.put("clienteId", clienteId);
+        resultado.put("clienteEstadoCompra", estadoCompra);
+        resultado.put("compraRealizada", compraRealizada);
+
+        return resultado;
     }
- 
 
-    Map<String, Object> resultado = new LinkedHashMap<>();
-    resultado.put("estado", "OK");
-    resultado.put("mensaje", "Resultado del seguimiento comercial actualizado en la base de datos");
-    resultado.put("clienteId", clienteId);
-    resultado.put("clienteEstadoCompra", estadoCompra);
-    resultado.put("compraRealizada", compraRealizada);
-
-    return resultado;
-}
     public static List<Map<String, Object>> listarClientes() throws SQLException {
         List<Map<String, Object>> lista = new ArrayList<>();
         String sql = """
-            SELECT c.CLIENTE_ID, c.CLIENTE_NOMBRE, c.CLIENTE_TELEFONO, c.CLIENTE_CORREO,
-                   c.CLIENTE_CANAL_CONTACTO, c.CLIENTE_FECHA_CONSULTA, c.CLIENTE_CONSULTA_REALIZADA,
-                   c.CLIENTE_ESTADO_COMPRA, c.CLIENTE_AUTORIZA, c.CLIENTE_OBSERVACIONES,
-                   m.MASCOTA_ID, m.MASCOTA_NOMBRE, m.MASCOTA_CUMPLEANO, m.MASCOTA_OBSERVACIONES,
-                   t.MASCOTA_ESPECIE, t.MASCOTA_TAMANO
-            FROM TABLA_CLIENTE c
-            LEFT JOIN TABLA_MASCOTA m ON c.CLIENTE_ID = m.CLIENTE_ID
-            LEFT JOIN TABLA_TIPO_MASCOTA t ON m.MASCOTA_TIPO_ID = t.MASCOTA_TIPO_ID
-            ORDER BY c.CLIENTE_ID DESC
-        """;
+                    SELECT c.CLIENTE_ID, c.CLIENTE_NOMBRE, c.CLIENTE_TELEFONO, c.CLIENTE_CORREO,
+                           c.CLIENTE_CANAL_CONTACTO, c.CLIENTE_FECHA_CONSULTA, c.CLIENTE_CONSULTA_REALIZADA,
+                           c.CLIENTE_ESTADO_COMPRA, c.CLIENTE_AUTORIZA, c.CLIENTE_OBSERVACIONES,
+                           m.MASCOTA_ID, m.MASCOTA_NOMBRE, m.MASCOTA_CUMPLEANO, m.MASCOTA_OBSERVACIONES,
+                           t.MASCOTA_ESPECIE, t.MASCOTA_TAMANO
+                    FROM TABLA_CLIENTE c
+                    LEFT JOIN TABLA_MASCOTA m ON c.CLIENTE_ID = m.CLIENTE_ID
+                    LEFT JOIN TABLA_TIPO_MASCOTA t ON m.MASCOTA_TIPO_ID = t.MASCOTA_TIPO_ID
+                    ORDER BY c.CLIENTE_ID DESC
+                """;
 
         try (Connection conn = conectar();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 Map<String, Object> fila = new LinkedHashMap<>();
                 fila.put("CLIENTE_ID", rs.getInt("CLIENTE_ID"));
@@ -264,16 +276,16 @@ public class BaseDatos {
     public static List<Map<String, Object>> listarProductos() throws SQLException {
         List<Map<String, Object>> lista = new ArrayList<>();
         String sql = """
-            SELECT p.PRODUCTO_ID, p.PRODUCTO_NOMBRE, p.PRODUCTO_TIPO,
-                   t.MASCOTA_TIPO_ID, t.MASCOTA_ESPECIE, t.MASCOTA_TAMANO
-            FROM TABLA_PRODUCTO p
-            JOIN TABLA_TIPO_MASCOTA t ON p.MASCOTA_TIPO_ID = t.MASCOTA_TIPO_ID
-            ORDER BY p.PRODUCTO_ID ASC
-        """;
+                    SELECT p.PRODUCTO_ID, p.PRODUCTO_NOMBRE, p.PRODUCTO_TIPO,
+                           t.MASCOTA_TIPO_ID, t.MASCOTA_ESPECIE, t.MASCOTA_TAMANO
+                    FROM TABLA_PRODUCTO p
+                    JOIN TABLA_TIPO_MASCOTA t ON p.MASCOTA_TIPO_ID = t.MASCOTA_TIPO_ID
+                    ORDER BY p.PRODUCTO_ID ASC
+                """;
 
         try (Connection conn = conectar();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 Map<String, Object> fila = new LinkedHashMap<>();
                 fila.put("PRODUCTO_ID", rs.getInt("PRODUCTO_ID"));
@@ -305,6 +317,6 @@ public class BaseDatos {
             String mascotaNombre,
             Integer mascotaTipoId,
             String mascotaCumpleano,
-            String mascotaObservaciones
-    ) {}
+            String mascotaObservaciones) {
+    }
 }
