@@ -1,0 +1,50 @@
+---
+title: Arquitectura de la Solución - Peluditos Pet Chile
+---
+flowchart TB
+
+    subgraph WEB["1. Interfaces web"]
+        direction LR
+        CLIENTE["Interfaz del cliente<br/>Registro de consultas"]
+        EMPRENDEDORA["Interfaz de la emprendedora<br/>Clientes y seguimiento comercial"]
+    end
+
+    subgraph SERVICIOS["2. Servicios e integración"]
+        direction LR
+        API["Servicio Java Jakarta REST<br/>Puerto 7072"]
+        FLOWABLE["Flowable OSS 7.2.0<br/>Proceso BPMN TO-BE<br/>Puerto 8080"]
+    end
+
+    subgraph WORKERS["3. Automatización del proceso"]
+        direction LR
+        W1["External Worker 1<br/>Registrar cliente y mascota"]
+        W2["External Worker 2<br/>Actualizar seguimiento"]
+    end
+
+    subgraph DATOS["4. Bases de datos"]
+        direction LR
+        SQLITE[("SQLite<br/>Clientes, mascotas y compras")]
+        H2[("H2<br/>Procesos y tareas de Flowable")]
+    end
+
+    CLIENTE -->|"Enviar consulta"| API
+    EMPRENDEDORA -->|"Consultar y registrar seguimiento"| API
+
+    API <-->|"API REST"| FLOWABLE
+
+    FLOWABLE -->|"Trabajo de registro"| W1
+    FLOWABLE -->|"Trabajo de seguimiento"| W2
+
+    W1 -->|"Registrar datos"| API
+    W2 -->|"Actualizar compra"| API
+
+    API -->|"Guardar y consultar"| SQLITE
+    FLOWABLE -->|"Persistencia del motor"| H2
+
+    style WEB fill:#eff8f5,stroke:#247964
+    style SERVICIOS fill:#edf3fc,stroke:#4679b5
+    style WORKERS fill:#fff7e8,stroke:#c58a36
+    style DATOS fill:#f4f0fa,stroke:#8665aa
+
+
+   
