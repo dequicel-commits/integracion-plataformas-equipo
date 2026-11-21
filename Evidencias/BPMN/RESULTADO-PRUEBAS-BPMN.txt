@@ -1,0 +1,54 @@
+VERIFICACION LOCAL DEL MODELO BPMN - ENTREGA 3
+Fecha: 20 de noviembre de 2026 (America/Santiago)
+
+Modelo: TO-BE-Entrega3-revisado.bpmn
+Nombre: Peluditos Pet Chile - TO-BE Entrega 3
+Clave del proceso: peluditosPetChileTOBE12
+SHA-256 del BPMN: 1bc156d45f3ac83abb6436850d93b3b6787712fda339d03e106f51c1b92c0894
+Codigo del equipo: rama implementacion-jakarta-entrega3
+Revision descargada: e5be816ff96ae213e1e13e29c4b18b79fd141d1d
+Entorno: Flowable OSS 7.2.0 en 127.0.0.1:8080; Jakarta REST en 127.0.0.1:7072.
+SQLite y Flowable utilizaron bases de prueba separadas de las pruebas anteriores.
+Datos: dos clientes y mascotas ficticios.
+
+RESULTADOS
+
+Ruta SI: Compra realizada - CORRECTO
+Caso Flowable: a5fe99a9-e54b-11f1-afe2-0a002700000b
+Cliente SQLite: 1
+Inicio: registro de consulta mediante POST /api/consultas/{referencia} (HTTP 202).
+Worker 1: guardar-cliente-peluditos registro cliente y mascota (HTTP 201) y devolvio clienteId a Flowable.
+Estado inicial: En seguimiento
+Seguimiento: compraRealizada=true; HTTP 200.
+Worker 2: actualizar-seguimiento-peluditos; actividad FormTask_13.
+Actualizacion: PUT /api/clientes/1/seguimiento (HTTP 200, registro del worker).
+Estado final verificado en GET /api/clientes y directamente en SQLite: Compra realizada
+Evento de fin alcanzado: Event_0zovcf7
+Proceso terminado: 2026-11-20T22:34:17.376000-03:00
+Se verifico que la actividad de la rama contraria no se ejecuto.
+
+Ruta NO: Sin compra - CORRECTO
+Caso Flowable: aad99518-e54b-11f1-afe2-0a002700000b
+Cliente SQLite: 2
+Inicio: registro de consulta mediante POST /api/consultas/{referencia} (HTTP 202).
+Worker 1: guardar-cliente-peluditos registro cliente y mascota (HTTP 201) y devolvio clienteId a Flowable.
+Estado inicial: En seguimiento
+Seguimiento: compraRealizada=false; HTTP 200.
+Worker 2: actualizar-seguimiento-peluditos; actividad FormTask_11.
+Actualizacion: PUT /api/clientes/2/seguimiento (HTTP 200, registro del worker).
+Estado final verificado en GET /api/clientes y directamente en SQLite: Sin compra
+Evento de fin alcanzado: EndNoneEvent_19
+Proceso terminado: 2026-11-20T22:34:21.258000-03:00
+Se verifico que la actividad de la rama contraria no se ejecuto.
+
+ALCANCE Y PENDIENTES
+Se verificaron registro, tareas de atencion y seguimiento, compuerta, ambos workers, persistencia y finalizacion de las dos rutas.
+La prueba se ejecuto por las APIs locales; no constituye una prueba manual de la interfaz web ni un informe QA completo.
+El flujo de campanas queda planificado para Entrega 4; no se ejecuto en estas pruebas.
+Estos resultados no publican el modelo en Flowable Cloud ni modifican GitHub.
+Pendiente de entrega: incorporar el BPMN revisado, imagen y evidencias a la version acordada del repositorio; grabar la explicacion del modelado.
+
+ARCHIVOS DE RESPALDO
+resultados-rutas.json: respuestas y actividades historicas de ambos procesos.
+prueba-rutas.txt: salida de la comprobacion automatizada.
+worker.out.log: respuestas HTTP 201 y 200 y trabajos completados.

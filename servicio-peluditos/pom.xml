@@ -12,6 +12,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
+    <jersey.version>3.1.11</jersey.version>
   </properties>
 
   <dependencyManagement>
@@ -28,10 +29,34 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-server</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-grizzly2-http</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+
+    <dependency>
+     <groupId>org.glassfish.jersey.media</groupId>
+     <artifactId>jersey-media-json-jackson</artifactId>
+     <version>${jersey.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>io.javalin</groupId>
       <artifactId>javalin</artifactId>
       <version>6.7.0</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+      <version>${jersey.version}</version>
+   </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
