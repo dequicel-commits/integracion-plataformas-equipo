@@ -21,6 +21,8 @@ Centralizar el análisis de requisitos, el diseño de datos y la guía de ejecuc
   - [Análisis de Requisitos — Entrega 3](Analisis/ANALISIS-REQUISITOS-ENTREGA3.md)
   - [Matriz de Trazabilidad de Requisitos](Analisis/MATRIZ-TRAZABILIDAD-ENTREGA3.md)
   - [Diagrama Entidad-Relación (SQLite)](Analisis/DIAGRAMA-ENTIDAD-RELACION.MD)
+- **[Implementación del sistema — Entrega 3](IMPLEMENTACION-ENTREGA3.md)**: detalle de las interfaces web, servicio Jakarta REST, External Workers y almacenamiento.
+- **[Informe de Pruebas QA — Entrega 3](Informe-Pruebas-QA-Entrega3.md)**: registro completo de verificaciones QA, manejo de errores e integración.
 - **[Guía de Ejecución y Pruebas](GUIA-EJECUCION.md)**: pasos para levantar Flowable OSS, el servidor Jakarta REST (`:7072`), la interfaz web y los 2 External Workers.
 
 ## Organización del monorepo

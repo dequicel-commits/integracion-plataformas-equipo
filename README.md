@@ -48,10 +48,12 @@ integracion-plataformas-equipo/
   - [Análisis de requisitos — Entrega 3](Documentacion/Analisis/ANALISIS-REQUISITOS-ENTREGA3.md).
   - [Matriz de trazabilidad de requisitos](Documentacion/Analisis/MATRIZ-TRAZABILIDAD-ENTREGA3.md).
   - [Diagrama Entidad-Relación y tablas SQLite](Documentacion/Analisis/DIAGRAMA-ENTIDAD-RELACION.MD).
-- **Guía de ejecución y Evidencias:**
+- **Guía de ejecución, Implementación y Evidencias QA:**
+  - [Documentación de implementación — Entrega 3](Documentacion/IMPLEMENTACION-ENTREGA3.md).
+  - [Informe de pruebas QA / Tester — Entrega 3](Documentacion/Informe-Pruebas-QA-Entrega3.md).
   - [Guía paso a paso de ejecución y pruebas](Documentacion/GUIA-EJECUCION.md).
   - [Evidencias de pruebas de rutas BPMN](Evidencias/BPMN/RESULTADO-PRUEBAS-BPMN.txt).
-  - [Informe de pruebas QA / Tester](Evidencias/QA/Informe-Pruebas-QA.md).
+  - [Capturas de implementación (Entrega 3)](Evidencias/Implementacion/Entrega-3/) y [capturas QA (Entrega 3)](Evidencias/QA/Entrega-3/).
 - **Coordinación del equipo:**
   - [Actas de coordinación](Actas/).
 
