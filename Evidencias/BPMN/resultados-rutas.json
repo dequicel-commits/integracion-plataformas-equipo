@@ -1,0 +1,284 @@
+[
+  {
+    "ruta": "SI",
+    "compraRealizada": true,
+    "casoId": "a5fe99a9-e54b-11f1-afe2-0a002700000b",
+    "clienteId": 1,
+    "estadoInicial": "En seguimiento",
+    "estadoFinal": "Compra realizada",
+    "observaciones": "Validación BPMN: Compra realizada",
+    "actividadWorker2": "FormTask_13",
+    "eventoFinal": "Event_0zovcf7",
+    "inicio": "2026-11-21T01:34:09.543Z",
+    "fin": "2026-11-21T01:34:17.376Z",
+    "registroHttp": 202,
+    "seguimientoHttp": 200,
+    "clienteApi": {
+      "CLIENTE_ID": 1,
+      "CLIENTE_NOMBRE": "Prueba BPMN - Compra realizada",
+      "CLIENTE_TELEFONO": "+56900000001",
+      "CLIENTE_CORREO": "prueba.bpmn@example.com",
+      "CLIENTE_CANAL_CONTACTO": "WhatsApp",
+      "CLIENTE_FECHA_CONSULTA": "2026-11-20",
+      "CLIENTE_CONSULTA_REALIZADA": "Consulta de prueba por una torta para perro pequeño.",
+      "CLIENTE_ESTADO_COMPRA": "Compra realizada",
+      "CLIENTE_AUTORIZA": true,
+      "CLIENTE_OBSERVACIONES": "Validación BPMN: Compra realizada",
+      "FLOWABLE_CASO_ID": "a5fe99a9-e54b-11f1-afe2-0a002700000b",
+      "MASCOTA_ID": 1,
+      "MASCOTA_NOMBRE": "Luna prueba",
+      "MASCOTA_CUMPLEANO": "2024-06-15",
+      "MASCOTA_ESPECIE": "Perro",
+      "MASCOTA_TAMANO": "Pequeno"
+    },
+    "actividades": [
+      {
+        "activityId": "startnoneevent1",
+        "activityName": "Cliente realiza una consulta",
+        "activityType": "startEvent",
+        "startTime": "2026-11-21T01:34:09.546Z",
+        "endTime": "2026-11-21T01:34:09.548Z"
+      },
+      {
+        "activityId": "FormTask_1",
+        "activityName": "Registrar datos del potencial cliente",
+        "activityType": "userTask",
+        "startTime": "2026-11-21T01:34:09.550Z",
+        "endTime": "2026-11-21T01:34:09.636Z"
+      },
+      {
+        "activityId": "SequenceFlow_2",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:09.550Z",
+        "endTime": "2026-11-21T01:34:09.550Z"
+      },
+      {
+        "activityId": "Activity_10hj4gn",
+        "activityName": "Guardar datos del potencial cliente",
+        "activityType": "externalWorkerServiceTask",
+        "startTime": "2026-11-21T01:34:09.636Z",
+        "endTime": "2026-11-21T01:34:10.811Z"
+      },
+      {
+        "activityId": "Flow_0hnjddx",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:09.636Z",
+        "endTime": "2026-11-21T01:34:09.636Z"
+      },
+      {
+        "activityId": "Flow_1usezc4",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:10.812Z",
+        "endTime": "2026-11-21T01:34:10.812Z"
+      },
+      {
+        "activityId": "FormTask_3",
+        "activityName": "Atender y responder consulta del cliente",
+        "activityType": "userTask",
+        "startTime": "2026-11-21T01:34:10.812Z",
+        "endTime": "2026-11-21T01:34:11.355Z"
+      },
+      {
+        "activityId": "SequenceFlow_6",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:11.355Z",
+        "endTime": "2026-11-21T01:34:11.355Z"
+      },
+      {
+        "activityId": "FormTask_5",
+        "activityName": "Realizar seguimiento comercial",
+        "activityType": "userTask",
+        "startTime": "2026-11-21T01:34:11.356Z",
+        "endTime": "2026-11-21T01:34:11.387Z"
+      },
+      {
+        "activityId": "Exclusive_Databased_Gateway_7",
+        "activityName": "¿La compra fue realizada ?",
+        "activityType": "exclusiveGateway",
+        "startTime": "2026-11-21T01:34:11.387Z",
+        "endTime": "2026-11-21T01:34:11.393Z"
+      },
+      {
+        "activityId": "SequenceFlow_8",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:11.387Z",
+        "endTime": "2026-11-21T01:34:11.387Z"
+      },
+      {
+        "activityId": "FormTask_13",
+        "activityName": "Actualizar estado a Compra realizada",
+        "activityType": "externalWorkerServiceTask",
+        "startTime": "2026-11-21T01:34:11.393Z",
+        "endTime": "2026-11-21T01:34:12.965Z"
+      },
+      {
+        "activityId": "SequenceFlow_14",
+        "activityName": "SI",
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:11.393Z",
+        "endTime": "2026-11-21T01:34:11.393Z"
+      },
+      {
+        "activityId": "Event_0zovcf7",
+        "activityName": "Venta concretada",
+        "activityType": "endEvent",
+        "startTime": "2026-11-21T01:34:12.965Z",
+        "endTime": "2026-11-21T01:34:12.966Z"
+      },
+      {
+        "activityId": "Flow_0fpo986",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:12.965Z",
+        "endTime": "2026-11-21T01:34:12.965Z"
+      }
+    ],
+    "resultado": "CORRECTO"
+  },
+  {
+    "ruta": "NO",
+    "compraRealizada": false,
+    "casoId": "aad99518-e54b-11f1-afe2-0a002700000b",
+    "clienteId": 2,
+    "estadoInicial": "En seguimiento",
+    "estadoFinal": "Sin compra",
+    "observaciones": "Validación BPMN: Sin compra",
+    "actividadWorker2": "FormTask_11",
+    "eventoFinal": "EndNoneEvent_19",
+    "inicio": "2026-11-21T01:34:17.689Z",
+    "fin": "2026-11-21T01:34:21.258Z",
+    "registroHttp": 202,
+    "seguimientoHttp": 200,
+    "clienteApi": {
+      "CLIENTE_ID": 2,
+      "CLIENTE_NOMBRE": "Prueba BPMN - Sin compra",
+      "CLIENTE_TELEFONO": "+56900000002",
+      "CLIENTE_CORREO": "prueba.bpmn@example.com",
+      "CLIENTE_CANAL_CONTACTO": "WhatsApp",
+      "CLIENTE_FECHA_CONSULTA": "2026-11-20",
+      "CLIENTE_CONSULTA_REALIZADA": "Consulta de prueba por una torta para perro pequeño.",
+      "CLIENTE_ESTADO_COMPRA": "Sin compra",
+      "CLIENTE_AUTORIZA": true,
+      "CLIENTE_OBSERVACIONES": "Validación BPMN: Sin compra",
+      "FLOWABLE_CASO_ID": "aad99518-e54b-11f1-afe2-0a002700000b",
+      "MASCOTA_ID": 2,
+      "MASCOTA_NOMBRE": "Sol prueba",
+      "MASCOTA_CUMPLEANO": "2024-06-15",
+      "MASCOTA_ESPECIE": "Perro",
+      "MASCOTA_TAMANO": "Pequeno"
+    },
+    "actividades": [
+      {
+        "activityId": "FormTask_1",
+        "activityName": "Registrar datos del potencial cliente",
+        "activityType": "userTask",
+        "startTime": "2026-11-21T01:34:17.689Z",
+        "endTime": "2026-11-21T01:34:17.712Z"
+      },
+      {
+        "activityId": "SequenceFlow_2",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:17.689Z",
+        "endTime": "2026-11-21T01:34:17.689Z"
+      },
+      {
+        "activityId": "startnoneevent1",
+        "activityName": "Cliente realiza una consulta",
+        "activityType": "startEvent",
+        "startTime": "2026-11-21T01:34:17.689Z",
+        "endTime": "2026-11-21T01:34:17.689Z"
+      },
+      {
+        "activityId": "Activity_10hj4gn",
+        "activityName": "Guardar datos del potencial cliente",
+        "activityType": "externalWorkerServiceTask",
+        "startTime": "2026-11-21T01:34:17.712Z",
+        "endTime": "2026-11-21T01:34:19.136Z"
+      },
+      {
+        "activityId": "Flow_0hnjddx",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:17.712Z",
+        "endTime": "2026-11-21T01:34:17.712Z"
+      },
+      {
+        "activityId": "Flow_1usezc4",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:19.136Z",
+        "endTime": "2026-11-21T01:34:19.136Z"
+      },
+      {
+        "activityId": "FormTask_3",
+        "activityName": "Atender y responder consulta del cliente",
+        "activityType": "userTask",
+        "startTime": "2026-11-21T01:34:19.136Z",
+        "endTime": "2026-11-21T01:34:19.372Z"
+      },
+      {
+        "activityId": "SequenceFlow_6",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:19.372Z",
+        "endTime": "2026-11-21T01:34:19.372Z"
+      },
+      {
+        "activityId": "FormTask_5",
+        "activityName": "Realizar seguimiento comercial",
+        "activityType": "userTask",
+        "startTime": "2026-11-21T01:34:19.373Z",
+        "endTime": "2026-11-21T01:34:19.389Z"
+      },
+      {
+        "activityId": "Exclusive_Databased_Gateway_7",
+        "activityName": "¿La compra fue realizada ?",
+        "activityType": "exclusiveGateway",
+        "startTime": "2026-11-21T01:34:19.389Z",
+        "endTime": "2026-11-21T01:34:19.389Z"
+      },
+      {
+        "activityId": "FormTask_11",
+        "activityName": "Actualizar estado a Sin compra",
+        "activityType": "externalWorkerServiceTask",
+        "startTime": "2026-11-21T01:34:19.389Z",
+        "endTime": "2026-11-21T01:34:21.255Z"
+      },
+      {
+        "activityId": "SequenceFlow_12",
+        "activityName": "NO",
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:19.389Z",
+        "endTime": "2026-11-21T01:34:19.389Z"
+      },
+      {
+        "activityId": "SequenceFlow_8",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:19.389Z",
+        "endTime": "2026-11-21T01:34:19.389Z"
+      },
+      {
+        "activityId": "SequenceFlow_20",
+        "activityName": null,
+        "activityType": "sequenceFlow",
+        "startTime": "2026-11-21T01:34:21.255Z",
+        "endTime": "2026-11-21T01:34:21.255Z"
+      },
+      {
+        "activityId": "EndNoneEvent_19",
+        "activityName": "Venta no concretada de potencial cliente",
+        "activityType": "endEvent",
+        "startTime": "2026-11-21T01:34:21.256Z",
+        "endTime": "2026-11-21T01:34:21.256Z"
+      }
+    ],
+    "resultado": "CORRECTO"
+  }
+]

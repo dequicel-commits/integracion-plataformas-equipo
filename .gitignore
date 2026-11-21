@@ -1,0 +1,6 @@
+﻿target/
+*.class
+*.db
+*.db-journal
+*.db-shm
+*.db-wal

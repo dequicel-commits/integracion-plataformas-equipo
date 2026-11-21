@@ -1,93 +1,87 @@
 # Peluditos Pet Chile - Integración de Plataformas
 
-Proyecto del curso Integración de Plataformas de IPLACEX. Estamos trabajando en una solución para ordenar las consultas de Peluditos Pet Chile, guardar los datos de los potenciales clientes y sus mascotas, registrar el seguimiento comercial y conocer su resultado. Más adelante también se consideran las campañas promocionales en fechas importantes y las oportunidades de recompra.
+Proyecto del curso Integración de Plataformas de IPLACEX. Desarrollamos una solución basada en **BPMN (Flowable Engine OSS)**, **Web Services en Java con Jakarta REST (JAX-RS)**, **External Workers**, **persistencia relacional en SQLite** y una **interfaz web propia** para gestionar el registro de potenciales clientes, sus mascotas y el seguimiento comercial de Peluditos Pet Chile.
 
 **Profesor:** Santiago Neira.  
-**Primera entrega:** jueves 29 de octubre de 2026.  
-**Segunda entrega:** noviembre de 2026.  
-**Actualizado:** 9 de noviembre de 2026.
+**Grupo:** 3.  
+**Etapa actual:** Entrega 3 (23 de noviembre de 2026).  
+**Versiones anteriores en Git Tags:** `entrega-1`, `entrega-2`.
 
-## Integrantes y roles
+## Integrantes y roles (Entrega 3)
 
-| Integrante | Trabajo en Entrega 1 | Trabajo en Entrega 2 |
+| Integrante | Rol en Entrega 3 | Trabajo principal |
 | --- | --- | --- |
-| Felipe Octavio Quicel Soto | Análisis del proceso y organización del repositorio. | Implementación de la interfaz web local e integración del registro con Flowable REST. |
-| Elvis Brayan Gutiérrez Bernal | Modelos BPMN AS-IS y TO-BE. | Pruebas QA / Tester, validación del flujo BPMN e informe de pruebas. |
-| Geraldine Andrea González Acuña | Implementación en Flowable e integración con el servicio REST Java y el worker. | Actualización del modelo BPMN TO-BE, análisis de requisitos y evidencias en Flowable. |
-| Lautaro Nelson Salinas Alvear | Pruebas, registro de problemas y propuesta de arquitectura. | Desarrollo del servicio REST con persistencia en SQLite, External Worker, modelo de datos y arquitectura. |
+| Elvis Brayan Gutiérrez Bernal | Analista | Análisis de requisitos funcionales/no funcionales y matriz de trazabilidad de la Entrega 3. |
+| Felipe Octavio Quicel Soto | Modelador BPMN | Actualización del proceso BPMN TO-BE ejecutable en Flowable OSS, imagen del modelo y validación de ambas rutas. |
+| Geraldine Andrea González Acuña | Implementadora y QA/Tester | Migración de servicios web a Jakarta REST (`:7072`) con SQLite, ampliación de la interfaz web, pruebas QA y actas. |
+| Lautaro Nelson Salinas Alvear | Integrador | Integración de los 2 External Workers con Flowable OSS y Jakarta REST, cierre del recorrido de seguimiento y organización del monorepo. |
 
-Nos coordinamos por WhatsApp y dejamos los avances y compromisos en las actas. Los roles rotan entre entregas según las necesidades del proyecto.
+## Estructura del monorepo
 
-## Qué queremos resolver
+El repositorio mantiene una única versión vigente por componente (el historial de entregas previas está etiquetado con los tags `entrega-1` y `entrega-2`):
 
-El emprendimiento recibe consultas por distintos canales digitales (WhatsApp, Instagram, Facebook y TikTok) y no cuenta con un mecanismo formal de registro y seguimiento. Queremos ordenar los datos de los interesados y sus mascotas, las acciones realizadas y el resultado de cada consulta.
+```text
+integracion-plataformas-equipo/
+├── README.md
+├── Actas/                         # Actas de reuniones y acuerdos del equipo
+├── Arquitectura/                  # Diagrama de arquitectura (.mmd y .png)
+├── BPMN/                          # Modelos AS-IS, TO-BE ejecutable (.bpmn20.xml) e imagen .png
+├── interfaz-peluditos/            # Aplicación web propia (HTML, CSS y JS)
+├── servicio-peluditos/            # Web Services con Jakarta REST (Jersey/Grizzly :7072) y SQLite
+├── external-worker-peluditos/     # External Workers Java (guardar-cliente y actualizar-seguimiento)
+├── Documentacion/
+│   ├── Analisis/                  # Requisitos, Matriz de Trazabilidad y Modelo Entidad-Relación
+│   └── GUIA-EJECUCION.md          # Instrucciones paso a paso para levantar y probar la solución
+├── Evidencias/
+│   ├── BPMN/                      # Resultados y capturas de ejecución de las rutas SI y NO
+│   ├── Implementacion/            # Capturas de funcionamiento de la implementación
+│   └── QA/                        # Informe de pruebas QA/Tester y evidencias
+└── Videos/                        # Enlaces a los videos de presentación (Emprendedora y Técnico)
+```
 
-En la primera entrega construimos un prototipo inicial que demostró la conexión entre Flowable y el servicio Java. En esta **segunda entrega** incorporamos el guardado automático de potenciales clientes y sus mascotas en una base de datos relacional (**SQLite**), un formulario web local conectado a Flowable y las pruebas de integración completas. La activación del flujo de campañas y cumpleaños queda planificada para la Entrega 3.
+## Cómo revisar la documentación y artefactos
 
-## Cómo revisar los archivos
+- **Arquitectura y Modelos:**
+  - [Diagrama de arquitectura de la solución](Arquitectura/README.md).
+  - [Modelos BPMN (AS-IS, TO-BE ejecutable e imagen)](BPMN/README.md).
+- **Análisis y Base de Datos:**
+  - [Análisis de requisitos — Entrega 3](Documentacion/Analisis/ANALISIS-REQUISITOS-ENTREGA3.md).
+  - [Matriz de trazabilidad de requisitos](Documentacion/Analisis/MATRIZ-TRAZABILIDAD-ENTREGA3.md).
+  - [Diagrama Entidad-Relación y tablas SQLite](Documentacion/Analisis/DIAGRAMA-ENTIDAD-RELACION.MD).
+- **Guía de ejecución, Implementación y Evidencias QA:**
+  - [Documentación de implementación — Entrega 3](Documentacion/IMPLEMENTACION-ENTREGA3.md).
+  - [Informe de pruebas QA / Tester — Entrega 3](Documentacion/Informe-Pruebas-QA-Entrega3.md).
+  - [Guía paso a paso de ejecución y pruebas](Documentacion/GUIA-EJECUCION.md).
+  - [Evidencias de pruebas de rutas BPMN](Evidencias/BPMN/RESULTADO-PRUEBAS-BPMN.txt).
+  - [Capturas de implementación (Entrega 3)](Evidencias/Implementacion/Entrega-3/) y [capturas QA (Entrega 3)](Evidencias/QA/Entrega-3/).
+- **Coordinación del equipo:**
+  - [Actas de coordinación](Actas/).
 
-### General, actas y modelos BPMN
-- [Análisis del proceso y registro del equipo](<analisis y actas entrega.md>).
-- [Modelos BPMN (AS-IS, TO-BE y TO-BE Entrega 2)](BPMN/README.md).
-- Actas de coordinación:
-  - [Acta del 16 de octubre](Actas/Acta-2026-10-16.md).
-  - [Acta del 20 de octubre](Actas/Acta-2026-10-20.md).
-  - [Acta del 21 de octubre](Actas/Acta-2026-10-21.md).
-  - [Acta del 24 de octubre](Actas/Acta-2026-10-24.md).
-  - [Acta del 5 de noviembre (Entrega 2)](Actas/Acta-2026-11-05.md).
+## Catálogo de Web Services (Jakarta REST — `servicio-peluditos` `:7072`)
 
-### Entrega 2 (Actual)
-- [Análisis de requisitos — Entrega 2](Entrega-2/Analisis/ANALISIS-REQUISITOS-ENTREGA2.md).
-- [Diagrama Entidad-Relación y tablas de la base de datos](Entrega-2/Analisis/DIAGRAMA-ENTIDAD-RELACION.md).
-- [Diagrama de arquitectura — Entrega 2](Entrega-2/Arquitectura/README.md).
-- [Guía para el tester y pasos de ejecución — Entrega 2](Entrega-2/GUIA-PARA-TESTER.md).
-- [Informe de pruebas QA / Tester](Entrega-2/QA-Tester/Informe-Pruebas-QA.md) y [evidencias QA](Entrega-2/QA-Tester/Evidencias/).
-- [Evidencias de validación BPMN](Entrega-2/Evidencias/BPMN/) y [evidencias de implementación](Entrega-2/Evidencias/Evidencias/Implementacion/).
-- [Video para la emprendedora — Entrega 2](Videos/Entrega-2/video-emprendedora.md).
+| Método y Ruta | Recurso Jakarta REST | Propósito | Entrada / Salida | Actividad BPMN / Consumidor |
+| --- | --- | --- | --- | --- |
+| `POST /api/consultas/{referencia}` | `ConsultasResource` | Inicia instancia `peluditosPetChileTOBE12` en Flowable OSS y completa `FormTask_1`. | JSON con datos del formulario web $\rightarrow$ `202 Accepted` (`{"casoId": "..."}`) | Interfaz web (`/interfaz/index.html`) |
+| `POST /api/consultas/{casoId}/seguimiento` | `ConsultasResource` | Completa en Flowable OSS la atención (`FormTask_3`) y el seguimiento (`FormTask_5`) con la decisión de compra. | `{"compraRealizada": true/false, "clienteObservaciones": "..."}` $\rightarrow$ `200 OK` | Interfaz web (`/interfaz/seguimiento.html`) |
+| `POST /api/clientes` | `ClientesResource` | Persiste al potencial cliente y su mascota en `TABLA_CLIENTE` y `TABLA_MASCOTA` (SQLite). | JSON del cliente y mascota $\rightarrow$ `201 Created` (`{"estado":"OK","clienteId":...,"mascotaId":...}`) | **External Worker 1** (`topic: guardar-cliente-peluditos`) |
+| `PUT /api/clientes/{id}/seguimiento` | `ClientesResource` | Actualiza en `TABLA_CLIENTE` el estado final (`"Compra realizada"` o `"Sin compra"`) y observaciones. | `{"compraRealizada": true/false, "clienteEstadoCompra": "...", "clienteObservaciones": "..."}` $\rightarrow$ `200 OK` | **External Worker 2** (`topic: actualizar-seguimiento-peluditos`) |
+| `GET /api/clientes` | `ClientesResource` | Lista todos los clientes y mascotas almacenados en SQLite (`peluditos.db`). | `200 OK` — Arreglo JSON de clientes y mascotas | Interfaz web (`/interfaz/clientes.html`) |
+| `GET /api/seguimiento` | `EstadoResource` | Verifica la disponibilidad del servidor Jakarta REST. | `200 OK` — `{"estado":"OK","mensaje":"..."}` | Verificación de estado / QA |
 
-### Entrega 1 (Histórico)
-- [Descripción de la implementación — Entrega 1](Entrega-1/README.md).
-- [Documentación técnica — Entrega 1](Entrega-1/DOCUMENTACION-TECNICA.md).
-- [Guía para el tester — Entrega 1](Entrega-1/GUIA-PARA-TESTER.md).
-- [Diagrama de arquitectura inicial — Entrega 1](arquitectura-demo.md).
-- [Problemas y ajustes encontrados en la Entrega 1](problemas-prueba1.md).
-- [Videos de la Entrega 1](Videos/Entrega-1/).
+## Ejecución rápida del recorrido integrado
 
-## Qué tenemos en la Entrega 2
-
-| Parte | Estado |
-| --- | --- |
-| Análisis y modelo de datos | Requisitos funcionales actualizados y diseño de base de datos relacional con 4 tablas (`TABLA_CLIENTE`, `TABLA_MASCOTA`, `TABLA_TIPO_MASCOTA` y `TABLA_PRODUCTO`). |
-| Modelos BPMN | `BPMN/TO-BE-Entrega2.bpmn` y su versión ejecutable en `Entrega-2/bpmn-oss/peluditos-integracion-oss-entrega2.bpmn20.xml`, incorporando la tarea automática «Guardar datos del potencial cliente» (`topic: guardar-cliente-peluditos`). |
-| Arquitectura | Diagrama de componentes actualizado para la Entrega 2 en `Entrega-2/Arquitectura/`. |
-| Interfaz web y registro | Formulario web en `Entrega-2/interfaz-peluditos/` servido en `/interfaz/index.html`, que envía las consultas a `POST /api/consultas/{referencia}` para iniciar el caso en Flowable OSS. |
-| Servicio REST y SQLite | Implementado con Javalin y SQLite (`peluditos.db`). Expone `POST /api/clientes`, `GET /api/clientes`, `GET /api/productos`, `POST /api/consultas/{referencia}` y `GET /api/seguimiento`. |
-| External Worker | Consume trabajos del tema `guardar-cliente-peluditos`, envía los datos del cliente y su mascota a `POST /api/clientes` y completa la tarea en Flowable. |
-| Pruebas QA | Informe de pruebas (`QA-01` a `QA-17`) y capturas de verificación disponibles en `Entrega-2/QA-Tester/`. |
-
-## Cómo se hizo la prueba en la Entrega 2
-
-En la prueba local se levanta Flowable OSS (`flowable-rest` o `flowable-ui` en el puerto `8080`) junto con el servicio REST Java en el puerto `7070` (o `7071` como respaldo automático si el `7070` está ocupado).
-
-El registro se puede iniciar tanto desde Flowable como desde el formulario web local (`/interfaz/index.html`). Al completarse la primera tarea («Registrar datos del potencial cliente»), el proceso avanza a la tarea automática «Guardar datos del potencial cliente». Al ejecutar el External Worker, este toma el trabajo pendiente del tema `guardar-cliente-peluditos`, invoca `POST /api/clientes` en el servicio Java para insertar al cliente y su mascota en SQLite (`peluditos.db`) y marca el trabajo como completado en Flowable para continuar con la atención de la consulta y el seguimiento comercial.
-
-## Programas y ejecución
-
-El proyecto utiliza Java 17/21, Apache Maven 3.9+, SQLite JDBC, Javalin 6.7 y Flowable OSS local sobre Apache Tomcat (`:8080`).
-
-El código de la Entrega 2 está en:
-
-- [Servicio REST Java + SQLite](Entrega-2/servicio-peluditos/).
-- [External Worker](Entrega-2/external-worker-peluditos/).
-- [Interfaz web local](Entrega-2/interfaz-peluditos/).
-- [BPMN y formularios adaptados para OSS](Entrega-2/bpmn-oss/).
-
-Para levantar el entorno paso a paso y reproducir las pruebas desde Flowable o desde el formulario web, seguir la [guía para el tester de la Entrega 2](Entrega-2/GUIA-PARA-TESTER.md).
-
-## Videos y envío
-
-- **Video para la emprendedora (Entrega 2):** [disponible aquí](Videos/Entrega-2/video-emprendedora.md).
-- **Video técnico (Entrega 2):** pendiente de agregar el enlace final.
-- **Videos de la Entrega 1:** [video emprendedora](Videos/Entrega-1/video-emprendedora-1.md) y [video técnico](Videos/Entrega-1/video-tecnico-1.md).
-
-Cada integrante debe enviar individualmente el enlace del repositorio en la actividad de entrega y verificar que todos los archivos y videos estén accesibles.
+1. **Desplegar el BPMN en Flowable OSS (`:8080`):**
+   ```powershell
+   curl.exe -i -u rest-admin:test -F "file=@BPMN/peluditos-integracion-oss-entrega2.bpmn20.xml" "http://127.0.0.1:8080/flowable-rest/service/repository/deployments"
+   ```
+2. **Iniciar el Servidor Jakarta REST y SQLite (`:7072`):**
+   ```powershell
+   cd servicio-peluditos
+   mvn compile exec:java "-Dexec.mainClass=cl.iplacex.peluditos.ServidorJakarta"
+   ```
+   *(La interfaz web queda disponible en `http://localhost:7072/interfaz/index.html` y `http://localhost:7072/interfaz/emprendedora.html`).*
+3. **Ejecutar los External Workers (Worker 1 y Worker 2):**
+   ```powershell
+   cd external-worker-peluditos
+   mvn compile exec:java "-Dexec.mainClass=cl.iplacex.peluditos.App"
+   ```
