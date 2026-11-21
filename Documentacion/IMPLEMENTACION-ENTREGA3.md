@@ -160,15 +160,15 @@ El informe completo de las pruebas se encuentra en:
 
 ## 10. Aspectos pendientes
 
-Aunque durante las pruebas fue posible comprobar el funcionamiento de los principales componentes del sistema, todavía quedan algunos aspectos por revisar.
+Durante las pruebas fue posible comprobar el funcionamiento de los principales componentes del sistema. Sin embargo, todavía quedan algunos aspectos por revisar.
 
 Entre ellos se encuentra completar la guía de ejecución para otro computador, ampliar las pruebas frente a errores de conexión y verificar el procedimiento de respaldo y recuperación de las bases de datos.
 
-También se debe revisar que el repositorio contenga únicamente los archivos necesarios para ejecutar la implementación actual.
+También se revisaron los archivos antiguos del servicio para evitar confusiones con la implementación actual. Se retiraron `RegistroFlowable.java` y el antiguo `App.java` de `servicio-peluditos`, conservando `RegistroFlowableJakarta.java`, `ServidorJakarta.java` y el `App.java` correspondiente a los External Workers.
 
-En particular, queda pendiente comprobar si el archivo antiguo `RegistroFlowable.java` todavía es utilizado por algún componente o si puede retirarse de manera segura, conservando `RegistroFlowableJakarta.java` y los demás archivos correspondientes a la implementación actual.
+Después de esta limpieza, ambos proyectos Java se compilaron nuevamente con Maven, obteniendo `BUILD SUCCESS`.
 
-Estas actividades permitirán ordenar la versión definitiva del proyecto y facilitar su continuidad en la siguiente entrega.
+Con estos cambios quedó más ordenada la implementación actual, mientras que las demás verificaciones mencionadas se mantienen pendientes para completar la documentación del proyecto.
 
 ## 11. Conclusión
 
