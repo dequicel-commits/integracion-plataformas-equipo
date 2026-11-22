@@ -25,33 +25,32 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
+     
         String urlEnv = System.getenv("FLOWABLE_API_URL");
         String usuarioEnv = System.getenv("FLOWABLE_USER");
         String claveEnv = System.getenv("FLOWABLE_PASSWORD");
 
-        List<ExternalWorkerClient> clientesWorker;
-        if (urlEnv != null && !urlEnv.isBlank()) {
-            String usuario = (usuarioEnv != null && !usuarioEnv.isBlank())
-                    ? usuarioEnv
-                    : (urlEnv.contains("flowable-rest") ? "rest-admin" : "admin");
-            String clave = (claveEnv != null && !claveEnv.isBlank()) ? claveEnv : "test";
-            clientesWorker = List.of(RestExternalWorkerClient.create(
-                    "peluditos-worker-entrega3",
-                    JavaHttpClientRestInvoker.withBasicAuth(urlEnv, usuario, clave)));
-        } else {
-            // Si no se especifico FLOWABLE_API_URL, revisar tanto flowable-rest como
-            // flowable-ui en :8080
-            String clave = (claveEnv != null && !claveEnv.isBlank()) ? claveEnv : "test";
-            clientesWorker = List.of(
-                    RestExternalWorkerClient.create(
-                            "peluditos-worker-rest",
-                            JavaHttpClientRestInvoker.withBasicAuth(
-                                    "http://localhost:8080/flowable-rest/external-job-api", "rest-admin", clave)),
-                    RestExternalWorkerClient.create(
-                            "peluditos-worker-ui",
-                            JavaHttpClientRestInvoker.withBasicAuth(
-                                    "http://localhost:8080/flowable-ui/external-job-api", "admin", clave)));
+        if (urlEnv == null || urlEnv.isBlank()) {
+            throw new IllegalStateException(
+                    "Debes configurar FLOWABLE_API_URL para conectar con Flowable.");
         }
+
+        if (usuarioEnv == null || usuarioEnv.isBlank()) {
+            throw new IllegalStateException(
+                    "Debes configurar FLOWABLE_USER.");
+        }
+
+        if (claveEnv == null || claveEnv.isBlank()) {
+            throw new IllegalStateException(
+                    "Debes configurar FLOWABLE_PASSWORD.");
+        }
+
+        List<ExternalWorkerClient> clientesWorker = List.of(
+                RestExternalWorkerClient.create(
+                        "peluditos-worker-entrega3",
+                        JavaHttpClientRestInvoker.withBasicAuth(
+                                urlEnv, usuarioEnv, claveEnv)));
+
 
         ObjectMapper mapper = new ObjectMapper();
         HttpClient clienteHttp = HttpClient.newBuilder()
@@ -62,18 +61,19 @@ public class App {
         boolean modoContinuo = Arrays.asList(args).contains("--loop")
                 || "true".equalsIgnoreCase(System.getenv("WORKER_LOOP"));
 
+        
         do {
             for (ExternalWorkerClient worker : clientesWorker) {
                 try {
-                    // 1. Ejecutar Worker 1: Guardar datos del potencial cliente y su mascota
+                    // 1. Ejecutar Worker 1: Guardar cliente y mascota
                     procesarGuardarClientes(worker, mapper, clienteHttp, !modoContinuo);
 
-                    // 2. Ejecutar Worker 2: Actualizar resultado del seguimiento comercial (con o
-                    // sin compra)
+                    // 2. Ejecutar Worker 2: Actualizar seguimiento comercial
                     procesarActualizarSeguimiento(worker, mapper, clienteHttp, !modoContinuo);
-                } catch (Exception ignored) {
-                    // Si uno de los dos entornos (flowable-rest o flowable-ui) no esta activo,
-                    // continuar con el otro
+
+                } catch (Exception e) {
+                    System.err.println(
+                            "[Error Worker] No se pudo consultar Flowable: " + e.getMessage());
                 }
             }
 
@@ -81,6 +81,7 @@ public class App {
                 Thread.sleep(2000);
             }
         } while (modoContinuo);
+
     }
 
     /**
@@ -303,54 +304,53 @@ public class App {
         return 2; // Perro Mediano
     }
 
+   
     private static HttpResponse<String> enviarPeticionServicio(
             HttpClient cliente,
             String metodo,
             String ruta,
             String jsonBody) throws Exception {
-        String baseConfigurada = System.getenv().getOrDefault("SERVICIO_PELUDITOS_URL", "http://localhost:7072");
-        // Si SERVICIO_PELUDITOS_URL incluia /api/clientes, extraer solo el host:puerto
-        int idxApi = baseConfigurada.indexOf("/api/");
-        String basePrincipal = idxApi > 0 ? baseConfigurada.substring(0, idxApi) : baseConfigurada;
 
-        String[] basesCandidatas = new String[] {
-                basePrincipal,
-                "http://localhost:7072",
-                "http://localhost:7070",
-                "http://localhost:7071"
-        };
+        String baseConfigurada = System.getenv("SERVICIO_PELUDITOS_URL");
 
-        Exception ultimoError = null;
-        for (String base : basesCandidatas) {
-            try {
-                HttpRequest.Builder builder = HttpRequest.newBuilder()
-                        .uri(URI.create(base + ruta))
-                        .version(HttpClient.Version.HTTP_1_1)
-                        .timeout(Duration.ofSeconds(5));
-
-                if ("POST".equalsIgnoreCase(metodo)) {
-                    builder.header("Content-Type", "application/json")
-                            .POST(HttpRequest.BodyPublishers.ofString(jsonBody != null ? jsonBody : "{}"));
-                } else if ("PUT".equalsIgnoreCase(metodo)) {
-                    builder.header("Content-Type", "application/json")
-                            .PUT(HttpRequest.BodyPublishers.ofString(jsonBody != null ? jsonBody : "{}"));
-                } else {
-                    builder.GET();
-                }
-
-                HttpResponse<String> resp = cliente.send(builder.build(), HttpResponse.BodyHandlers.ofString());
-                if (resp.statusCode() >= 200 && resp.statusCode() < 300) {
-                    return resp;
-                }
-            } catch (Exception e) {
-                ultimoError = e;
-            }
+        if (baseConfigurada == null || baseConfigurada.isBlank()) {
+            throw new IllegalStateException(
+                    "Debes configurar SERVICIO_PELUDITOS_URL.");
         }
 
-        if (ultimoError != null) {
-            throw ultimoError;
+        String basePrincipal = baseConfigurada.trim();
+
+        // Si la direccion incluye /api/, conservar solamente la URL base.
+        int idxApi = basePrincipal.indexOf("/api/");
+        if (idxApi > 0) {
+            basePrincipal = basePrincipal.substring(0, idxApi);
         }
-        throw new IllegalStateException("No se pudo conectar con servicio-peluditos en 7072, 7070 ni 7071.");
+
+        // Evitar una doble barra al construir la direccion.
+        while (basePrincipal.endsWith("/")) {
+            basePrincipal = basePrincipal.substring(0, basePrincipal.length() - 1);
+        }
+
+        HttpRequest.Builder builder = HttpRequest.newBuilder()
+                .uri(URI.create(basePrincipal + ruta))
+                .version(HttpClient.Version.HTTP_1_1)
+                .timeout(Duration.ofSeconds(5));
+
+        if ("POST".equalsIgnoreCase(metodo)) {
+            builder.header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(
+                            jsonBody != null ? jsonBody : "{}"));
+        } else if ("PUT".equalsIgnoreCase(metodo)) {
+            builder.header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(
+                            jsonBody != null ? jsonBody : "{}"));
+        } else {
+            builder.GET();
+        }
+
+        return cliente.send(
+                builder.build(),
+                HttpResponse.BodyHandlers.ofString());
     }
 
     private static String leerTexto(Map<String, Object> vars, String clave, String porDefecto) {
