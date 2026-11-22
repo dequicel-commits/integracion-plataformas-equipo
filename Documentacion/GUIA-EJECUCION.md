@@ -1,4 +1,3 @@
-
 # Guía de ejecución y configuración — Peluditos Pet Chile (Entrega 3)
 
 **Asignatura:** Integración de Plataformas — IPLACEX  
@@ -23,7 +22,7 @@ Las pruebas realizadas hasta esta entrega corresponden principalmente al entorno
 
 | Programa | Versión o configuración | Uso |
 |---|---|---|
-| Java JDK | 21 en el entorno de pruebas | Compilación y ejecución de los componentes Java |
+| Java JDK | 17 (Amazon Corretto en las pruebas finales) | Compilación y ejecución de los componentes Java |
 | Apache Maven | 3.10.0 en el entorno de trabajo | Gestión de dependencias y compilación |
 | Jakarta REST | Jersey y Grizzly | Implementación y ejecución de servicios REST |
 | SQLite JDBC | 3.47.1.0 | Almacenamiento de los datos comerciales |
@@ -33,7 +32,7 @@ Las pruebas realizadas hasta esta entrega corresponden principalmente al entorno
 | Git y GitHub | Control de versiones | Organización del código y documentación |
 | PowerShell | Terminal utilizada en Windows | Ejecución de comandos y pruebas |
 
-Los dos proyectos Java utilizan `maven.compiler.release=17` en sus archivos `pom.xml`, aunque durante las pruebas se trabajó con Java 21.
+Los dos proyectos Java utilizan maven.compiler.release=17 en sus archivos pom.xml. Durante las comprobaciones finales de la Entrega 3 se utilizó Amazon Corretto JDK 17, obteniendo resultados correctos en la compilación y ejecución de los componentes.
 
 Para comprobar las versiones de Java y Maven se pueden ejecutar los siguientes comandos:
 
@@ -202,12 +201,9 @@ No se deben publicar contraseñas, tokens ni credenciales reales en GitHub.
 
 Los valores de ejemplo permiten mostrar cómo establecer la configuración sin entregar información privada.
 
-En el código actual de los Workers todavía existe una contraseña de prueba como valor alternativo cuando no se define `FLOWABLE_PASSWORD`. Antes de utilizar el proyecto en un entorno distinto del local, corresponde revisar y corregir ese comportamiento.
-
-También existen algunas direcciones locales de respaldo en los Workers. Se considera pendiente revisar estos valores para mejorar la portabilidad de la solución.
+Durante la revisión de la Entrega 3 se modificó la configuración del External Worker para eliminar la contraseña de prueba que se utilizaba automáticamente y las direcciones alternativas de los puertos antiguos. Actualmente, el Worker requiere configurar las variables de entorno necesarias para conectarse con Flowable y el servicio Jakarta REST. Esto permite trabajar con las direcciones y credenciales definidas para cada entorno, sin tener que modificar directamente el código.
 
 ---
-
 ## 6. Iniciar Flowable OSS
 
 Para ejecutar la solución se necesita tener Flowable OSS 7.2.0 instalado y funcionando.
@@ -524,7 +520,7 @@ Se debe comprobar el procedimiento completo en un entorno distinto del utilizado
 
 ### Configuración externa
 
-Se recomienda revisar las direcciones locales de respaldo que todavía aparecen en los Workers y eliminar la dependencia de contraseñas de prueba establecidas como valores alternativos.
+Durante la Entrega 3 se corrigió la configuración externa del Worker y se realizaron nuevas pruebas para comprobar su funcionamiento. Se obtuvo una compilación exitosa mediante Maven y se verificó la conexión con Flowable y Jakarta REST. El Worker 1 registró correctamente un cliente en SQLite mediante una respuesta HTTP 201, mientras que el Worker 2 actualizó el seguimiento comercial con una respuesta HTTP 200. Estas pruebas permitieron comprobar el funcionamiento de la configuración externa en el entorno local utilizado por el equipo. Queda pendiente verificar la instalación completa en otro computador.
 
 ### Manejo de errores
 
@@ -589,3 +585,5 @@ Se utilizaron servicios Jakarta REST, una interfaz web propia, Flowable OSS, dos
 Las pruebas realizadas permitieron comprobar los recorridos de registro y seguimiento comercial, además de identificar aspectos que necesitan mayor revisión antes de una instalación definitiva.
 
 Con esta guía se busca dejar documentada la configuración y ejecución de los componentes, facilitando la continuidad del proyecto y la preparación de la Entrega 4.
+
+
