@@ -2,256 +2,340 @@
 
 ## Proyecto: Peluditos Pet Chile
 
-**Rol:** Analista de Procesos/ Elvis Gutiérrez Bernal
+**Rol:** Analista de Procesos / Elvis Gutiérrez Bernal
+
+**Fecha de revisión:** 21 de noviembre de 2026
 
 ### 1. Introducción
 
-El presente documento tiene como finalidad analizar los avances del proyecto Peluditos Pet Chile durante la tercera entrega, enfocándose en la integración de los procesos de negocio, servicios web e interfaces de usuario mediante el motor de procesos Flowable Open Source.
+El presente documento tiene como finalidad analizar los avances del proyecto Peluditos Pet Chile durante la tercera entrega, enfocándose en la integración de los procesos de negocio, servicios web, automatizaciones e interfaces de usuario mediante el motor Flowable Open Source.
 
-El proyecto busca mejorar la gestión de consultas y ventas de alimentos para mascotas, permitiendo organizar las actividades comerciales y automatizar tareas mediante tecnologías de integración de plataformas.
+El proyecto busca mejorar la gestión de consultas y el seguimiento comercial de los potenciales clientes, permitiendo registrar sus datos y los de sus mascotas, automatizar actividades y mantener información actualizada sobre los resultados comerciales.
+
+Durante esta entrega, el equipo ha desarrollado y probado componentes que permiten avanzar desde funcionalidades individuales hacia una solución integrada para el emprendimiento.
 
 ### 2. Objetivo del análisis
 
-Evaluar el funcionamiento del proceso de ventas de Peluditos Pet Chile, identificando los requisitos necesarios para integrar correctamente el modelo BPMN, los servicios REST, las tareas automáticas y las interfaces de usuario.
+Evaluar el funcionamiento del proceso comercial de Peluditos Pet Chile, verificando la integración del modelo BPMN TO-BE, Flowable OSS 7.2.0, servicios Jakarta REST, External Workers, base de datos SQLite e interfaces web.
 
-Además, se busca identificar oportunidades de mejora que permitan entregar una solución estable, funcional y alineada con las necesidades del emprendimiento.
+Los objetivos específicos son:
+
+- Identificar los requisitos funcionales y no funcionales del sistema.
+- Analizar las actividades humanas y automáticas del proceso.
+- Revisar los resultados de las pruebas realizadas por el equipo.
+- Identificar problemas potenciales y oportunidades de mejora.
+- Relacionar los requisitos con las evidencias disponibles.
+- Proponer recomendaciones para fortalecer la solución.
 
 ### 3. Análisis del proceso actual
 
-El proceso de ventas de Peluditos Pet Chile tiene como finalidad gestionar las consultas de los clientes y facilitar la compra de alimentos para perros y gatos.
+El proceso comercial de Peluditos Pet Chile tiene como finalidad gestionar las consultas de los potenciales clientes, registrar información sobre sus mascotas y realizar el seguimiento correspondiente.
 
-El proceso comienza cuando un cliente realiza una consulta sobre los productos disponibles. Posteriormente, se atiende su solicitud y se determina si desea realizar una compra.
+El proceso TO-BE actualizado contempla las siguientes actividades:
 
-Si el cliente decide comprar, el proceso continúa con el registro de la venta, la preparación del pedido y su entrega. En caso contrario, se proporciona la información solicitada y finaliza el proceso.
+1. El cliente realiza una consulta.
+2. Se registran los datos del potencial cliente y su mascota.
+3. Un External Worker guarda la información mediante un servicio REST.
+4. Se atiende y responde la consulta del cliente.
+5. Se realiza el seguimiento comercial.
+6. Un gateway determina si la compra fue realizada.
+7. Un External Worker actualiza el estado comercial.
+8. El proceso finaliza como Compra realizada o Sin compra.
 
-### 3.1 Componentes tecnológicos del proyecto
+El modelo incorpora actividades humanas mediante User Tasks y actividades automatizadas mediante Service Tasks configuradas como External Workers.
 
-Para apoyar la automatización del proceso de ventas, el equipo ha trabajado con los siguientes componentes:
+Las campañas de cumpleaños y fechas especiales se encuentran planificadas para la Entrega 4 y no forman parte de las pruebas del flujo comercial principal de esta entrega.
 
-- **BPMN:** permite representar las actividades, decisiones y secuencia del proceso comercial.
-- **Flowable Open Source:** motor encargado de ejecutar y administrar las instancias del proceso.
-- **Servicios REST:** permiten intercambiar información entre los componentes del sistema.
-- **External Workers:** permiten ejecutar actividades automáticas mediante servicios externos.
-- **Interfaz web:** facilita la interacción de los usuarios con el proceso de negocio.
-- **Base de datos:** permite almacenar información relacionada con las operaciones del emprendimiento.
+#### 3.1 Componentes tecnológicos del proyecto
 
-### 3.2 Estado del proceso
+| Componente | Función |
+|---|---|
+| BPMN TO-BE | Representar las actividades, decisiones y resultados comerciales. |
+| Flowable OSS 7.2.0 | Ejecutar y administrar las instancias del proceso. |
+| Jakarta REST | Proporcionar servicios para registrar y consultar información. |
+| External Workers | Ejecutar las actividades automáticas definidas en el BPMN. |
+| Interfaz web | Permitir registrar consultas, clientes, mascotas y resultados comerciales. |
+| SQLite | Almacenar la información del emprendimiento. |
+| GitHub | Mantener el código, la documentación y las evidencias del equipo. |
 
-Durante las entregas anteriores se desarrollaron los modelos BPMN AS-IS y TO-BE, y se realizaron pruebas de ejecución utilizando Flowable Open Source.
+#### 3.2 Estado del proceso
 
-Para la tercera entrega, el principal desafío consiste en verificar que el proceso BPMN, los servicios REST, las tareas automáticas y la interfaz web funcionen de manera integrada.
+Durante la tercera entrega se documentaron pruebas de integración realizadas el 20 de noviembre de 2026.
 
-Esta validación permitirá identificar posibles problemas de comunicación entre los componentes y establecer las mejoras necesarias antes de la entrega final.
+Estas pruebas utilizaron Flowable OSS 7.2.0, servicios Jakarta REST y bases de datos locales de prueba.
+
+Se ejecutaron los siguientes escenarios:
+
+- **Ruta SÍ:** el cliente realiza una compra y su estado se actualiza a Compra realizada.
+- **Ruta NO:** el cliente no realiza una compra y su estado se actualiza a Sin compra.
+
+Ambos escenarios fueron documentados con resultado correcto, incluyendo actividades humanas, tareas automáticas, servicios REST, persistencia y eventos de finalización.
+
+Las pruebas BPMN fueron ejecutadas mediante APIs locales. Por separado, las evidencias de implementación y QA muestran funcionalidades de registro, consulta y seguimiento mediante interfaces web.
 
 ### 4. Identificación de problemas y oportunidades de mejora
 
-Durante el análisis del proceso comercial de Peluditos Pet Chile se identifican los siguientes aspectos que requieren revisión para asegurar el correcto funcionamiento de la solución integrada.
+Durante la revisión del BPMN, formularios, código Java y evidencias de funcionamiento se identificaron aspectos que requieren atención para mejorar la confiabilidad del sistema.
 
 #### 4.1 Problemas o riesgos identificados
 
-1. **Integración entre componentes:** es necesario verificar que Flowable, los servicios REST y la interfaz web intercambien información correctamente.
+1. **Valores predeterminados en el registro:** el Worker encargado de guardar clientes utiliza datos de ejemplo cuando determinadas variables no se encuentran disponibles. Esto podría generar registros incorrectos.
 
-2. **Automatización de actividades:** se debe comprobar que las tareas automáticas se ejecuten mediante Service Tasks o External Workers sin intervención manual innecesaria.
+2. **Autorización comercial:** el Worker 1 utiliza un valor verdadero predeterminado para `clienteAutoriza`. Se recomienda evitar que una autorización promocional se considere concedida sin confirmación del cliente.
 
-3. **Validación de datos:** es importante asegurar que la información ingresada por los clientes sea correcta antes de procesarla.
+3. **Identificación del cliente:** el Worker 2 dispone de un mecanismo alternativo para obtener un ID si no recibe uno válido desde Flowable. Esto podría provocar la actualización de un registro distinto del correspondiente al proceso.
 
-4. **Manejo de errores:** se requiere revisar cómo responde el sistema ante fallas de comunicación o indisponibilidad de los servicios.
+4. **Validación de decisiones:** el formulario de seguimiento utiliza la variable booleana `compraRealizada`, pero el campo no está marcado como obligatorio en su definición de respaldo.
 
-5. **Pruebas del proceso:** es necesario validar los diferentes escenarios de ejecución, incluyendo clientes que realizan una compra y clientes que solamente solicitan información.
+5. **Validación de datos:** es necesario verificar que los campos obligatorios, teléfonos, correos electrónicos y fechas sean validados tanto en la interfaz como en el servidor.
+
+6. **Pruebas automatizadas:** el archivo `AppTest.java` contiene una prueba básica que no comprueba directamente la integración de los External Workers.
+
+7. **Preparación para producción:** las pruebas locales exitosas no demuestran por sí solas el cumplimiento de todos los requisitos de seguridad, rendimiento y disponibilidad.
+
+Estos puntos representan riesgos identificados mediante el análisis del código y la documentación, y no necesariamente errores observados durante las pruebas.
 
 #### 4.2 Oportunidades de mejora
 
-Para fortalecer el funcionamiento de la solución se proponen las siguientes acciones:
+Se recomienda:
 
-- Verificar la comunicación entre Flowable y los servicios REST.
-- Validar que las tareas humanas y automáticas estén correctamente diferenciadas.
-- Incorporar validaciones en los formularios para evitar datos incompletos.
-- Implementar mecanismos de control y registro de errores.
-- Realizar pruebas de extremo a extremo para comprobar el funcionamiento del proceso.
-- Mejorar la interfaz web incorporando los colores y el logotipo institucional de Peluditos Pet Chile.
-
-Estas mejoras permitirán avanzar hacia una solución más estable, integrada y alineada con los objetivos del emprendimiento.
+- Exigir datos válidos antes de registrar clientes y mascotas.
+- Evitar utilizar automáticamente datos ficticios en operaciones reales.
+- Confirmar explícitamente la autorización para recibir promociones.
+- Validar el identificador del cliente antes de actualizar el seguimiento.
+- Garantizar que `compraRealizada` se encuentre definida correctamente.
+- Incorporar pruebas automatizadas funcionales y de integración.
+- Mantener los registros de errores y las evidencias de ejecución.
+- Verificar la identidad visual institucional en las interfaces.
+- Priorizar la estabilidad de los componentes existentes antes de desarrollar nuevas funcionalidades.
 
 ### 5. Definición de requisitos funcionales
 
-Los requisitos funcionales describen las acciones que debe realizar el sistema de Peluditos Pet Chile para gestionar correctamente el proceso de ventas.
+Los requisitos funcionales describen las acciones necesarias para gestionar las consultas, los clientes y el seguimiento comercial.
 
 | Código | Requisito funcional | Descripción |
 |---|---|---|
-| RF-01 | Registrar consultas | El sistema debe permitir ingresar las consultas realizadas por los clientes mediante una interfaz web. |
-| RF-02 | Iniciar procesos BPMN | El sistema debe permitir iniciar instancias del proceso de ventas utilizando Flowable Open Source. |
-| RF-03 | Registrar ventas | El sistema debe permitir registrar la información de una venta cuando el cliente decide comprar. |
-| RF-04 | Gestionar tareas humanas | Flowable debe asignar y administrar las actividades que requieren intervención de una persona. |
-| RF-05 | Ejecutar tareas automáticas | El sistema debe permitir ejecutar actividades automáticas mediante Service Tasks o External Workers. |
-| RF-06 | Integrar servicios REST | Los componentes deben intercambiar información correctamente mediante servicios REST. |
-| RF-07 | Almacenar información | El sistema debe permitir guardar y consultar los datos necesarios para el proceso comercial. |
-| RF-08 | Gestionar decisiones | El proceso BPMN debe utilizar gateways para determinar el camino correspondiente según la decisión del cliente. |
-| RF-09 | Consultar información | La interfaz debe permitir consultar información relevante sobre las operaciones registradas. |
-| RF-10 | Finalizar procesos | Flowable debe permitir completar las actividades y finalizar correctamente las instancias del proceso. |
+| RF-01 | Registrar consultas | Permitir el ingreso de consultas mediante la interfaz web. |
+| RF-02 | Iniciar procesos BPMN | Iniciar instancias del proceso comercial utilizando Flowable OSS. |
+| RF-03 | Registrar resultado comercial | Registrar si el cliente concretó o no una compra y actualizar su estado. |
+| RF-04 | Gestionar tareas humanas | Ejecutar las actividades que requieren intervención de usuarios mediante User Tasks. |
+| RF-05 | Ejecutar tareas automáticas | Ejecutar actividades mediante Service Tasks y External Workers. |
+| RF-06 | Integrar servicios REST | Intercambiar información entre los componentes mediante servicios Jakarta REST. |
+| RF-07 | Almacenar información | Guardar y recuperar información de clientes, mascotas y seguimiento comercial. |
+| RF-08 | Gestionar decisiones | Utilizar gateways para seleccionar la ruta correspondiente según `compraRealizada`. |
+| RF-09 | Consultar información | Permitir consultar registros y estados comerciales desde la interfaz web. |
+| RF-10 | Finalizar procesos | Completar correctamente las instancias del proceso en Flowable OSS. |
 
-### 5.1 Validación de requisitos
+#### 5.1 Validación de requisitos
 
-Los requisitos definidos deberán comprobarse mediante pruebas funcionales y de integración.
+Las pruebas realizadas y documentadas durante la tercera entrega respaldan el cumplimiento de los requisitos funcionales en los escenarios evaluados.
 
-Las pruebas deberán considerar los siguientes escenarios:
+Se verificaron:
 
-- Cliente que realiza una consulta sin concretar una compra.
-- Cliente que realiza una consulta y decide comprar.
-- Ejecución de tareas automáticas mediante servicios externos.
-- Registro y consulta de información mediante servicios REST.
-- Finalización correcta del proceso BPMN en Flowable.
+- Inicio de procesos BPMN.
+- Registro de clientes y mascotas.
+- Ejecución de actividades humanas.
+- Ejecución de los External Workers.
+- Comunicación mediante servicios REST.
+- Persistencia y consulta de información.
+- Evaluación de las dos rutas del gateway.
+- Finalización de instancias del proceso.
+- Registro y consulta del seguimiento comercial mediante la interfaz web.
 
-La validación de estos requisitos permitirá determinar el nivel de cumplimiento de la solución y detectar los componentes que requieren ajustes antes de la entrega final.
+Las evidencias se encuentran relacionadas con cada requisito en el documento `MATRIZ-TRAZABILIDAD-ENTREGA3.md`.
+
+La validación corresponde al alcance de las pruebas documentadas y no garantiza el funcionamiento en todos los escenarios posibles.
 
 ### 6. Definición de requisitos no funcionales
 
-Los requisitos no funcionales establecen las condiciones de calidad que debe cumplir la solución tecnológica de Peluditos Pet Chile para garantizar un funcionamiento adecuado.
+Los requisitos no funcionales establecen las condiciones de calidad necesarias para el funcionamiento adecuado del sistema.
 
 | Código | Requisito no funcional | Descripción |
 |---|---|---|
-| RNF-01 | Seguridad | El sistema debe proteger la información de los clientes y controlar el acceso a las funciones administrativas. |
-| RNF-02 | Rendimiento | Los servicios REST deben responder de manera eficiente a las solicitudes realizadas desde la interfaz web. |
-| RNF-03 | Disponibilidad | Flowable y los servicios necesarios deben encontrarse disponibles durante la operación del sistema. |
-| RNF-04 | Usabilidad | La interfaz web debe ser sencilla y permitir que los usuarios ingresen y consulten información fácilmente. |
-| RNF-05 | Mantenibilidad | El código y la documentación deben estar organizados para facilitar futuras modificaciones. |
-| RNF-06 | Confiabilidad | El sistema debe ejecutar correctamente las actividades del proceso y evitar pérdidas de información. |
-| RNF-07 | Compatibilidad | Los componentes deben comunicarse correctamente mediante APIs REST y formatos de intercambio de datos compatibles. |
-| RNF-08 | Identidad visual | La interfaz pública debe incorporar el logotipo y los colores institucionales de Peluditos Pet Chile. |
+| RNF-01 | Seguridad | Proteger la información de los clientes y controlar el acceso a funciones administrativas. |
+| RNF-02 | Rendimiento | Mantener tiempos de respuesta adecuados en los servicios y las interfaces. |
+| RNF-03 | Disponibilidad | Mantener operativos los componentes necesarios durante la utilización del sistema. |
+| RNF-04 | Usabilidad | Ofrecer interfaces claras para registrar y consultar información. |
+| RNF-05 | Mantenibilidad | Organizar el código y la documentación para facilitar futuras modificaciones. |
+| RNF-06 | Confiabilidad | Ejecutar las actividades correctamente y proteger la integridad de la información. |
+| RNF-07 | Compatibilidad | Permitir la comunicación correcta entre Flowable, servicios REST y aplicaciones externas. |
+| RNF-08 | Identidad visual | Incorporar los colores y el logotipo institucional de Peluditos Pet Chile. |
 
-### 6.1 Consideraciones de calidad
+#### 6.1 Consideraciones de calidad
 
-Para verificar estos requisitos se recomienda realizar pruebas de funcionamiento, revisar las respuestas de los servicios REST y comprobar que la interfaz web permita utilizar correctamente las funcionalidades implementadas.
+Las capturas de QA muestran que la interfaz dispone de mecanismos básicos de validación para campos obligatorios.
 
-También se debe revisar el manejo de errores, la protección de los datos y la estabilidad de la comunicación entre los componentes.
+También se observan formularios organizados, opciones de consulta y mensajes de confirmación.
 
-Estas verificaciones contribuirán a mejorar la calidad de la solución antes de la entrega final.
+Por otra parte, el código de los External Workers incorpora mecanismos para reportar errores a Flowable y utiliza variables de entorno para configurar las conexiones.
+
+No obstante, se recomienda complementar las pruebas con revisiones específicas de seguridad, rendimiento, disponibilidad y validación de datos en el servidor.
+
+La identidad visual debe revisarse para asegurar la incorporación del logotipo institucional, además de los colores utilizados.
 
 ### 7. Análisis de integración de componentes
 
-La tercera entrega del proyecto Peluditos Pet Chile tiene como objetivo consolidar la integración de los componentes tecnológicos desarrollados durante las etapas anteriores.
+La tercera entrega busca demostrar que el proceso BPMN, el motor Flowable, los servicios REST, los External Workers y las interfaces trabajan de manera integrada.
 
-Para cumplir este propósito, es necesario verificar que el proceso BPMN, el motor Flowable Open Source, los servicios REST, los External Workers, la base de datos y la interfaz web trabajen de manera coordinada.
-
-### 7.1 Componentes y responsabilidades
+#### 7.1 Componentes y responsabilidades
 
 | Componente | Responsabilidad |
 |---|---|
-| Interfaz web | Permitir que los usuarios ingresen consultas y visualicen información relacionada con el proceso comercial. |
-| Flowable Open Source | Ejecutar el proceso BPMN y administrar las actividades y decisiones del flujo. |
-| User Tasks | Representar actividades que requieren intervención humana. |
-| Service Tasks | Representar actividades automatizadas dentro del proceso BPMN. |
-| External Workers | Ejecutar tareas automáticas mediante aplicaciones o servicios externos. |
-| Servicios REST | Permitir el intercambio de información entre los componentes del sistema. |
-| Base de datos SQLite | Almacenar la información necesaria para las operaciones comerciales. |
+| Interfaz web | Registrar consultas, clientes, mascotas y resultados comerciales. |
+| Flowable OSS | Ejecutar el BPMN y administrar las instancias del proceso. |
+| User Tasks | Gestionar actividades realizadas por personas. |
+| Service Tasks | Representar actividades automáticas del flujo. |
+| External Worker 1 | Registrar clientes y mascotas mediante `POST /api/clientes`. |
+| External Worker 2 | Actualizar el seguimiento mediante `PUT /api/clientes/{clienteId}/seguimiento`. |
+| Jakarta REST | Procesar solicitudes y proporcionar acceso a la información. |
+| SQLite | Almacenar clientes, mascotas y estados comerciales. |
 
-### 7.2 Funcionamiento esperado de la integración
+#### 7.2 Funcionamiento de la integración
 
-El funcionamiento integrado del sistema debe considerar las siguientes etapas:
+El proceso integrado contempla las siguientes etapas:
 
-1. El cliente ingresa una consulta mediante la interfaz web.
-2. El sistema envía la información al componente encargado de iniciar el proceso en Flowable.
-3. Flowable ejecuta el proceso BPMN y determina las actividades correspondientes.
-4. Las tareas humanas son realizadas por los usuarios responsables.
-5. Las tareas automáticas se ejecutan mediante Service Tasks o External Workers, según la implementación.
-6. Los servicios REST permiten registrar o consultar información en la base de datos.
-7. El proceso continúa según las decisiones definidas en los gateways.
-8. Finalmente, Flowable registra la finalización de la instancia del proceso.
+1. Se registra una consulta y se inicia el proceso correspondiente.
+2. Flowable administra la instancia BPMN.
+3. Se completan los datos del potencial cliente.
+4. El Worker 1 registra la información mediante Jakarta REST.
+5. Se ejecutan las actividades de atención y seguimiento.
+6. El gateway evalúa la variable `compraRealizada`.
+7. El Worker 2 actualiza el estado comercial del cliente.
+8. SQLite conserva la información actualizada.
+9. Flowable alcanza el evento de finalización correspondiente.
 
-### 7.3 Validación de la integración
+Las pruebas locales respaldan el funcionamiento de esta secuencia para ambas rutas comerciales.
 
-Para comprobar el funcionamiento de la solución, se deberán realizar pruebas que permitan verificar:
+#### 7.3 Validación de la integración
 
-- La comunicación entre la interfaz web y el servicio correspondiente.
-- El inicio correcto de las instancias del proceso BPMN.
-- La ejecución de las tareas humanas y automáticas.
-- El funcionamiento de los servicios REST.
-- El almacenamiento y consulta de información.
-- La finalización correcta de las instancias en Flowable.
+El equipo documentó las siguientes verificaciones:
 
-Los resultados de estas pruebas deberán documentarse mediante capturas de pantalla, respuestas de servicios y registros de ejecución.
+**Ruta Compra realizada**
 
-Este análisis representa el funcionamiento esperado de la solución. El cumplimiento efectivo de cada componente deberá confirmarse mediante las pruebas realizadas por el equipo.
+- Inicio del proceso mediante una solicitud REST: HTTP 202.
+- Registro del cliente mediante Worker 1: HTTP 201.
+- Seguimiento comercial: HTTP 200.
+- Actualización del estado mediante Worker 2: HTTP 200.
+- Estado final: Compra realizada.
+- Evento de finalización alcanzado.
+
+**Ruta Sin compra**
+
+- Inicio del proceso mediante una solicitud REST: HTTP 202.
+- Registro del cliente mediante Worker 1: HTTP 201.
+- Seguimiento comercial: HTTP 200.
+- Actualización del estado mediante Worker 2: HTTP 200.
+- Estado final: Sin compra.
+- Evento de finalización alcanzado.
+
+Las pruebas utilizaron registros ficticios y bases de datos de prueba.
+
+Los resultados quedaron documentados en `RESULTADO-PRUEBAS-BPMN.txt` y `resultados-rutas.json`.
 
 ### 8. Escenarios de prueba y criterios de aceptación
 
-Para verificar el funcionamiento de la solución integrada de Peluditos Pet Chile, se definen los siguientes escenarios de prueba.
+Los escenarios de prueba permiten comprobar que el sistema responde a los requisitos definidos.
 
-Estas pruebas permitirán comprobar que los componentes del sistema trabajan correctamente y que el proceso comercial responde a las necesidades del emprendimiento.
+#### 8.1 Escenarios de prueba
 
-### 8.1 Escenarios de prueba
-
-| Código | Escenario | Resultado esperado |
+| Código | Escenario | Resultado documentado |
 |---|---|---|
-| CP-01 | Cliente realiza una consulta | La interfaz permite ingresar la información y se inicia correctamente el proceso correspondiente. |
-| CP-02 | Cliente decide realizar una compra | El proceso continúa con el registro de la venta y las actividades de preparación y entrega del pedido. |
-| CP-03 | Cliente no realiza una compra | El proceso permite entregar la información solicitada y finalizar correctamente. |
-| CP-04 | Ejecución de una tarea humana | Flowable permite identificar y completar la User Task correspondiente. |
-| CP-05 | Ejecución de una tarea automática | El Service Task o External Worker ejecuta la actividad y permite continuar el proceso. |
-| CP-06 | Comunicación con servicios REST | Los servicios reciben las solicitudes y entregan respuestas correctas. |
-| CP-07 | Almacenamiento de información | Los datos enviados por los servicios se guardan y pueden consultarse posteriormente. |
-| CP-08 | Finalización del proceso | La instancia del proceso finaliza y su estado puede verificarse en Flowable. |
+| CP-01 | Registrar consulta e iniciar proceso | Correcto en los escenarios documentados. |
+| CP-02 | Cliente realiza una compra | Ruta SÍ ejecutada y finalizada correctamente. |
+| CP-03 | Cliente no realiza una compra | Ruta NO ejecutada y finalizada correctamente. |
+| CP-04 | Ejecutar tareas humanas | Las User Tasks aparecen completadas en el historial. |
+| CP-05 | Ejecutar tareas automáticas | Los External Workers aparecen ejecutados correctamente. |
+| CP-06 | Comunicación mediante REST | Se documentaron respuestas HTTP satisfactorias. |
+| CP-07 | Almacenar y consultar información | Se verificaron registros y estados comerciales. |
+| CP-08 | Finalizar procesos BPMN | Ambas instancias alcanzaron sus eventos de finalización. |
 
-### 8.2 Criterios de aceptación
+#### 8.2 Criterios de aceptación
 
-Para considerar que la solución cumple con los objetivos de la tercera entrega, se deberán verificar los siguientes criterios:
+Para considerar cumplidos los objetivos funcionales de esta entrega se establecen los siguientes criterios:
 
-1. El proceso BPMN se encuentra desplegado y puede ejecutarse en Flowable Open Source.
-2. Las tareas humanas y automáticas funcionan según el flujo establecido.
-3. Los servicios REST se comunican correctamente con los componentes correspondientes.
-4. La interfaz web permite ingresar y consultar información relevante.
-5. Los datos del proceso se almacenan correctamente.
-6. Se demuestra la ejecución del proceso en diferentes escenarios.
-7. Se dispone de evidencias que permitan comprobar los resultados obtenidos.
+1. El proceso BPMN debe encontrarse desplegado y ejecutarse en Flowable OSS.
+2. Las User Tasks deben completarse correctamente.
+3. Los External Workers deben procesar las tareas automáticas.
+4. Los servicios REST deben responder adecuadamente.
+5. Los registros deben almacenarse y poder consultarse.
+6. El gateway debe seleccionar correctamente ambas rutas comerciales.
+7. Las instancias deben finalizar en sus eventos correspondientes.
+8. La interfaz web debe permitir las operaciones principales del negocio.
+9. Las pruebas deben contar con evidencias verificables.
 
-### 8.3 Registro de resultados
+Las evidencias revisadas respaldan estos criterios en los escenarios probados, con las limitaciones descritas en el presente informe.
 
-Los escenarios definidos deberán ser ejecutados y documentados por el equipo, registrando el resultado obtenido, las evidencias correspondientes y las posibles incidencias detectadas.
+#### 8.3 Registro de resultados
 
-Los resultados deberán clasificarse como:
+Las principales evidencias revisadas corresponden a:
 
-- **Aprobado:** el escenario cumple con el resultado esperado.
-- **Rechazado:** el escenario presenta errores o no cumple con el resultado esperado.
-- **Pendiente:** el escenario todavía no ha sido ejecutado o validado.
+**BPMN**
 
-Los escenarios descritos corresponden a pruebas propuestas y no deben considerarse aprobados hasta contar con evidencia de su ejecución.
+- `RESULTADO-PRUEBAS-BPMN.txt`
+- `resultados-rutas.json`
+- `resultado-ambas-rutas.png`
+
+**Implementación**
+
+- `IMP_Formulario_Cliente_Completado.png`
+- `IMP_Cliente_Simon_Registrado.png`
+- `IMP_Clientes_Registrados_6.png`
+- `IMP_Panel_Emprendedora.png`
+
+**QA**
+
+- `QA_Seguimiento_Enviado_OK.png`
+- `QA_Cliente8_Compra_Realizada.png`
+- `QA_Validacion_Campos_Obligatorios.png`
+
+Estas evidencias respaldan diferentes aspectos de la implementación, incluyendo ejecución BPMN, persistencia, registro, consulta, seguimiento comercial y validación básica de formularios.
+
+Las pruebas BPMN se realizaron mediante APIs locales, por lo que no constituyen por sí solas una validación completa de la experiencia de usuario desde la interfaz pública.
 
 ### 9. Conclusiones y recomendaciones
 
 #### 9.1 Conclusiones
 
-El análisis realizado para la tercera entrega de Peluditos Pet Chile permite establecer los requisitos necesarios para avanzar hacia una solución tecnológica integrada que apoye la gestión de consultas y ventas de alimentos para mascotas.
+El análisis realizado para la tercera entrega de Peluditos Pet Chile permite identificar avances importantes en la integración de los componentes tecnológicos del proyecto.
 
-Durante las entregas anteriores se desarrollaron los modelos BPMN AS-IS y TO-BE, además de realizarse pruebas de ejecución de procesos mediante Flowable Open Source.
+El equipo documentó la ejecución de ambas rutas del proceso comercial mediante Flowable OSS, incluyendo tareas humanas, automatizaciones, decisiones y eventos de finalización.
 
-Para esta tercera entrega, el principal objetivo es consolidar la comunicación entre el motor de procesos, los servicios REST, los External Workers, la base de datos y la interfaz web.
+Además, las evidencias de implementación y QA muestran funcionalidades para registrar clientes y mascotas, consultar información y actualizar estados comerciales mediante interfaces web.
 
-La correcta integración de estos componentes permitirá mejorar la organización de las actividades comerciales, reducir tareas manuales y facilitar el seguimiento de las operaciones del emprendimiento.
+Estos resultados respaldan el funcionamiento de la solución dentro del alcance de las pruebas realizadas.
 
-Sin embargo, será necesario comprobar el funcionamiento de la solución mediante pruebas de extremo a extremo y evidencias que demuestren la ejecución de los distintos escenarios.
+Sin embargo, el análisis del código permitió identificar riesgos relacionados con valores predeterminados, autorización comercial, identificación de clientes y cobertura de pruebas automatizadas.
 
 #### 9.2 Recomendaciones del Analista
 
-Se recomienda al equipo de desarrollo considerar las siguientes acciones:
+Se recomienda al equipo considerar las siguientes acciones:
 
-1. **Priorizar la integración:** verificar que los componentes existentes funcionen correctamente antes de incorporar nuevas funcionalidades.
+1. **Mantener la integración funcional:** priorizar la estabilidad del proceso BPMN y los servicios existentes.
 
-2. **Validar el proceso BPMN:** comprobar que las actividades, decisiones y finalización de las instancias se ejecuten correctamente en Flowable Open Source.
+2. **Fortalecer las validaciones:** comprobar los datos obligatorios y evitar registros generados con información de ejemplo cuando se trate de operaciones reales.
 
-3. **Comprobar la automatización:** verificar el funcionamiento de las Service Tasks y los External Workers implementados.
+3. **Proteger la autorización comercial:** asegurar que las promociones se envíen únicamente cuando corresponda y exista autorización.
 
-4. **Fortalecer las pruebas:** ejecutar los escenarios definidos y registrar los resultados obtenidos.
+4. **Validar la identificación del cliente:** exigir un identificador correcto antes de actualizar los estados comerciales.
 
-5. **Mejorar la interfaz web:** asegurar que permita interactuar con el proceso e incorpore la identidad visual de Peluditos Pet Chile.
+5. **Mejorar las pruebas automatizadas:** incorporar casos que verifiquen directamente los External Workers y la comunicación REST.
 
-6. **Mantener la documentación:** actualizar los archivos del repositorio GitHub y registrar los cambios realizados por cada integrante.
+6. **Mantener las evidencias:** conservar los historiales de Flowable, respuestas REST, capturas y resultados de QA.
 
-7. **Promover el trabajo colaborativo:** mantener reuniones, actas y seguimiento de compromisos para asegurar el cumplimiento de los objetivos.
+7. **Fortalecer la interfaz:** verificar la usabilidad y la incorporación del logotipo y colores institucionales.
+
+8. **Continuar el trabajo colaborativo:** mantener actas, compromisos, asignación de responsabilidades y commits significativos.
+
+9. **Preparar la siguiente entrega:** abordar los riesgos pendientes antes de activar el flujo de campañas de cumpleaños y fechas especiales.
 
 #### 9.3 Conclusión final
 
-Desde el rol de Analista de Procesos, se considera fundamental garantizar que la solución desarrollada responda a las necesidades reales de Peluditos Pet Chile.
+Desde el rol de Analista de Procesos, se concluye que Peluditos Pet Chile presenta avances significativos hacia una solución integrada y funcional para la gestión de consultas y seguimiento comercial.
 
-Por ello, se recomienda concentrar los esfuerzos de la tercera entrega en validar la integración de los componentes existentes, corregir posibles problemas y demostrar mediante evidencias el funcionamiento del proceso comercial.
+Las evidencias documentadas demuestran el funcionamiento de las rutas Compra realizada y Sin compra, así como la participación de Flowable OSS, External Workers, servicios Jakarta REST y SQLite.
 
-De esta manera, el equipo podrá avanzar hacia una solución más confiable, mantenible y preparada para futuras mejoras.
+Asimismo, las interfaces revisadas permiten observar funcionalidades relacionadas con el registro, consulta y seguimiento de clientes.
 
+Se recomienda continuar fortaleciendo las validaciones y las pruebas del sistema, procurando que las funcionalidades existentes mantengan su estabilidad antes de incorporar nuevos procesos.
+
+De esta manera, el equipo podrá avanzar hacia una solución más confiable, mantenible y alineada con las necesidades reales del emprendimiento.
