@@ -152,7 +152,7 @@ Las evidencias de las pruebas realizadas como QA se encuentran en:
 
 `Evidencias/QA/Entrega-3/`
 
-Esta carpeta contiene 22 capturas, incluyendo la prueba HTTP 400 que permitió comprobar el rechazo de una solicitud con datos vacíos.
+En esta carpeta se encuentran las capturas correspondientes a las pruebas QA de la Entrega 3, incluyendo la validación HTTP 400, que permitió comprobar el rechazo de una solicitud con datos vacíos.
 
 El informe completo de las pruebas se encuentra en:
 
