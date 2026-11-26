@@ -1,0 +1,32 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24625 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] -----------< cl.iplacex.peluditos:external-worker-peluditos >-----------
+[INFO] Building external-worker-peluditos 2.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 64 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ external-worker-peluditos ---
+[INFO] skip non existing resourceDirectory C:\Users\Felipx_q\Desktop\QA-Entrega-4\integracion-plataformas-equipo-main\external-worker-peluditos\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ external-worker-peluditos ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ external-worker-peluditos ---
+[INFO] skip non existing resourceDirectory C:\Users\Felipx_q\Desktop\QA-Entrega-4\integracion-plataformas-equipo-main\external-worker-peluditos\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ external-worker-peluditos ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.3.0:test (default-test) @ external-worker-peluditos ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ external-worker-peluditos ---
+[INFO] Building jar: C:\Users\Felipx_q\Desktop\QA-Entrega-4\integracion-plataformas-equipo-main\external-worker-peluditos\target\external-worker-peluditos-2.0-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.041 s
+[INFO] Finished at: 2026-11-25T00:10:15-03:00
+[INFO] ------------------------------------------------------------------------

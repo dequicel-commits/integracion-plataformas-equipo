@@ -1,0 +1,24 @@
+{
+  "historial": {
+    "http_status": 200,
+    "id": "7885ae14-e8fe-11f1-b442-0a002700000b",
+    "processDefinitionId": "peluditosPetChileTOBE12:1:3b722bf0-e8ec-11f1-bce2-0a002700000b",
+    "startTime": "2026-11-25T18:31:46.656Z",
+    "endTime": "2026-11-25T18:32:27.317Z",
+    "endActivityId": "Event_0zovcf7",
+    "deleteReason": null
+  },
+  "clientes": {
+    "http_status": 200,
+    "total": 4,
+    "cliente": [
+      {
+        "CLIENTE_ID": 4,
+        "CLIENTE_NOMBRE": "Cliente QA Post Reinicio",
+        "CLIENTE_ESTADO_COMPRA": "Compra realizada",
+        "FLOWABLE_CASO_ID": "7885ae14-e8fe-11f1-b442-0a002700000b",
+        "MASCOTA_NOMBRE": "Copito QA"
+      }
+    ]
+  }
+}

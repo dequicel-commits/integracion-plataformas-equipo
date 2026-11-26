@@ -1,0 +1,23 @@
+{
+  "historial": {
+    "http_status": 200,
+    "id": "d9094f71-e8fa-11f1-bce2-0a002700000b",
+    "processDefinitionId": "peluditosPetChileTOBE12:1:3b722bf0-e8ec-11f1-bce2-0a002700000b",
+    "startTime": "2026-11-25T18:05:50.593Z",
+    "endTime": "2026-11-25T18:08:27.247Z",
+    "endActivityId": "EndNoneEvent_19",
+    "deleteReason": null
+  },
+  "clientes": {
+    "http_status": 200,
+    "cliente": [
+      {
+        "CLIENTE_ID": 2,
+        "CLIENTE_NOMBRE": "Cliente QA Sin Compra",
+        "CLIENTE_ESTADO_COMPRA": "Sin compra",
+        "FLOWABLE_CASO_ID": "d9094f71-e8fa-11f1-bce2-0a002700000b",
+        "MASCOTA_NOMBRE": "Alan QA"
+      }
+    ]
+  }
+}

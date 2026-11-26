@@ -1,0 +1,78 @@
+{
+  "fecha_utc": "2026-11-25T18:17:02.602455+00:00",
+  "version": "cdad1af71e0e0382661e1e8ab9478492c9e0b830",
+  "clientes": [
+    {
+      "CLIENTE_ID": 3,
+      "CLIENTE_NOMBRE": "Cliente QA Reinicio",
+      "CLIENTE_TELEFONO": "+56900000004",
+      "CLIENTE_CANAL_CONTACTO": "WhatsApp",
+      "CLIENTE_ESTADO_COMPRA": "En seguimiento",
+      "CLIENTE_OBSERVACIONES": "Registrado desde Flowable",
+      "FLOWABLE_CASO_ID": "44911fb0-e8fc-11f1-bce2-0a002700000b",
+      "MASCOTA_NOMBRE": "Blanca QA",
+      "MASCOTA_CUMPLEANO": "2026-11-15"
+    },
+    {
+      "CLIENTE_ID": 2,
+      "CLIENTE_NOMBRE": "Cliente QA Sin Compra",
+      "CLIENTE_TELEFONO": "+56900000002",
+      "CLIENTE_CANAL_CONTACTO": "WhatsApp",
+      "CLIENTE_ESTADO_COMPRA": "Sin compra",
+      "CLIENTE_OBSERVACIONES": "Prueba QA-04: el cliente no concretó la compra.",
+      "FLOWABLE_CASO_ID": "d9094f71-e8fa-11f1-bce2-0a002700000b",
+      "MASCOTA_NOMBRE": "Alan QA",
+      "MASCOTA_CUMPLEANO": "2016-10-07"
+    },
+    {
+      "CLIENTE_ID": 1,
+      "CLIENTE_NOMBRE": "Cliente QA Registro",
+      "CLIENTE_TELEFONO": "+56900000001",
+      "CLIENTE_CANAL_CONTACTO": "WhatsApp",
+      "CLIENTE_ESTADO_COMPRA": "Compra realizada",
+      "CLIENTE_OBSERVACIONES": "Prueba QA-03, el cliente concretó la compra. Verificación del Worker 2",
+      "FLOWABLE_CASO_ID": "561b01f2-e8f8-11f1-bce2-0a002700000b",
+      "MASCOTA_NOMBRE": "Luna QA",
+      "MASCOTA_CUMPLEANO": "2026-02-20"
+    }
+  ],
+  "procesos_activos": {
+    "total": 1,
+    "data": [
+      {
+        "id": "44911fb0-e8fc-11f1-bce2-0a002700000b",
+        "processDefinitionId": "peluditosPetChileTOBE12:1:3b722bf0-e8ec-11f1-bce2-0a002700000b",
+        "name": null,
+        "businessKey": "web-e0f801c9-7427-4cc9-af83-40360ac93652",
+        "suspended": false
+      }
+    ]
+  },
+  "tareas_activas": {
+    "total": 1,
+    "data": [
+      {
+        "id": "456782ac-e8fc-11f1-bce2-0a002700000b",
+        "processInstanceId": "44911fb0-e8fc-11f1-bce2-0a002700000b",
+        "processDefinitionId": "peluditosPetChileTOBE12:1:3b722bf0-e8ec-11f1-bce2-0a002700000b",
+        "taskDefinitionKey": "FormTask_3",
+        "name": "Atender y responder consulta del cliente",
+        "suspended": false
+      }
+    ]
+  },
+  "procesos_finalizados": [
+    {
+      "id": "561b01f2-e8f8-11f1-bce2-0a002700000b",
+      "endTime": "2026-11-25T17:58:52.403Z",
+      "endActivityId": "Event_0zovcf7",
+      "deleteReason": null
+    },
+    {
+      "id": "d9094f71-e8fa-11f1-bce2-0a002700000b",
+      "endTime": "2026-11-25T18:08:27.247Z",
+      "endActivityId": "EndNoneEvent_19",
+      "deleteReason": null
+    }
+  ]
+}
