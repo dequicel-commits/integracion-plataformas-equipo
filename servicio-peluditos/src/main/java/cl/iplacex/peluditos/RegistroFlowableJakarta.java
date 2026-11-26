@@ -160,7 +160,7 @@ final class RegistroFlowableJakarta {
 
             return Response.status(502)
                     .entity(Map.of(
-                            "mensaje","No pudimos enviar tu consulta en este momento. Intenta nuevamente más tarde.\""))
+                            "mensaje","No pudimos enviar tu consulta en este momento. Intenta nuevamente más tarde.""))
                     .build();
         }
     }
