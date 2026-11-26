@@ -1,9 +1,0 @@
-{
-  "id": "561b01f2-e8f8-11f1-bce2-0a002700000b",
-  "processDefinitionId": "peluditosPetChileTOBE12:1:3b722bf0-e8ec-11f1-bce2-0a002700000b",
-  "startTime": "2026-11-25T17:47:51.934Z",
-  "endTime": "2026-11-25T17:58:52.403Z",
-  "endActivityId": "Event_0zovcf7",
-  "deleteReason": null,
-  "http_status": 200
-}
