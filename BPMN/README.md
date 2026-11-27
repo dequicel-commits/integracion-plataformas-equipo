@@ -12,7 +12,7 @@ Directorio unificado con los modelos BPMN del proceso actual (AS-IS) y del proce
   - **Worker 2 (`FormTask_13` / `FormTask_11`):** *Actualizar estado a Compra realizada / Sin compra* (`topic: actualizar-seguimiento-peluditos`).
   - **Worker 3 (`FormTask_23`):** *Seleccionar clientes para la campaña* (`topic: seleccionar-clientes-campana`). Filtra clientes con `CLIENTE_AUTORIZA = true` según dos criterios opcionales/combinables: **fecha/mes de cumpleaños** (`mesCumpleanos`) y **tipo/tamaño de mascota** (`especieMascota`, `tamanoMascota`).
   - **Worker 4 (`FormTask_29`):** *Realizar seguimiento de la campaña* (`topic: registrar-seguimiento-campana`). Registra en la base de datos la respuesta y resultado del seguimiento de la campaña comercial.
-- **`TO-BE-Entrega3.png`**: representación visual del modelo TO-BE.
+- **`TO-BE-Entrega4.png`**: representación visual actualizada del modelo TO-BE con los 4 External Workers generada por Flowable Engine OSS.
 - **`form_registro_cliente.form`** y **`form_seguimiento_comercial.form`**: definiciones de formularios para Flowable.
 
 ## Variables del Recorrido 2 (Campañas, Cumpleaños y Fechas Especiales)
