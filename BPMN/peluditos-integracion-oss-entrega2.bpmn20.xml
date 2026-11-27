@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:design="http://flowable.org/design" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/test" exporter="Flowable Design" exporterVersion="2026.1.3" design:palette="flowable-work-process-palette">
   <message id="MensajeActivarCampanasEntrega3" name="Activar campañas y fechas especiales - Entrega 3"></message>
-  <process id="peluditosPetChileTOBE12" name="Peluditos Pet Chile - TO-BE Entrega 3" isExecutable="true">
-    <documentation>Este modelo representa el registro del potencial cliente y su seguimiento comercial. Incluye tareas automáticas para guardar los datos y actualizar el resultado a Compra realizada o Sin compra. Las campañas y fechas especiales quedan planificadas para la Entrega 4.</documentation>
+  <process id="peluditosPetChileTOBE12" name="Peluditos Pet Chile - TO-BE Entrega 4" isExecutable="true">
+    <documentation>Este modelo representa los dos recorridos integrados de Peluditos Pet Chile: 1) Registro del potencial cliente y seguimiento comercial (con los External Workers guardar-cliente-peluditos y actualizar-seguimiento-peluditos), y 2) Gestion de campanas, cumpleanos de mascotas y fechas especiales filtrando por fecha/mes y tipo/tamano de mascota (con los External Workers seleccionar-clientes-campana y registrar-seguimiento-campana).</documentation>
     <extensionElements>
       <flowable:candidates-type><![CDATA[all]]></flowable:candidates-type>
       <design:stencilid><![CDATA[BPMNDiagram]]></design:stencilid>
@@ -23,13 +23,12 @@
         <design:stencilsuperid><![CDATA[Task]]></design:stencilsuperid>
       </extensionElements>
     </userTask>
-    <userTask id="FormTask_23" name="Seleccionar clientes para la campaña" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+    <serviceTask id="FormTask_23" name="Seleccionar clientes para la campaña" flowable:type="external-worker" flowable:topic="seleccionar-clientes-campana" flowable:exclusive="false">
       <extensionElements>
-        <flowable:task-candidates-type><![CDATA[all]]></flowable:task-candidates-type>
-        <design:stencilid><![CDATA[FormTask]]></design:stencilid>
+        <design:stencilid><![CDATA[ExternalWorkerTask]]></design:stencilid>
         <design:stencilsuperid><![CDATA[Task]]></design:stencilsuperid>
       </extensionElements>
-    </userTask>
+    </serviceTask>
     <userTask id="FormTask_25" name="Preparar y enviar promociones" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
       <extensionElements>
         <flowable:task-candidates-type><![CDATA[all]]></flowable:task-candidates-type>
@@ -37,13 +36,12 @@
         <design:stencilsuperid><![CDATA[Task]]></design:stencilsuperid>
       </extensionElements>
     </userTask>
-    <userTask id="FormTask_29" name="Realizar seguimiento de la campaña" flowable:assignee="${initiator}" flowable:formFieldValidation="false">
+    <serviceTask id="FormTask_29" name="Realizar seguimiento de la campaña" flowable:type="external-worker" flowable:topic="registrar-seguimiento-campana" flowable:exclusive="false">
       <extensionElements>
-        <flowable:task-candidates-type><![CDATA[all]]></flowable:task-candidates-type>
-        <design:stencilid><![CDATA[FormTask]]></design:stencilid>
+        <design:stencilid><![CDATA[ExternalWorkerTask]]></design:stencilid>
         <design:stencilsuperid><![CDATA[Task]]></design:stencilsuperid>
       </extensionElements>
-    </userTask>
+    </serviceTask>
     <serviceTask id="FormTask_13" name="Actualizar estado a Compra realizada" flowable:type="external-worker" flowable:topic="actualizar-seguimiento-peluditos" flowable:exclusive="false">
       <extensionElements>
         <design:stencilid><![CDATA[ExternalWorkerTask]]></design:stencilid>
@@ -89,7 +87,7 @@
         <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
       </extensionElements>
     </exclusiveGateway>
-    <startEvent id="StartNoneEvent_20" name="Inicio campañas — Entrega 4 (activación futura)" flowable:initiator="initiator" isInterrupting="true">
+    <startEvent id="StartNoneEvent_20" name="Inicio campañas, cumpleaños y fechas especiales" flowable:initiator="initiator" isInterrupting="true">
       <extensionElements>
         <flowable:work-form-field-validation><![CDATA[false]]></flowable:work-form-field-validation>
         <design:stencilid><![CDATA[StartMessageEvent]]></design:stencilid>
