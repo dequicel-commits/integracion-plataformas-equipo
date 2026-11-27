@@ -29,9 +29,14 @@ public class ServidorJakarta {
                                 configuracion,
                                 false);
 
-                Path carpetaInterfaz = Path.of("..", "interfaz-peluditos")
-                                .toAbsolutePath()
-                                .normalize();
+                
+                           String rutaInterfaz = System.getenv().getOrDefault(
+                      "PELU_INTERFAZ_PATH", "../interfaz-peluditos");
+
+                          Path carpetaInterfaz = Path.of(rutaInterfaz)
+                          .toAbsolutePath()
+                          .normalize();
+
 
                 if (Files.isDirectory(carpetaInterfaz)) {
 

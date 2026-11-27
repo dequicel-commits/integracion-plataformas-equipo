@@ -155,16 +155,17 @@ final class RegistroFlowableJakarta {
                             "mensaje", "Se interrumpió la conexión con Flowable. Intenta de nuevo."))
                     .build();
 
-        } catch (IOException e) {
-            System.err.println("Error en el registro Flowable: " + e.getMessage());
+     
+} catch (IOException e) {
+    System.err.println("Error en el registro Flowable: " + e.getMessage());
 
-            return Response.status(502)
-                    .entity(Map.of(
-                            "mensaje","No pudimos enviar tu consulta en este momento. Intenta nuevamente más tarde.""))
-                    .build();
-        }
-    }
+    return Response.status(502)
+            .entity(Map.of(
+                    "mensaje", "No pudimos enviar tu consulta en este momento. Intenta nuevamente más tarde."))
+            .build();
+         }
 
+} 
     /**
      * Avanza en Flowable OSS las tareas de atencion (FormTask_3) y seguimiento
      * comercial (FormTask_5),
