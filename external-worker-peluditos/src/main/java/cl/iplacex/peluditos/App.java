@@ -6,6 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,6 +23,9 @@ public class App {
 
     private static final String TOPIC_GUARDAR_CLIENTE = "guardar-cliente-peluditos";
     private static final String TOPIC_ACTUALIZAR_SEGUIMIENTO = "actualizar-seguimiento-peluditos";
+    private static final String TOPIC_SELECCIONAR_CAMPANA = "seleccionar-clientes-campana";
+    private static final String TOPIC_SEGUIMIENTO_CAMPANA = "registrar-seguimiento-campana";
+
 
     public static void main(String[] args) throws Exception {
 
@@ -70,6 +74,12 @@ public class App {
 
                     // 2. Ejecutar Worker 2: Actualizar seguimiento comercial
                     procesarActualizarSeguimiento(worker, mapper, clienteHttp, !modoContinuo);
+
+                    // 3. Seleccionar clientes elegibles para campanas
+                    procesarSeleccionarClientesCampana(worker, mapper, clienteHttp, !modoContinuo);
+
+                    // 4. Registrar seguimiento de una campana
+                    procesarSeguimientoCampana(worker, mapper, clienteHttp, !modoContinuo);
 
                 } catch (Exception e) {
                     System.err.println(
@@ -256,6 +266,239 @@ public class App {
                         e.toString());
             }
         }
+    }
+
+    /**
+     * WORKER 3 (topic: seleccionar-clientes-campana)
+     * Consulta GET /api/clientes y selecciona exclusivamente clientes que
+     * autorizaron promociones y cumplen los filtros de la campana.
+     * Devuelve a Flowable un booleano, una cantidad y una lista JSON.
+     */
+    private static void procesarSeleccionarClientesCampana(
+            ExternalWorkerClient worker,
+            ObjectMapper mapper,
+            HttpClient clienteHttp,
+            boolean mostrarSiCero) {
+        List<AcquiredExternalWorkerJob> trabajos = worker.createJobAcquireBuilder()
+                .topic(TOPIC_SELECCIONAR_CAMPANA)
+                .numberOfTasks(5)
+                .lockDuration(Duration.ofMinutes(2))
+                .acquireAndLock();
+
+        if (mostrarSiCero || !trabajos.isEmpty()) {
+            System.out.println("[Worker 3] Trabajos recibidos: " + trabajos.size());
+        }
+
+        for (AcquiredExternalWorkerJob trabajo : trabajos) {
+            try {
+                Map<String, Object> vars = trabajo.getVariables();
+                String tipoCampana = leerTexto(vars, "tipoCampana", "FECHA_ESPECIAL");
+                String mesCumpleanos = leerTexto(vars, "mesCumpleanos", "");
+                String especie = leerTexto(vars, "especieMascota", "Todos");
+                String tamano = leerTexto(vars, "tamanoMascota", "Todos");
+
+                if (!tipoCampana.equalsIgnoreCase("CUMPLEANOS")
+                        && !tipoCampana.equalsIgnoreCase("FECHA_ESPECIAL")) {
+                    throw new IllegalArgumentException("tipoCampana no valido: " + tipoCampana);
+                }
+                if (!mesCumpleanos.isBlank()) {
+                    int mes = Integer.parseInt(mesCumpleanos);
+                    if (mes < 1 || mes > 12) {
+                        throw new IllegalArgumentException("mesCumpleanos debe estar entre 1 y 12");
+                    }
+                }
+
+                HttpResponse<String> respuesta = enviarPeticionServicio(
+                        clienteHttp, "GET", "/api/clientes", null);
+                if (respuesta.statusCode() != 200) {
+                    reportarFalloFlowable(worker, trabajo,
+                            "Error al consultar GET /api/clientes: HTTP " + respuesta.statusCode(),
+                            respuesta.body());
+                    continue;
+                }
+
+                JsonNode clientes = mapper.readTree(respuesta.body());
+                if (!clientes.isArray()) {
+                    throw new IllegalStateException("GET /api/clientes no devolvio una lista JSON");
+                }
+
+                List<Map<String, Object>> seleccionados = new ArrayList<>();
+                java.util.Set<Integer> idsIncluidos = new java.util.HashSet<>();
+
+                for (JsonNode cliente : clientes) {
+                    if (!cliente.path("CLIENTE_AUTORIZA").asBoolean(false)) {
+                        continue;
+                    }
+                    if (!"Todos".equalsIgnoreCase(especie)
+                            && !especie.equalsIgnoreCase(cliente.path("MASCOTA_ESPECIE").asText(""))) {
+                        continue;
+                    }
+                    if (!"Todos".equalsIgnoreCase(tamano)
+                            && !tamano.equalsIgnoreCase(cliente.path("MASCOTA_TAMANO").asText(""))) {
+                        continue;
+                    }
+                    // El mes solo se aplica a las campanas de cumpleanos.
+                    if (tipoCampana.equalsIgnoreCase("CUMPLEANOS") && !mesCumpleanos.isBlank()) {
+                        String fecha = cliente.path("MASCOTA_CUMPLEANO").asText("");
+                        if (fecha.isBlank()) {
+                            continue;
+                        }
+                        int mesRegistrado = java.time.LocalDate.parse(fecha).getMonthValue();
+                        if (mesRegistrado != Integer.parseInt(mesCumpleanos)) {
+                            continue;
+                        }
+                    }
+
+                    int clienteId = cliente.path("CLIENTE_ID").asInt(0);
+                    if (clienteId <= 0 || !idsIncluidos.add(clienteId)) {
+                        continue;
+                    }
+                    Map<String, Object> seleccionado = new LinkedHashMap<>();
+                    seleccionado.put("clienteId", clienteId);
+                    seleccionado.put("clienteNombre", cliente.path("CLIENTE_NOMBRE").asText(""));
+                    seleccionado.put("mascotaNombre", cliente.path("MASCOTA_NOMBRE").asText(""));
+                    seleccionados.add(seleccionado);
+                }
+
+                boolean hayClientes = !seleccionados.isEmpty();
+                // Almacenamos la lista como JSON de texto para su lectura posterior.
+                String listaJson = mapper.writeValueAsString(seleccionados);
+                worker.createCompletionBuilder(trabajo)
+                        .variable("clientesSeleccionados", hayClientes)
+                        .variable("cantidadClientesCampana", seleccionados.size())
+                        .variable("listaClientesCampana", listaJson)
+                        .complete();
+
+                System.out.println("[Worker 3] Trabajo completado. Clientes elegibles: "
+                        + seleccionados.size());
+            } catch (Exception e) {
+                reportarFalloFlowable(worker, trabajo,
+                        "Error al ejecutar Worker 3: " + e.getMessage(), e.toString());
+            }
+        }
+    }
+
+    /**
+     * WORKER 4 (topic: registrar-seguimiento-campana)
+     * Recibe los resultados consignados en FormTask_27, verifica que clienteId
+     * pertenezca a listaClientesCampana y actualiza el seguimiento mediante
+     * PUT /api/clientes/{id}/seguimiento.
+     * Importante: este endpoint actualiza el seguimiento comercial existente;
+     * no crea un historial independiente de campanas.
+     */
+    private static void procesarSeguimientoCampana(
+            ExternalWorkerClient worker,
+            ObjectMapper mapper,
+            HttpClient clienteHttp,
+            boolean mostrarSiCero) {
+        List<AcquiredExternalWorkerJob> trabajos = worker.createJobAcquireBuilder()
+                .topic(TOPIC_SEGUIMIENTO_CAMPANA)
+                .numberOfTasks(5)
+                .lockDuration(Duration.ofMinutes(2))
+                .acquireAndLock();
+
+        if (mostrarSiCero || !trabajos.isEmpty()) {
+            System.out.println("[Worker 4] Trabajos recibidos: " + trabajos.size());
+        }
+
+        for (AcquiredExternalWorkerJob trabajo : trabajos) {
+            try {
+                Map<String, Object> vars = trabajo.getVariables();
+                if (vars == null) {
+                    throw new IllegalArgumentException("No se recibieron variables del proceso");
+                }
+
+                // No se usa un cliente por defecto: se evita actualizar a otro cliente.
+                int clienteId = leerEntero(vars, "clienteId", 0);
+                if (clienteId <= 0) {
+                    throw new IllegalArgumentException("FormTask_27 debe indicar un clienteId valido");
+                }
+
+                // Worker 3 devuelve esta lista como texto JSON.
+                String listaJson = leerTexto(vars, "listaClientesCampana", "");
+                if (listaJson.isBlank()) {
+                    throw new IllegalArgumentException("Falta listaClientesCampana del Worker 3");
+                }
+                JsonNode listaSeleccionados = mapper.readTree(listaJson);
+                if (!listaSeleccionados.isArray()) {
+                    throw new IllegalArgumentException("listaClientesCampana no es una lista JSON");
+                }
+                boolean clienteSeleccionado = false;
+                for (JsonNode item : listaSeleccionados) {
+                    if (item.path("clienteId").asInt(0) == clienteId) {
+                        clienteSeleccionado = true;
+                        break;
+                    }
+                }
+                if (!clienteSeleccionado) {
+                    throw new IllegalArgumentException(
+                            "clienteId " + clienteId + " no pertenece a listaClientesCampana");
+                }
+
+                String tipoCampana = leerTexto(vars, "tipoCampana", "");
+                if (tipoCampana.isBlank()) {
+                    throw new IllegalArgumentException("Falta tipoCampana");
+                }
+                boolean promocionEnviada = leerBooleanoObligatorio(vars, "promocionEnviada");
+                boolean compraRealizada = leerBooleanoObligatorio(vars, "compraRealizadaCampana");
+                String respuestaCliente = leerTexto(vars, "respuestaClienteCampana", "");
+                if (respuestaCliente.isBlank()) {
+                    throw new IllegalArgumentException("Falta respuestaClienteCampana");
+                }
+                String observaciones = leerTexto(vars, "observacionesCampana", "");
+
+                // El endpoint REST exige compraRealizada y estos campos de texto.
+                String estado = compraRealizada
+                        ? "Campana: compra realizada"
+                        : "Campana: sin compra";
+                String detalle = "Tipo de campana: " + tipoCampana
+                        + "; promocion enviada: " + promocionEnviada
+                        + "; respuesta del cliente: " + respuestaCliente
+                        + (observaciones.isBlank() ? "" : "; observaciones: " + observaciones);
+
+                Map<String, Object> payload = new LinkedHashMap<>();
+                payload.put("compraRealizada", compraRealizada);
+                payload.put("clienteEstadoCompra", estado);
+                payload.put("clienteObservaciones", detalle);
+
+                String ruta = "/api/clientes/" + clienteId + "/seguimiento";
+                HttpResponse<String> respuesta = enviarPeticionServicio(
+                        clienteHttp, "PUT", ruta, mapper.writeValueAsString(payload));
+
+                if (respuesta.statusCode() == 200 || respuesta.statusCode() == 201) {
+                    worker.createCompletionBuilder(trabajo)
+                            .variable("seguimientoCampanaRegistrado", true)
+                            .variable("estadoCampana", "Finalizada")
+                            .complete();
+                    System.out.println("[Worker 4] Seguimiento registrado. Cliente ID: " + clienteId);
+                } else {
+                    reportarFalloFlowable(worker, trabajo,
+                            "Error en PUT " + ruta + ": HTTP " + respuesta.statusCode(),
+                            respuesta.body());
+                }
+            } catch (Exception e) {
+                reportarFalloFlowable(worker, trabajo,
+                        "Error al ejecutar Worker 4: " + e.getMessage(), e.toString());
+            }
+        }
+    }
+
+    /** Exige un valor booleano explicito para no inventar resultados. */
+    private static boolean leerBooleanoObligatorio(Map<String, Object> vars, String clave) {
+        Object valor = vars.get(clave);
+        if (valor instanceof Boolean b) {
+            return b;
+        }
+        if (valor != null) {
+            String texto = String.valueOf(valor).trim();
+            if (texto.equalsIgnoreCase("true")) {
+                return true;
+            }
+            if (texto.equalsIgnoreCase("false")) {
+                return false;
+            }
+        }
+        throw new IllegalArgumentException("Falta un valor booleano valido para " + clave);
     }
 
     private static void reportarFalloFlowable(
